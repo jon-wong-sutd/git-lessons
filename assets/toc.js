@@ -30,6 +30,8 @@ $(document).ready(function() {
   var closestToMiddle = null;
   var diff = 10000;
 
+  // Shows a floating toc when the fixed toc scrolls out of view.
+  // Also scrolls the floating toc to show the currently viewed heading(s).
   window.onscroll = function() {
     var pageTop = $(window).scrollTop();
 
@@ -72,4 +74,24 @@ $(document).ready(function() {
       }
     }
   };
+
+  // Allows the floating toc to be dragged anywhere.
+  menu[0].addEventListener('dragstart', function(event) {
+    var style = window.getComputedStyle(event.target, null);
+    var leftOffset = parseInt(style.getPropertyValue("left"),10) - event.clientX;
+    var topOffset = parseInt(style.getPropertyValue("top"),10) - event.clientY;
+    event.dataTransfer.setData("text/plain", leftOffset + ',' + topOffset);
+    console.log('Offset: ' + leftOffset + ',' + topOffset);
+  }, false);
+  document.body.addEventListener('dragover', function(event) {
+    event.preventDefault();
+    return false;
+  }, false);
+  document.body.addEventListener('drop', function(event) {
+    var offset = event.dataTransfer.getData("text/plain").split(',');
+    menu[0].style.left = (event.clientX + parseInt(offset[0],10)) + 'px';
+    menu[0].style.top = (event.clientY + parseInt(offset[1],10)) + 'px';
+    event.preventDefault();
+    return false;
+  }, false);
 });

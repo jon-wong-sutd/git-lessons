@@ -10,7 +10,7 @@ permalink: /git-lesson/
 * TOC
 {:toc}
 
-<div id="menu" markdown="1">
+<div id="menu" markdown="1" draggable="true">
 </div>
 
 # Overview
@@ -30,7 +30,7 @@ Even if you only use Git on your own, bear in mind that version control is neces
 This Git lesson is written to be as trim as possible. You can safely ignore side notes like this:
 
 <div class="side-note">
-Serious about programming? Get the cheapest Mac there is. It is difficult to find cheap Linux laptops in Singapore. Ask Jon for more details about the IT culture in Singapore if you want to understand why we don't have easy access to Linux laptops here. ;-)
+Serious about programming? Get the cheapest Mac there is. It is difficult to find cheap Linux laptops in Singapore, possibly due to the IT culture (or lack thereof) in Singapore.
 </div>
 
 # Prerequistites
