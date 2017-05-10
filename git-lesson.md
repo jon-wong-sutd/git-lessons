@@ -518,8 +518,72 @@ A Git **Commit** has 3 components:
 * Commit Message --- the *commit message* for itself (plain text)
 </div>
 
-
-
 # Starting a Bare Git Repository
 
 A bare Git repo contains the **history** of your work on your files, but does not (bother to) keep a copy of your files.
+
+Make room for the bare Git repo by doing:
+{% highlight shell %}
+cd ..
+mv my-new-project clone-A     # Our local repo is now in folder 'clone-A'
+mkdir -p my-new-project/remote     # Create the folder for the bare repo
+mv clone-A my-new-project     # 'my-new-project' shall neatly contain our repos
+cd my-new-project
+{% endhighlight %}
+
+Create the bare repo, which we shall call *remote repo*, by doing:
+{% highlight shell %}
+mkdir remote     # Create new folder for bare repo
+cd remote
+git init --bare     # Create the bare repo
+cd ..
+{% endhighlight %}
+
+<div class="side-note" markdown="1">
+The above bare repo resides on your local harddisk, but is for all our intents and purposes akin to a *remote repo*. You shall see the concept *remote repo* demonstrated soon.
+</div>
+
+Point our *local repo* to the *remote repo*:
+{% highlight shell %}
+cd clone-A
+git remote -v     # Should display nothing; no remotes linked to yet.
+git remote add orign ../remote     # Our remote is named "origin"
+{% endhighlight %}
+
+Checking for our added remote with `git remote -v`:
+{% highlight text %}
+orign	../remote (fetch)
+orign	../remote (push)
+{% endhighlight %}
+
+<div class="side-note" markdown="1">
+Although it is possible to pull (fetch) from one remote repo and push to another remote repo, we shall stick with the most common use case --- pull and push is the same for the remote.
+</div>
+
+We now attempt to push our current branch (`master`) up to `origin` by doing `git push origin master`:
+{% highlight text %}
+Counting objects: 10, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (10/10), 926 bytes | 0 bytes/s, done.
+Total 10 (delta 0), reused 0 (delta 0)
+To ../remote
+ * [new branch]      master -> master
+{% endhighlight %}
+
+<div class="side-note" markdown="1">
+Typically, your first push to a remote should include the `-u` (set-upstream) option like this `git push -u origin master`. The above is a simplified scenario.
+</div>
+
+Everything you saw in your `.git` folder inside your local Git repo will be inside a bare Git repo.
+Both these commands should show you the same files:
+{% highlight shell %}
+find .git/objects -type f
+find ../remote/objects -type f
+{% endhighlight %}
+
+You can see that the bare repo does not reserve any space for *working copies of project files*; all Git data is stored at the top-level folder (`../remote`).
+
+<div class="tip" markdown="1">
+*Local clones* are non-bare local repos we work on. *Remote repos* are bare repos we push to. Consider *remote repos* as a "*certified true copy*" of sorts. They also act like "*cloud backups*", in case your *local clones* get damaged.
+</div>
