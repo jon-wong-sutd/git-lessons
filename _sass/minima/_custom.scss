@@ -20,11 +20,21 @@ h2 code {
   }
 }
 
-.side-note {
+.side-note, .tip {
   margin-left: 5%;
   margin-right: 5%;
+  margin-bottom: 0.5em;
   padding: 1%;
+  border-radius: 10px;
   background-color: #ffffee;
+
+  p:last-of-type {
+    margin: 0;
+  }
+}
+
+.tip {
+  background-color: #ffeeee;
 }
 
 #menu {
@@ -37,4 +47,21 @@ h2 code {
   border-radius: 25px;
   max-height: 20vh;
   overflow: scroll;
+}
+
+.git-red {
+  color: red;
+}
+.git-green {
+  color: green;
+}
+.git-yellow {
+  color: #afae30;
+}
+.git-blue {
+  color: #54bcce;
+}
+
+div.figure {
+  text-align: center;
 }

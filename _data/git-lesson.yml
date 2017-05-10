@@ -1,0 +1,19 @@
+# Use hyphenated naming convention!
+# Underscore confuses Markdown highlighting in Markdown editor.
+
+git-credential:
+  name: Author A
+  email: a@c.com
+
+git-commits:
+  first: 2b5519936865f3b841b5f7aad46dcd0cf0e86ceb
+  second: 118a9ac701be36a849423e65f4ab2bebf75ddbfe
+
+git-trees:
+  first: 88dc468c538f956841dbd018e805ff2ba94248fb
+  second: 19a6f72ee10a50fa32d42edc5070f12f876414b7
+  folder-A: 0ea6ae12ebb0a96b85d57edd8bd433deb08f663e
+  folder-B: fac3336c78925507f50257e5124f57bcaa271732
+  file-B: e7086e266d1d5c77563cf27bbada6e4fddd30057
+
+commit-msg-file: ~/Documents/temp/commit-msg.txt

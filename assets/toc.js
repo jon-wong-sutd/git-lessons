@@ -30,6 +30,8 @@ $(document).ready(function() {
   var closestToMiddle = null;
   var diff = 10000;
 
+  var floatMenuHeight = menu.height();
+
   // Shows a floating toc when the fixed toc scrolls out of view.
   // Also scrolls the floating toc to show the currently viewed heading(s).
   window.onscroll = function() {
@@ -68,7 +70,10 @@ $(document).ready(function() {
 
       if (closestToMiddle !== null && !floatMenuScrolled) {
         // Adjust floating menu to show current header at center.
-        var floatMenuScrollTop = $('#float-toc-' + headingTops[closestToMiddle].name).position().top;
+        var anchorID = '#float-toc-' + headingTops[closestToMiddle].name;
+        // Get top of item relative to top of parent (not relative to scrollTop!).
+        var floatMenuScrollTop = $(anchorID).position().top + $('#menu').scrollTop();
+        floatMenuScrollTop -= 0.5 * floatMenuHeight; // Show item in middle of floating menu.
         $('#menu').scrollTop(floatMenuScrollTop);
         floatMenuScrolled = true;
       }
@@ -81,7 +86,6 @@ $(document).ready(function() {
     var leftOffset = parseInt(style.getPropertyValue("left"),10) - event.clientX;
     var topOffset = parseInt(style.getPropertyValue("top"),10) - event.clientY;
     event.dataTransfer.setData("text/plain", leftOffset + ',' + topOffset);
-    console.log('Offset: ' + leftOffset + ',' + topOffset);
   }, false);
   document.body.addEventListener('dragover', function(event) {
     event.preventDefault();
