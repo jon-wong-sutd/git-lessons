@@ -27,6 +27,7 @@ $(document).ready(function() {
   var viewportMidHeight = $(window).height() / 2;
 
   var floatMenuScrolled = false;
+  var lastClosestToMiddle = null;
   var closestToMiddle = null;
   var diff = 10000;
 
@@ -58,6 +59,7 @@ $(document).ready(function() {
         if (headingTops[i].top > pageTop && headingTops[i].top < viewportMid) {
           var newDiff = viewportMid - headingTops[i].top;
           if (newDiff < diff) {
+            lastClosestToMiddle = closestToMiddle;
             diff = newDiff;
             floatMenuScrolled = false;
             closestToMiddle = i;
@@ -68,14 +70,30 @@ $(document).ready(function() {
         }
       }
 
+      // If closest is below middle, set to previous item.
+      if (closestToMiddle !== null && closestToMiddle !== 0) {
+        if (headingTops[closestToMiddle].top > viewportMid) {
+          lastClosestToMiddle = closestToMiddle;
+          floatMenuScrolled = false;
+          closestToMiddle--;
+        }
+      }
+
       if (closestToMiddle !== null && !floatMenuScrolled) {
         // Adjust floating menu to show current header at center.
         var anchorID = '#float-toc-' + headingTops[closestToMiddle].name;
         // Get top of item relative to top of parent (not relative to scrollTop!).
         var floatMenuScrollTop = $(anchorID).position().top + $('#menu').scrollTop();
-        floatMenuScrollTop -= 0.5 * floatMenuHeight; // Show item in middle of floating menu.
+        floatMenuScrollTop -= 0.40 * floatMenuHeight; // Show item in middle of floating menu.
         $('#menu').scrollTop(floatMenuScrollTop);
         floatMenuScrolled = true;
+
+        // Highlight current heading.
+        if (lastClosestToMiddle) {
+          var lastAnchorID = '#float-toc-' + headingTops[lastClosestToMiddle].name;
+          $(lastAnchorID).removeClass('current');
+        }
+        $(anchorID).addClass('current');
       }
     }
   };

@@ -6,8 +6,22 @@ git-credential:
   email: a@c.com
 
 git-commits:
-  first: 2b5519936865f3b841b5f7aad46dcd0cf0e86ceb
-  second: 118a9ac701be36a849423e65f4ab2bebf75ddbfe
+  first:
+    id: 2b5519936865f3b841b5f7aad46dcd0cf0e86ceb
+    timestamp: 1481488284
+    date: Mon Dec 12 04:31:24 2016 +0800
+  second:
+    id: 118a9ac701be36a849423e65f4ab2bebf75ddbfe
+    timestamp: 1481488427
+    date: Mon Dec 12 04:33:47 2016 +0800
+  third:
+    id: 9ad88e52d7820c8754ca35ff125cb391ae810bc0
+    timestamp: Mon Dec 12 04:42:04 2016 +0800
+    date: Mon Dec 12 04:42:04 2016 +0800
+  to-lose:
+    id: 7f428d0f2fc13ec199f3137c9b59354f7ac4de89
+    timestamp: 1481489291
+    date: Mon Dec 12 04:48:11 2016 +0800
 
 git-trees:
   first: 88dc468c538f956841dbd018e805ff2ba94248fb
@@ -16,4 +30,4 @@ git-trees:
   folder-B: fac3336c78925507f50257e5124f57bcaa271732
   file-B: e7086e266d1d5c77563cf27bbada6e4fddd30057
 
-commit-msg-file: ~/Documents/temp/commit-msg.txt
+commit-msg-file: .git/COMMIT_EDIT_MSG

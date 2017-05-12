@@ -3,7 +3,7 @@
 }
 
 /* Code in titles are part of titles. */
-h2 code {
+h1 code, h2 code {
   @include relative-font-size(2);
 }
 
@@ -20,7 +20,7 @@ h2 code {
   }
 }
 
-.side-note, .tip {
+.side-note, .tip, .forward {
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 0.5em;
@@ -37,6 +37,10 @@ h2 code {
   background-color: #ffeeee;
 }
 
+.forward {
+  background-color: #eeffee;
+}
+
 #menu {
   display: none;
   position: fixed;
@@ -45,8 +49,13 @@ h2 code {
   opacity: 0.8;
   padding: 5px 10px 0 0;
   border-radius: 25px;
-  max-height: 20vh;
+  height: 20vh;
+  min-height: 140px;
   overflow: scroll;
+
+  a.current {
+    background-color: #ffeeee;
+  }
 }
 
 .git-red {
