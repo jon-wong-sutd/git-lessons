@@ -6,6 +6,7 @@ git-credential:
   email: a@c.com
 
 git-commits:
+  # timestamp via `date -j -f "%a %b %d %T %Y %Z" "Mon Dec 12 04:55:26 2016 SGT" "+%s"'
   first:
     id: 2b5519936865f3b841b5f7aad46dcd0cf0e86ceb
     timestamp: 1481488284
@@ -22,6 +23,10 @@ git-commits:
     id: e72818bb5b1fb88e8b20e551da3610dd6de204c5
     timestamp: 1481489291
     date: Mon Dec 12 04:48:11 2016 +0800
+  detached:
+    id: 795babc8e58f20dd2647032afc5bf6de12e866cf
+    timestamp: 1481489726
+    date: Mon Dec 12 04:55:26 2016 +0800
 
 git-trees:
   first: 88dc468c538f956841dbd018e805ff2ba94248fb

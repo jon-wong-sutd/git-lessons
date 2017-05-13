@@ -128,7 +128,7 @@ The unicorn looked around.
 {% endhighlight %}
 
 <div class="side-note" markdown="1">
-Your text editor may insert a 4th line --- a blank line --- at the end of `story.txt`. The historical reasons for that stem from [C Standards for non-empty files](http://c0x.coding-guidelines.com/5.1.1.2.html#123), from [Posix's definition of *Line*](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206), and various other sources related to *software's ability to process instructions in text files* (our `story.txt` is a story, not computer instructions). In this Git lesson, we don't care about any of that. Just be consistent in the way you write your files, ending new-line or no.
+Your text editor may insert a 4th line --- a blank line --- at the end of `story.txt`. The historical reasons for that stem from [C Standards for non-empty files](http://c0x.coding-guidelines.com/5.1.1.2.html#123), from [Posix's definition of *Line*](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206), and various other sources related to *software's ability to process instructions in text files*. In this Git lesson, we don't care about any of that; our `story.txt` is a story, not computer instructions. Just be consistent in the way you write your files, ending new-line or no.
 </div>
 
 <div class="tip">
@@ -196,7 +196,7 @@ Changes to be committed:
 Staged work (new files or updates to existing files) are shown in green.
 </div>
 
-You can remove staged work using `git rm --cached <file>`. Feel free to practice removing the staged work and re-staging that work.
+You can unstage work using `git rm --cached <file>`. Feel free to practice unstaging the staged work and re-staging that work.
 
 <div class="tip">
 <p markdown="1">The *staging area* allows you to work on multiple ideas rapidly --- as and when they come to mind --- but yet still be able to organize your changes into *coherent* and *integral* units.</p>
@@ -243,7 +243,7 @@ You then commit your work by doing `git commit -F {{ commit-msg-file }}`.
 
 <div class="side-note">
 <p markdown="1">If you want to use Emacs as a *commit message editor*, you can configure Git to use Emacs. Do the configuration with `git config --global core.editor emacs`. The default editor is [vi][vi]. You can then verify your editor configuration in `~/.gitconfig`. That file can also be edited by hand.</p>
-<p markdown="1">You can then do just `git commit -v` and see your chosen text editor pop up, enter your commit message, save like you're saving a file, and finally exit the text editor. That sequence of actions will commit your changes.</p>
+<p markdown="1">You can then do just `git commit -v` and see your chosen text editor pop up, enter your commit message, save like you're saving a file (you're actually saving `{{ commit-msg-file }}`), and finally exit the text editor. That sequence of actions will commit your changes.</p>
 </div>
 
 [vi]: https://www.cs.colostate.edu/helpdocs/vi.html
@@ -261,7 +261,7 @@ You then commit your work by doing `git commit -F {{ commit-msg-file }}`.
 
 `git log --decorate --graph` will show your first commit. Later on when you have more commits, `git log` will show a connected graph (timeline) of all your commits. Right now, you only have 1 commit:
 <pre>
-<code>{% include git-log/ch.html commit-id=first-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=first-commit full-id=true head=true attached="master" %}
   Author: {{ git-name }} <{{ git-email }}>
   Date:   {{ first-commit-date }}
 
@@ -274,8 +274,12 @@ You then commit your work by doing `git commit -F {{ commit-msg-file }}`.
 
 Especially note the credential attached to that commit. Recall from [a previous section](#the-git-folder) where you configured your credential for this Git repo. This credential is what gets attached to every commit you make in this Git repo.
 
-<div class="side-note" markdown="1">
+<div class="forward" markdown="1">
 The `git log` option `--decorate` shows *git branches/tags*, concepts that will be explained later. The option `--graph` shows a visual representation (with connecting lines) of how *commits*  connect and form, well, a graph. How *commits* connect to one another will also be explained later.
+</div>
+
+<div class="tip" markdown="1">
+`git log` lets you see *what was done before* to decide *what to do next*. You'll also often look at previous *commit messages* to guide you in creating new *commit messages*.
 </div>
 
 ## Navigating the Git Log
@@ -287,10 +291,6 @@ Turns out many *nix productivity tools are inter-related! Learn one, learn all! 
 </div>
 
 Shorten the height of your `bash` terminal such that `git log --decorate --graph` output exceeds that height. The log will be displayed in a `less` window, and you can practice navigating in that window.
-
-<div class="tip" markdown="1">
-`git log` lets you see *what was done before* to decide *what to do next*. You'll also often look at previous *commit messages* to guide you in creating new *commit messages*.
-</div>
 
 # Git Objects --- Commits, Trees, Blobs
 
@@ -363,7 +363,7 @@ And now, we commit with `git commit -F {{ commit-msg-file }}`.
 
 A look at Git Log via `git log --decorate --graph` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit full-id=true head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -372,7 +372,7 @@ A look at Git Log via `git log --decorate --graph` shows:
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit full-id=true %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -427,7 +427,7 @@ The second line indicates that our *second-commit* is linked to our *first-commi
 </div>
 
 <div class="tip" markdown="1">
-New *commit*s are added **downstream**. Swimming **upstream** brings you to earlier commits. The above example has *commit C1* upsteam of *commit C2*. There is no way to swim *downstream*.
+New *commit*s are added **downstream**. Swimming **upstream** brings you to earlier commits. The above example has *commit C1* upsteam of *commit C2*.
 </div>
 
 <div class="forward" markdown="1">
@@ -572,14 +572,48 @@ Confirm this by doing `cat .git/refs/heads/master` and also `git branch -v`. Not
 * <span class="git-green">master</span> 118a9ac Adds nested folder structure</code>
 </pre>
 
+## Human-Friendlier Git Object IDs
+
+In the spirit of Git *reference*s, let's make *Git Object ID*s more human-friendly too.
+
+<div class="tip" markdown="1">
+*Git Object ID*s is still *not* the right way to work in Git. Git *reference*s is the right way!
+</div>
+
+We set a parameter for `git log` like this: `git config log.abbrevCommit true`.
+
+A subsequent `git log --decorate --graph` shows 7-character *commit ID*s:
+<pre>
+<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Just testing. We want to see Git Objects.
+<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
 ## Swimming Upstream
 
 <div class="tip" markdown="1">
 The `~` operator takes in a number that tells Git how many commits you want to swim upstream. The result is the *commit* Git lands on after performing that operation.
 </div>
 
-`git log --oneline master~1` shows us our *first-commit*, which is 1 step upstream of our *second-commit*:
+`git log --decorate --oneline master~1` shows us our *first-commit*, which is 1 step upstream of our *second-commit*:
 <pre><code><span class="git-yellow">{{ first-commit | slice: 0, 7 }}</span> Adds first work on the story</code></pre>
+
+There is no way to swim *downstream*. Git *commit*s do not have a property that is a counterpart to `parent`.
 
 # Branches
 
@@ -611,7 +645,7 @@ Our "*master*" branch is pointing to our second commit, as shown by `git log --d
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-Let's create a new *branch* named "*temp*" at our first commit by doing `git branch temp master~1`. A `git log --decorate --graph master` shows:
+Let's create a new *branch* named "*temp*" at our *first-commit* by doing `git branch temp master~1`. A `git log --decorate --graph master` shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -668,7 +702,7 @@ git branch -d temp     # Don't need branch 'temp' anymore
 git reset --hard master~1     # Move branch 'master' upstream to first-commit
 {% endhighlight %}
 
-Our story will continue properly from the first-commit. The second-commit was really a digression to understand Git objects. `git log --decorate git-obj-study` shows:
+Our story will continue properly from the *first-commit*. The *second-commit* was really a digression to understand Git objects. `git log --decorate git-obj-study` shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=second-commit branch="git-obj-study" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -690,7 +724,7 @@ Our story will continue properly from the first-commit. The second-commit was re
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-Edit file `story.txt` to contain (new lines 3-5):
+Edit file `story.txt` to contain (new lines 3-6):
 {% highlight text linenos %}
 Once upon a time, there was a unicorn.
 
@@ -756,6 +790,8 @@ In the above `git log`, we can see that there are 2 branches --- <span class="gi
 The **head**, aka *tip*, of a **branch** is the latest *commit* (furthest *downstream*) on the *branch*.
 </div>
 
+The fork for these 2 *branch*es is at our *first-commit*, just FYI.
+
 ## Branches and Garbage Collection
 
 *Branch*es are important because they provide the only (normal) way for you to access *commit*s.
@@ -772,7 +808,7 @@ Unreferenced *commit*s can be deleted --- at some later time, not immediately --
 
 Even if you strive hard to remember an unreferenced *commit*'s *Git object ID*, you won't be able to retrieve that *commit* after Git's *garbage collector* has deleted it.
 
-We will demonstrate how the *garbage collector* deletes *unreferenced commit*. We first create a commit we intend to lose.
+We will demonstrate how the *garbage collector* deletes an *unreferenced commit*. We first create a commit we intend to lose.
 
 In `story.txt`, add 2 lines at the end:
 {% highlight text linenos %}
@@ -873,19 +909,24 @@ Let us see if our *to-lose-commit* is now **unreachable**. We can see that our *
 * Git **references**
   * *branch* (local or remote)
   * *tag*
-  * the `HEAD`
 * **commit** (via commit property "*parent*").
 </div>
 
+Note that Git does not consider the `HEAD` as a "*Git reference that determines commit reachability*".
+
 <div class="forward" markdown="1">
-**Tag**s and the **`HEAD`** will be explained later.
+**Tag**s and the **`HEAD`** will be explained later, as well as the reason why the `HEAD` does not determine *commit reachability*.
 </div>
 
 It is now clear that our *to-lose-commit* is **unreachable**. But it is *not* **unreferenced**! Let's see.
 
+<div class="forward" markdown="1">
+The proper way to check for dangling (unreachable) *commit*s is to do `git fsck --no-reflog`. But we will only learn about Git *reflog* later on.
+</div>
+
 ### Reflog --- Safety Net
 
-Git's **reflog** still stores references to our *to-lose-commit*. A `git reflog master` reveals our *to-lose-commit* is still referenced at `master@{1}`:
+Git's **reflog** still stores a reference to our *to-lose-commit*. A `git reflog master` reveals our *to-lose-commit* is still referenced at `master@{1}`:
 <pre>
 <code><span class="git-yellow">{{ third-commit | slice: 0, 7 }}</span> master@{0}: reset: moving to master~1
 <span class="git-yellow">{{ to-lose-commit | slice: 0, 7 }}</span> master@{1}: commit: Adds a commit we intend to lose
@@ -896,7 +937,7 @@ Git's **reflog** still stores references to our *to-lose-commit*. A `git reflog 
 </pre>
 
 <div class="forward" markdown="1">
-The Git **reflog** is like an "*undo history*". We will learn more about Git *reflog* later on.
+The Git **reflog** is like an "*undo history*" --- a history of past actions we can undo. We will learn more about Git *reflog* later on.
 </div>
 
 Now, Git's default parameters for its *garbage collector* means that Git only deletes *unreferenced commits* that are older than 14 days. To impede our current experiment more, Git still retains references to our *to-lose-commit* in its *reflog*, because *reflog references to unreachable commits* are only deleted if older than 30 days. Our experiment can only work if we wait 30 days from now!
@@ -929,17 +970,21 @@ Never change default parameters for the *garbage collector* under normal circums
 # The `HEAD`
 
 <div class="tip" markdown="1">
-The `HEAD` is a special Git reference that refers to the **current commit** you're on. Your *next commit* will have this *current commit* as its *parent*.
+The `HEAD` is a special Git reference that refers to the **current commit** you're on. Your *next new commit* will have this *current commit* as its *parent*.
 </div>
 
-TODO: Show that `HEAD` moves around, and is not a good Git reference to use to *hold on to commits* --- to prevent wanted *commit*s from becoming *unreachable* and eventually deleted. Hence, *branch*es is still the best way to *keep commits we want*.
+That is the definition, so to speak, of the `HEAD`. That definition implies many things, such as the functionality and semantics of Git *branch*, the definition of *commit reachability*, and more.
+
+<div class="forward" markdown="1">
+Those implications are better studied through clear demonstrations, coming up next.
+</div>
 
 ## `HEAD` With Branch
 
 When we perform a `git checkout <branch>`, the `HEAD` is attached to the *branch* we checkout.
 
 <div class="tip" markdown="1">
-`git checkout <branch>` checks out (or *switches* to) <span class="git-green">&lt;branch&gt;</span>, attaching `HEAD` to the branch.
+**Checking out** (switching to) a *branch* (`git checkout <branch>`) **attaches** the `HEAD` to the branch. Thus, the `HEAD` moves around to different *branch*es as we checkout various *branch*es.
 </div>
 
 Currently, we're on *branch* <span class="git-green">master</span>, as shown by `git log --decorate --graph master git-obj-study`:
@@ -970,6 +1015,10 @@ Currently, we're on *branch* <span class="git-green">master</span>, as shown by 
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
+<div class="tip" markdown="1">
+An **attached** `HEAD` is shown with an arrow pointing to the *branch* it is attached to. Like this: <code><span class="git-blue">HEAD -></span> <span class="git-green">branch-name</span></code>
+</div>
+
 We do `git checkout git-obj-study`, and then `git log --decorate --graph master git-obj-study` shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=third-commit branch="master" %}
@@ -998,8 +1047,18 @@ We do `git checkout git-obj-study`, and then `git log --decorate --graph master 
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
+The `HEAD` has moved from being *attached to* <span class="git-green">master</span> to being *attached to* <span class="git-green">git-obj-study</span>.
+
+### To Work on a Branch
+
+What does it mean to *work on a branch*? How is a *branch* **advanced**?
+
 <div class="tip" markdown="1">
-When creating a new *commit* off (downstream) of the attached `HEAD`, the *branch* is automatically advanced (downstream) to point to the new *commit*. The `HEAD` is, of course (by definition), moved to refer to the new *commit*. It remains attached to the *branch*, allowing us to in effect **work on the branch, commit to the branch, and advance the branch**.
+When creating a new *commit* off of (downstream of) the `HEAD`:
+* The `HEAD` is moved to refer to the new *commit*.
+* **If attached** to a *branch*, that *branch* is advanced (downstream) to point to the new *commit*.
+
+Hence, a `HEAD` attached to some *branch* allows us to in effect **work on the branch, commit to the branch, and advance the branch**.
 </div>
 
 This was seen when we committed our *first-commit* and *second-commit* while on *branch* <span class="git-green">master</span>. We did not have to manually advance the *branch* with every new *commit*.
@@ -1009,27 +1068,21 @@ We shall soon see that this *automatic advancing of a branch* does not occur if 
 ## Quick Word on Tags
 
 <div class="tip" markdown="1">
-*Tag*s are mere pointers, like *branch*es are. However, *tag*s do not have the same functionality (such as automatic advancement to new, downstream *commit*s) as *branch*es do. **Tags are mere pointers, and nothing more.**
+*Tag*s are mere pointers, like *branch*es are. However, *tag*s do not have the same functionality (such as advancement with new *commit*s) nor semantics as *branch*es do. **Tags are mere pointers, and nothing more.**
 </div>
 
 As we will soon see, checking out a tag will result in a detached `HEAD`.
 
-Create a tag at the *second-commit* by doing `git tag our-tag git-obj-study`. Then `git log --decorate --graph master git-obj-study` shows:
+Create a tag at the *second-commit* by doing `git tag our-tag git-obj-study`. Then `git log --decorate --graph git-obj-study` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit branch="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit attached="git-obj-study" head=true tag="our-tag" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
-<span class="git-red">|</span> Date:   {{ third-commit-date }}
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
-<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>    Adds nested folder structure
 <span class="git-red">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit attached="git-obj-study" head=true tag="our-tag" %}
-<span class="git-red">|/</span> Author: Author A <a@c.com>
-<span class="git-red">|</span>  Date:   {{ second-commit-date }}
-<span class="git-red">|</span>
-<span class="git-red">|</span>      Adds nested folder structure
-<span class="git-red">|</span>
-<span class="git-red">|</span>      Just testing. We want to see Git Objects.
-<span class="git-red">|</span>      We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>    Just testing. We want to see Git Objects.
+<span class="git-red">|</span>    We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
 {% include git-log/ch.html commit-id=first-commit %}
   Author: Author A <a@c.com>
@@ -1061,49 +1114,174 @@ HEAD is now at {{ second-commit | slice: 0, 7 }} ... Adds nested folder structur
 {% endhighlight %}
 
 <div class="tip" markdown="1">
-Checking out a *tag* will result in a detached `HEAD`.
+Checking out a **tag** will result in a **detached** `HEAD`. The same **detachment** will happen if you checked out the **commit** itself (`git checkout {{ second-commit-short }}`), or any *commit* for that matter.
 </div>
 
-The same can happen if you did `git checkout {{ second-commit-short }}`.
-
-<!-- include git-log-commit-id.html commit-id=second-commit branch="git-obj-study" head=true detached=true tag="our-tag" -->
-
-A `git log --decorate --graph git-obj-study` shows that the `HEAD` is on its own:
+A `git log --decorate --graph HEAD` shows that the `HEAD` is on its own:
 <pre>
-<code>{% include git-log/h.html head=true attached="master" %}
-{% include git-log/ch.html commit-id=second-commit branch="git-obj-study" head=true tag="our-tag" %}</code>
+<code>{% include git-log/ch.html commit-id=second-commit branch="git-obj-study" head=true tag="our-tag" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Just testing. We want to see Git Objects.
+<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-Recall that *branch*es are important, being the only normal way to access *commit*s.
+### Committing While Detached
 
-TODO: Demonstrate committing on a detached `HEAD`. Then a `git checkout <branch>` changes `HEAD`, rendering the new commit *unreachable*.
+We will now show what happens when a new *commit* is made on a *detached* `HEAD`.
 
-# Tags
+Add 2 lines at the end of `story.txt`:
+{% highlight text %}
+Once upon a time, there was a unicorn.
 
-Checking out a tag will result in a detached `HEAD`.
+The unicorn looked around.
 
-TODO: Tags can also be a good way to keep *commit*s we want. They don't move around like `HEAD` does, and so can be permanent rather than transient. However, if you ever want to continue work (create a new *commit* downstream) from a *tag*, you'll need to create a *branch* to do so.
+This change will be committed while detached.
+{% endhighlight %}
 
-# Misc
+Edit `{{ commit-msg-file }}` to be:
+{% highlight text %}
+Adds a commit while detached
+{% endhighlight %}
 
+Commit that new change with `git commit -F {{ commit-msg-file }}`.
+
+{% assign detached-commit = site.data.git-lesson.git-commits.detached.id %}
+{% assign detached-commit-short = detached-commit | slice: 0, 5 %}
+{% assign detached-commit-date = site.data.git-lesson.git-commits.detached.date %}
+{% assign detached-commit-timestamp = site.data.git-lesson.git-commits.detached.timestamp %}
+
+Then `git log --decorate --graph HEAD` shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=detached-commit head=true %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ detached-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=second-commit branch="git-obj-study" tag="our-tag" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Just testing. We want to see Git Objects.
+<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
+Note your *commit ID*s, including the new one we created while detached. Mine are:
+{% highlight text %}
+first-commit: {{ first-commit-short }}
+second-commit: {{ second-commit-short }}
+third-commit: {{ third-commit-short }}
+to-lose-commit: {{ to-lose-commit-short }}
+detached-commit: {{ detached-commit-short }}
+{% endhighlight %}
+
+Our *detached-commit* is **unreachable**, as can be seen via `git for-each-ref --contains {{ detached-commit-short }}` (no output).
+
+Git considers the `HEAD` as transient and *not really a Git reference*, even though the `HEAD` is technically a *special kind of Git reference*.
 
 <div class="tip" markdown="1">
-If a *commit* is not accessible via any *branch*, that *commit* is said to be *detached* or *lost* or (most accurately) *ripe for garbage-collection (deletion)*.
+Recall: *Branch*es are important, being the only normal way to access *commit*s.
 </div>
 
-Teach safe behavior using backup branches.
+Let's put a new *branch* to our *detached-commit* via `git branch temp`. Now, our *detached-commit* is no longer **unreachable**, as evidenced by `git for-each-ref --contains {{ detached-commit-short }}`:
+{% highlight text %}
+{{ detached-commit }} commit	refs/heads/temp
+{% endhighlight %}
 
-Create a branch 'test-git-obj' at 2nd commit.
+### Leaving Commits Behind
 
-Move 'master' to 1st commit.
+Let's complete our demonstration of how a commit created while detached can be lost.
 
-Show that a branch is just a pointer pointing to a commit.
+Delete the branch <span class="git-green">temp</span> via `git branch -d temp`.
 
-<div class="tip">
-When in doubt, always create another branch as a *backup*. This backup should point to the same commit as the branch you're about to perform drastic operations on.
+Checkout branch <span class="git-green">git-obj-study</span> via `git checkout git-obj-study`, and we see Git telling us:
+{% highlight text %}
+Warning: you are leaving 1 commit behind, not connected to
+any of your branches:
+
+  {{ detached-commit | slice: 0, 7 }} Adds a commit while detached
+
+If you want to keep it by creating a new branch, this may be a good time
+to do so with:
+
+ git branch <new-branch-name> {{ detached-commit | slice: 0, 7 }}
+
+Switched to branch 'git-obj-study'
+{% endhighlight %}
+
+In fact, despite Git's polite warning, that is about the only time you may *keep that unreachable commit*. You likely won't remember the *commit ID* of our *detached-commit* after this warning disappears. Moreover, Git's *garbage collector* may delete that *unreachable commit* some time later (30 days) before you decide to retrieve it.
+
+That brings us to an important tip:
+
+<div class="tip" markdown="1">
+Creating branches (temporarily or otherwise) is a good way to hang on to any *commit*s you would potentially want to keep. In fact, it's a good "*put a bookmark on here before I mess things up*" technique. (Just don't delete the *branch* in question!)
 </div>
 
-## Git Reflog
+To repeat for reinforcement, *branch*es are the only normal way to access (reach) *commit*s.
+
+The `HEAD` changes depending on which *branch* you checkout, and can potentially leave *commit*s behind.
+
+A `git log --decorate --graph {{ detached-commit-short }}` shows that the `HEAD` has moved to <span class="git-green">git-obj-study</span>, and has left our *detached-commit* behind:
+<pre>
+<code>{% include git-log/ch.html commit-id=detached-commit %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ detached-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=second-commit head=true attached="git-obj-study" tag="our-tag" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Just testing. We want to see Git Objects.
+<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
+### Jumping Through Timelines
+
+A *detached* `HEAD` does have its uses. You can move the `HEAD` to any *commit* (snapshot) in any timeline to take a look-see.
+
+Just remember that you need to attach the `HEAD` to a *branch* before you start work.
+
+# Git Reflog
 
 "*Undo history*" for Git references.
 
@@ -1141,18 +1319,18 @@ The above bare repo resides on your local harddisk, but is for all our intents a
 ## *Clone* vs *Remote*
 
 <div class="tip" markdown="1">
-*Clones* are non-bare local repos we work on. Your *clone* is your local copy of the Git repo you work on (see "*remote*" soon after this).
+**Clone**s are non-bare local repos we work on. Your *clone* is your local copy of the Git repo you work on (see "*remote*" soon after this).
 </div>
 
-In our case here, we have a *local clone* in folder '*clone-A*'.
+In our case here, we have a *clone* in folder '*clone-A*'.
 
 <div class="tip" markdown="1">
-*Remotes* are bare repos we push to, and collaborate on. Consider a *remote* as a "*certified true copy*" of sorts, which is also clearly implied by the contrasting term "*clone*". They also act like "*cloud backups*" (if you're using [GitHub](github.com) or [BitBucket](bitbucket.org)), in case your *clones* get damaged.
+**Remote**s are bare repos we push to, and collaborate on. Consider a *remote* as a "*certified true copy*" of sorts, which is also clearly implied by the contrasting term "*clone*". They also act like "*cloud backups*" (if you're using [GitHub](github.com) or [BitBucket](bitbucket.org)), in case your *clones* get damaged.
 </div>
 
 Our *remote* in this case resides in folder '*remote*'.
 
-<div class="side-note" markdown="1">
+<div class="forward" markdown="1">
 We will look at situating our *remote* on GitHub and BitBucket later on.
 </div>
 
