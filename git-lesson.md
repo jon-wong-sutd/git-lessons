@@ -6,11 +6,57 @@ permalink: /git-lesson/
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="../assets/toc.js"></script>
+<script src="../assets/git-obj-id.js"></script>
 
 * TOC
 {:toc}
 
 <div id="menu" markdown="1" draggable="true">
+</div>
+
+<!-- Forms to edit commit IDs -->
+<div id="error-msg"></div>
+<div id="info-msg"></div>
+
+<div id="first-commit-edit" class="goi-edit" markdown="1">
+Enter your own *first-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="second-commit-edit" class="goi-edit" markdown="1">
+Enter your own *second-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="third-commit-edit" class="goi-edit" markdown="1">
+Enter your own *third-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="to-lose-commit-edit" class="goi-edit" markdown="1">
+Enter your own *to-lose-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="detached-commit-edit" class="goi-edit" markdown="1">
+Enter your own *detached-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="first-tree-edit" class="goi-edit" markdown="1">
+Enter your own *first-tree* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="second-tree-edit" class="goi-edit" markdown="1">
+Enter your own *second-tree* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="folder-A-tree-edit" class="goi-edit" markdown="1">
+Enter your own *folder-A-tree* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="folder-B-tree-edit" class="goi-edit" markdown="1">
+Enter your own *folder-B-tree* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="file-B-blob-edit" class="goi-edit" markdown="1">
+Enter your own *file-B-blob* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
 </div>
 
 # Overview
@@ -261,7 +307,7 @@ You then commit your work by doing `git commit -F {{ commit-msg-file }}`.
 
 `git log --decorate --graph` will show your first commit. Later on when you have more commits, `git log` will show a connected graph (timeline) of all your commits. Right now, you only have 1 commit:
 <pre>
-<code>{% include git-log/ch.html commit-id=first-commit full-id=true head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=first-commit class="first-commit" full-id=true head=true attached="master" %}
   Author: {{ git-name }} <{{ git-email }}>
   Date:   {{ first-commit-date }}
 
@@ -271,6 +317,10 @@ You then commit your work by doing `git commit -F {{ commit-msg-file }}`.
       That first line above should be a short summary, with no ending period.
       Then comes a blank line, and then whatever descriptive things I wanna say.</code>
 </pre>
+
+<div class="tip" markdown="1">
+Click on the *commit ID* above to enter your own value. The rest of this lesson will follow suit. You can click on any *commit ID* anywhere and do the same edit.
+</div>
 
 Especially note the credential attached to that commit. Recall from [a previous section](#the-git-folder) where you configured your credential for this Git repo. This credential is what gets attached to every commit you make in this Git repo.
 
@@ -363,7 +413,7 @@ And now, we commit with `git commit -F {{ commit-msg-file }}`.
 
 A look at Git Log via `git log --decorate --graph` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit full-id=true head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" full-id=true head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -372,7 +422,7 @@ A look at Git Log via `git log --decorate --graph` shows:
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit full-id=true %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" full-id=true %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -383,14 +433,12 @@ A look at Git Log via `git log --decorate --graph` shows:
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-{% assign first-commit-short = first-commit | slice: 0, 5 %}
-{% assign second-commit-short = second-commit | slice: 0, 5 %}
+<div class="tip" markdown="1">
+Click on the *Git Object ID*s above to enter your own value. The rest of this lesson will follow suit. You can click on any *Git Object ID*s anywhere and do the same edit.
+</div>
 
-Now, take note of your two **commit ID**s, just the first 5 characters will do. Mine are <span class="git-yellow">{{ first-commit-short }}</span> and <span class="git-yellow">{{ second-commit-short }}</span>. Write yours down somewhere quick and easy, like I do, and map yours to mine:
-{% highlight text %}
-first-commit: {{ first-commit-short }} --- <your first-commit ID>
-second-commit: {{ second-commit-short }} --- <your second-commit ID>
-{% endhighlight %}
+{% assign first-commit-short = first-commit | slice: 0, 7 %}
+{% assign second-commit-short = second-commit | slice: 0, 7 %}
 
 <div class="tip" markdown="1">
 Think of these **ID**s as unique identifiers, each uniquely representing a Git object (*commit*, *tree* or *blob*).
@@ -406,18 +454,25 @@ These **ID**s are actually [SHA-1](https://en.wikipedia.org/wiki/SHA-1) *message
 
 {% assign second-tree = site.data.git-lesson.git-trees.second %}
 
-Let's look at the *second-commit* via `git cat-file -p {{ second-commit-short }}`:
-{% highlight text linenos %}
-tree {{ second-tree }}
-parent {{ first-commit }}
+Let's look at the *second-commit* via
+<pre>
+<code>git cat-file -p <span class="second-commit-short goi">{{ second-commit-short }}</span></code>
+</pre>
+<pre>
+<code>tree <span class="second-tree goi">{{ second-tree }}</span>
+parent <span class="first-commit goi">{{ first-commit }}</span>
 author Author A <a@c.com> {{ second-commit-timestamp }} +0800
 committer Author A <a@c.com> {{ second-commit-timestamp }} +0800
 
 Adds nested folder structure
 
 Just testing. We want to see Git Objects.
-We should be seeing Commits, Trees and Blobs.
-{% endhighlight %}
+We should be seeing Commits, Trees and Blobs.</code>
+</pre>
+
+<div class="tip" markdown="1">
+Click on the *Git Object ID*s above, even the *tree ID*, to enter your own value. The rest of this lesson will follow suit. You can click on any *Git Object ID*s anywhere and do the same edit.
+</div>
 
 From the third line of that output, we see the *commit message* for our *second-commit*.
 
@@ -436,9 +491,11 @@ We will learn later that *commits* are connected as [Singly Linked Lists](https:
 
 {% assign first-tree = site.data.git-lesson.git-trees.first %}
 
-And to confirm that our *second-commit* really links to our *first-commit*, we take a peek at the *first-commit* by doing `git cat-file -p {{ first-commit-short }}`:
-{% highlight text linenos %}
-tree {{ first-tree }}
+And to confirm that our *second-commit* really links to our *first-commit*, we take a peek at the *first-commit* by doing:
+<pre><code>git cat-file -p <span class="first-commit-short goi">{{ first-commit-short }}</span></code></pre>
+
+<pre>
+<code>tree <span class="first-tree goi">{{ first-tree }}</span>
 author Author A <a@c.com> {{ first-commit-timestamp }} +0800
 committer Author A <a@c.com> {{ first-commit-timestamp }} +0800
 
@@ -446,19 +503,11 @@ Adds first work on the story
 
 I'd think up more descriptive information here if I could.
 That first line above should be a short summary, with no ending period.
-Then comes a blank line, and then details and descriptions follow.
-{% endhighlight %}
+Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
 
-{% assign first-tree-short = first-tree | slice: 0, 5 %}
-{% assign second-tree-short = second-tree | slice: 0, 5 %}
-
-Note the 2 different *tree* objects pointed to by the 2 commits. Write yours down somewhere quick and easy, like I do, mapping yours to mine:
-{% highlight text %}
-first-commit: {{ first-commit-short }}
-second-commit: {{ second-commit-short }}
-first-tree: {{ first-tree-short }}
-second-tree: {{ second-tree-short }}
-{% endhighlight %}
+{% assign first-tree-short = first-tree | slice: 0, 7 %}
+{% assign second-tree-short = second-tree | slice: 0, 7 %}
 
 <div class="forward" markdown="1">
 Git objects **tree** and **blob** are only useful here for the concept exploration of **commit**. You won't be bothering with *tree* or *blob* once we have taken apart the anatomy of a *commit*.
@@ -485,39 +534,43 @@ second-tree
 Just a little more down the rabbit hole...
 
 {% assign git-tree-folder-A = site.data.git-lesson.git-trees.folder-A %}
-{% assign git-tree-folder-A-short = git-tree-folder-A | slice: 0, 5 %}
+{% assign git-tree-folder-A-short = git-tree-folder-A | slice: 0, 7 %}
 {% assign git-tree-folder-B = site.data.git-lesson.git-trees.folder-B %}
-{% assign git-tree-folder-B-short = git-tree-folder-B | slice: 0, 5 %}
+{% assign git-tree-folder-B-short = git-tree-folder-B | slice: 0, 7 %}
 {% assign git-tree-file-B = site.data.git-lesson.git-trees.file-B %}
-{% assign git-tree-file-B-short = git-tree-file-B | slice: 0, 5 %}
+{% assign git-tree-file-B-short = git-tree-file-B | slice: 0, 7 %}
 
-Let's confirm that our *second-tree* does indeed contain the hierarchy we conjectured above. `git cat-file -p {{ first-tree-short }}` shows:
-{% highlight text %}
-040000 tree {{ git-tree-folder-A }}	folder-A
-100644 blob 2a8621f3fe966d677330a471450bd54a539162a2	story.txt
-{% endhighlight %}
+Let's confirm that our *second-tree* does indeed contain the hierarchy we conjectured above.
+<pre><code>git cat-file -p <span class="second-tree-short goi">{{ second-tree-short }}</span></code></pre>
+<pre>
+<code>040000 tree <span class="folder-A-tree goi">{{ git-tree-folder-A }}</span>	folder-A
+100644 blob 2a8621f3fe966d677330a471450bd54a539162a2	story.txt</code>
+</pre>
 
 Indeed, our *second-tree* has a tree (`folder-A`) and a blob (`story.txt`).
 
-Chase that nested *tree* further down by `git cat-file -p {{ git-tree-folder-A-short }}`:
-{% highlight text %}
-100644 blob 0e82526a4ea4a0031220e1e872d2c6abab945ccb	file-A.txt
-040000 tree {{ git-tree-folder-B }}	folder-B
-{% endhighlight %}
+Chase that nested *tree* further down by:
+<pre><code>git cat-file -p <span class="folder-A-tree-short goi">{{ git-tree-folder-A-short }}</span></code></pre>
+<pre>
+<code>100644 blob 0e82526a4ea4a0031220e1e872d2c6abab945ccb	file-A.txt
+040000 tree <span class="folder-B-tree goi">{{ git-tree-folder-B }}</span>	folder-B</code>
+</pre>
 
-And further down by `git cat-file -p {{ git-tree-folder-B-short }}`:
-{% highlight text %}
-100644 blob {{ git-tree-file-B }}	file-B.txt
-100644 blob 8458d5e043e7546ff08a0292699a75536f87bcaa	file-C.txt
-{% endhighlight %}
+And further down by:
+<pre><code>git cat-file -p <span class="folder-B-tree-short goi">{{ git-tree-folder-B-short }}</span></code></pre>
+<pre>
+<code>100644 blob <span class="file-B-blob goi">{{ git-tree-file-B }}</span>	file-B.txt
+100644 blob 8458d5e043e7546ff08a0292699a75536f87bcaa	file-C.txt</code>
+</pre>
 
-And finally, a peek into a **Blob** Git object by `git cat-file -p {{ git-tree-file-B-short }}`:
+And finally, a peek into a **Blob** Git object by:
+<pre><code>git cat-file -p <span class="file-B-blob-short goi">{{ git-tree-file-B-short }}</span></code></pre>
 {% highlight text %}
 This is file-B.
 {% endhighlight %}
 
 {% assign git-tree-file-B = site.data.git-lesson.git-trees.file-B %}
-{% assign git-tree-file-B-short = git-tree-file-B | slice: 0, 5 %}
+{% assign git-tree-file-B-short = git-tree-file-B | slice: 0, 7 %}
 
 To fully take stock of all the Git objects we currently have, `find .git/objects -type f` shows:
 {% highlight text %}
@@ -561,15 +614,15 @@ The types of Git *references* are:
 
 We currently have 1 branch --- "*master*". (`git branch` shows all branches)
 
-This is actually a *reference* to our *second-commit* (<span class="git-yellow">{{ second-commit-short }}</span> in my case), as seen by `git log --decorate --oneline master`:
+This is actually a *reference* to our *second-commit*, as seen by `git log --decorate --oneline master`:
 <pre>
-<code><span class="git-yellow">118a9ac (<span class="git-blue">HEAD -></span> <span class="git-green">master</span>)</span> Adds nested folder structure
-<span class="git-yellow">2b55199</span> Adds first work on the story</code>
+<code><span class="git-yellow"><span class="second-commit-short goi">{{ second-commit-short }}</span> (<span class="git-blue">HEAD -></span> <span class="git-green">master</span>)</span> Adds nested folder structure
+<span class="git-yellow"><span class="first-commit-short goi">{{ first-commit-short }}</span></span> Adds first work on the story</code>
 </pre>
 
 Confirm this by doing `cat .git/refs/heads/master` and also `git branch -v`. Note that the *Git object ID* is the same in both places:
-<pre><code>{{ second-commit }}
-* <span class="git-green">master</span> 118a9ac Adds nested folder structure</code>
+<pre><code><span class="second-commit goi">{{ second-commit }}</span>
+* <span class="git-green">master</span> <span class="second-commit-short goi">{{ second-commit-short }}</span> Adds nested folder structure</code>
 </pre>
 
 ## Human-Friendlier Git Object IDs
@@ -584,7 +637,7 @@ We set a parameter for `git log` like this: `git config log.abbrevCommit true`.
 
 A subsequent `git log --decorate --graph` shows 7-character *commit ID*s:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -593,7 +646,7 @@ A subsequent `git log --decorate --graph` shows 7-character *commit ID*s:
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -611,7 +664,7 @@ The `~` operator takes in a number that tells Git how many commits you want to s
 </div>
 
 `git log --decorate --oneline master~1` shows us our *first-commit*, which is 1 step upstream of our *second-commit*:
-<pre><code><span class="git-yellow">{{ first-commit | slice: 0, 7 }}</span> Adds first work on the story</code></pre>
+<pre><code><span class="git-yellow"><span class="first-commit goi">{{ first-commit-short }}</span></span> Adds first work on the story</code></pre>
 
 There is no way to swim *downstream*. Git *commit*s do not have a property that is a counterpart to `parent`.
 
@@ -625,7 +678,7 @@ The branch name "*master*" is the convention for the *main branch* of a Git repo
 
 Our "*master*" branch is pointing to our second commit, as shown by `git log --decorate --graph`:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -634,7 +687,7 @@ Our "*master*" branch is pointing to our second commit, as shown by `git log --d
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -647,7 +700,7 @@ Our "*master*" branch is pointing to our second commit, as shown by `git log --d
 
 Let's create a new *branch* named "*temp*" at our *first-commit* by doing `git branch temp master~1`. A `git log --decorate --graph master` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -656,7 +709,7 @@ Let's create a new *branch* named "*temp*" at our *first-commit* by doing `git b
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit branch="temp" %}
+{% include git-log/ch.html commit-id=first-commit branch="temp" class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -669,13 +722,11 @@ Let's create a new *branch* named "*temp*" at our *first-commit* by doing `git b
 
 The fact that branches are really just Git *references* tells us that branches are simply pointers. We confirm this by comparing `cat .git/refs/heads/temp` with `git branch -v`:
 <pre>
-<code>* <span class="git-green">master</span> {{ second-commit | slice: 0, 7 }} Adds nested folder structure
-  temp   {{ first-commit | slice: 0, 7 }} Adds first work on the story</code>
+<code>* <span class="git-green">master</span> <span class="second-commit goi">{{ second-commit-short }}</span> Adds nested folder structure
+  temp   <span class="first-commit goi">{{ first-commit-short }}</span> Adds first work on the story</code>
 </pre>
 
-{% highlight text %}
-{{ first-commit }}
-{% endhighlight %}
+<pre><code><span class="first-commit goi">{{ first-commit }}</span></code></pre>
 
 <div class="tip" markdown="1">
 Git **branch**es are simply pointers (or formally, Git *references*) pointing to **commit**s.
@@ -704,7 +755,7 @@ git reset --hard master~1     # Move branch 'master' upstream to first-commit
 
 Our story will continue properly from the *first-commit*. The *second-commit* was really a digression to understand Git objects. `git log --decorate git-obj-study` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit branch="git-obj-study" %}
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" branch="git-obj-study" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -713,7 +764,7 @@ Our story will continue properly from the *first-commit*. The *second-commit* wa
 <span class="git-red">|</span>     Just testing. We want to see Git Objects.
 <span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit head=true attached="master" %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" head=true attached="master" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -745,19 +796,19 @@ Unicorn encounters a rainbow
 Commit our new work by doing `git commit -F .git/COMMIT_EDITMSG`.
 
 {% assign third-commit = site.data.git-lesson.git-commits.third.id %}
-{% assign third-commit-short = third-commit | slice: 0, 5 %}
+{% assign third-commit-short = third-commit | slice: 0, 7 %}
 {% assign third-commit-date = site.data.git-lesson.git-commits.third.date %}
 {% assign third-commit-timestamp = site.data.git-lesson.git-commits.third.timestamp %}
 
 A `git log --decorate --graph git-obj-study master` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit attached="master" head=true %}
+<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" attached="master" head=true %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ third-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
 <span class="git-red">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit branch="git-obj-study" %}
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit class="second-commit" branch="git-obj-study" %}
 <span class="git-red">|/</span> Author: Author A <a@c.com>
 <span class="git-red">|</span>  Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -766,7 +817,7 @@ A `git log --decorate --graph git-obj-study master` shows:
 <span class="git-red">|</span>      Just testing. We want to see Git Objects.
 <span class="git-red">|</span>      We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -777,14 +828,7 @@ A `git log --decorate --graph git-obj-study master` shows:
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-Note your *commit ID*s, including the new (third) one. Map yours to mine:
-{% highlight text %}
-first-commit: {{ first-commit-short }}
-second-commit: {{ second-commit-short }}
-third-commit: {{ third-commit-short }}
-{% endhighlight %}
-
-In the above `git log`, we can see that there are 2 branches --- <span class="git-green">master</span> whose *head* is at the *third-commit* (<span class="git-yellow">{{ third-commit-short }}</span> in my case), and <span class="git-green">git-obj-study</span> whose *head* is at the *second-commit* (<span class="git-yellow">{{ second-commit-short }}</span> in my case).
+In the above `git log`, we can see that there are 2 branches --- <span class="git-green">master</span> whose *head* is at the *third-commit*, and <span class="git-green">git-obj-study</span> whose *head* is at the *second-commit*.
 
 <div class="tip" markdown="1">
 The **head**, aka *tip*, of a **branch** is the latest *commit* (furthest *downstream*) on the *branch*.
@@ -820,7 +864,7 @@ The unicorn felt nothing about it.
 
 The unicorn looked around.
 
-This change will intentionally be lost.
+This change will be intentionally lost.
 {% endhighlight %}
 
 Edit `{{ commit-msg-file }}` to be:
@@ -831,24 +875,24 @@ Adds a commit we intend to lose
 Do `git add story.txt` and then `git commit -F {{ commit-msg-file }}`.
 
 {% assign to-lose-commit = site.data.git-lesson.git-commits.to-lose.id %}
-{% assign to-lose-commit-short = to-lose-commit | slice: 0, 5 %}
+{% assign to-lose-commit-short = to-lose-commit | slice: 0, 7 %}
 {% assign to-lose-commit-date = site.data.git-lesson.git-commits.to-lose.date %}
 {% assign to-lose-commit-timestamp = site.data.git-lesson.git-commits.to-lose.timestamp %}
 
 A `git log --decorate --graph master` shows our *to-lose-commit* (<span class="git-yellow">{{ to-lose-commit-short }}</span> for my case):
 <pre>
-<code>{% include git-log/ch.html commit-id=to-lose-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=to-lose-commit class="to-lose-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ to-lose-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Adds a commit we intend to lose
-{% include git-log/ch.html commit-id=third-commit %}
+{% include git-log/ch.html commit-id=third-commit class="third-commit" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ third-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -858,24 +902,16 @@ A `git log --decorate --graph master` shows our *to-lose-commit* (<span class="g
       That first line above should be a short summary, with no ending period.
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
-
-Note your *commit ID*s, including the new one we intend to lose. Map yours to mine:
-{% highlight text %}
-first-commit: {{ first-commit-short }}
-second-commit: {{ second-commit-short }}
-third-commit: {{ third-commit-short }}
-to-lose-commit: {{ to-lose-commit-short }}
-{% endhighlight %}
 
 We now retreat (move *upstream*) our branch <span class="git-green">master</span> by doing `git reset --hard master~1`. A `git log --decorate --graph master` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit head=true attached="master" %}
+<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ third-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -886,32 +922,32 @@ We now retreat (move *upstream*) our branch <span class="git-green">master</span
       Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-We confirm that our *to-lose-commit* still exists by doing `git cat-file -p {{ to-lose-commit-short }}`:
-{% highlight text %}
-tree 2913ba48160d3b6b713135243c06d7e15034bbcc
-parent 9ad88e52d7820c8754ca35ff125cb391ae810bc0
+We confirm that our *to-lose-commit* still exists by doing:
+<pre><code>git cat-file -p <span class="to-lose-commit-short goi">{{ to-lose-commit-short }}</span></code></pre>
+<pre>
+<code>tree 2913ba48160d3b6b713135243c06d7e15034bbcc
+parent <span class="third-commit goi">{{ third-commit }}</span>
 author Author A <a@c.com> {{ to-lose-commit-timestamp }} +0800
 committer Author A <a@c.com> {{ to-lose-commit-timestamp }} +0800
 
-Adds a commit we intend to lose
-{% endhighlight %}
+Adds a commit we intend to lose</code>
+</pre>
 
 ### Unreachable Commits
 
-Let us see if our *to-lose-commit* is now **unreachable**. We can see that our *to-lose-commit* is now *unreachable* by doing `git fsck --no-reflogs`:
-{% highlight text %}
-dangling commit {{ to-lose-commit }}
-{% endhighlight %}
+We can see that our *to-lose-commit* is now **unreachable** by doing `git fsck --no-reflogs`:
+<pre><code>dangling commit <span class="to-lose-commit goi">{{ to-lose-commit }}</span></code></pre>
 
 <div class="forward" markdown="1">
 We will learn about Git *reflog* later on.
 </div>
 
-Contrast that with our *first-commit* via `git for-each-ref --contains {{ first-commit-short }}`:
-{% highlight text %}
-{{ second-commit }} commit	refs/heads/git-obj-study
-{{ third-commit }} commit	refs/heads/master
-{% endhighlight %}
+Contrast that with our *first-commit* via:
+<pre><code>git for-each-ref --contains <span class="first-commit-short goi">{{ first-commit-short }}</span></code></pre>
+<pre>
+<code><span class="second-commit goi">{{ second-commit }}</span> commit	refs/heads/git-obj-study
+<span class="third-commit goi">{{ third-commit }}</span> commit	refs/heads/master</code>
+</pre>
 
 <div class="tip" markdown="1">
 **Unreachable commits** are those that aren't referenced by any:
@@ -933,12 +969,12 @@ It is now clear that our *to-lose-commit* is **unreachable**. But it is *not* **
 
 Git's **reflog** still stores a reference to our *to-lose-commit*. A `git reflog master` reveals our *to-lose-commit* is still referenced at `master@{1}`:
 <pre>
-<code><span class="git-yellow">{{ third-commit | slice: 0, 7 }}</span> master@{0}: reset: moving to master~1
-<span class="git-yellow">{{ to-lose-commit | slice: 0, 7 }}</span> master@{1}: commit: Adds a commit we intend to lose
-<span class="git-yellow">{{ third-commit | slice: 0, 7 }}</span> master@{2}: commit: Unicorn encounters a rainbow
-<span class="git-yellow">{{ first-commit | slice: 0, 7 }}</span> master@{3}: reset: moving to HEAD~1
-<span class="git-yellow">{{ second-commit | slice: 0, 7 }}</span> master@{4}: commit: Adds nested folder structure
-<span class="git-yellow">{{ first-commit | slice: 0, 7 }}</span> master@{5}: commit (initial): Adds first work on the story</code>
+<code><span class="git-yellow"><span class="third-commit-short goi">{{ third-commit-short }}</span></span> master@{0}: reset: moving to master~1
+<span class="git-yellow"><span class="to-lose-commit-short goi">{{ to-lose-commit-short }}</span></span> master@{1}: commit: Adds a commit we intend to lose
+<span class="git-yellow"><span class="third-commit-short goi">{{ third-commit-short }}</span></span> master@{2}: commit: Unicorn encounters a rainbow
+<span class="git-yellow"><span class="first-commit-short goi">{{ first-commit-short }}</span></span> master@{3}: reset: moving to HEAD~1
+<span class="git-yellow"><span class="second-commit-short goi">{{ second-commit-short }}</span></span> master@{4}: commit: Adds nested folder structure
+<span class="git-yellow"><span class="first-commit-short goi">{{ first-commit-short }}</span></span> master@{5}: commit (initial): Adds first work on the story</code>
 </pre>
 
 <div class="forward" markdown="1">
@@ -951,7 +987,16 @@ Now, Git's default parameters for its *garbage collector* means that Git only de
 Git does not immediately delete, through *garbage collection*, *commit*s that are not referenced. Later on, we will learn how to perform *undo* operations in Git.
 </div>
 
-A simple test proves it: `git gc` and then `git cat-file -p {{ to-lose-commit-short }}`. And we see that our *to-lose-commit* is still in existence.
+A simple test proves it. We do `git gc` and see that our *to-lose-commit* is still in existence:
+<pre><code>git cat-file -p <span class="to-lose-commit-short goi">{{ to-lose-commit-short }}</span></code></pre>
+<pre>
+<code>tree 2913ba48160d3b6b713135243c06d7e15034bbcc
+parent <span class="third-commit goi">{{ third-commit }}</span>
+author Author A <a@c.com> {{ to-lose-commit-timestamp }} +0800
+committer Author A <a@c.com> {{ to-lose-commit-timestamp }} +0800
+
+Adds a commit we intend to lose</code>
+</pre>
 
 We give immediacy to the *garbage collector* by passing in these parameters:
 {% highlight shell %}
@@ -959,10 +1004,9 @@ git config gc.pruneExpire now
 git config gc.reflogExpireUnreachable now
 {% endhighlight %}
 
-Now, `git gc` and then `git cat-file -p {{ to-lose-commit-short }}` shows that our *to-lose-commit* was deleted by Git's *garbage collector*:
-{% highlight text %}
-fatal: Not a valid object name {{ to-lose-commit-short }}
-{% endhighlight %}
+Now, `git gc` will delete our *to-lose-commit*, as can be seen by:
+<pre><code>git cat-file -p <span class="to-lose-commit-short goit">{{ to-lose-commit-short }}</span></code></pre>
+<pre><code>fatal: Not a valid object name <span class="to-lose-commit-short goi">{{ to-lose-commit-short }}</span></code></pre>
 
 Now remove that immediacy we just mandated! We don't want Git immediately deleting our commits. We like the 30-day *grace period* for us to perform any *undo* required!
 
@@ -994,13 +1038,13 @@ When we perform a `git checkout <branch>`, the `HEAD` is attached to the *branch
 
 Currently, we're on *branch* <span class="git-green">master</span>, as shown by `git log --decorate --graph master git-obj-study`:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit attached="master" head=true %}
+<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" attached="master" head=true %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ third-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
 <span class="git-red">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit branch="git-obj-study" %}
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit class="second-commit" branch="git-obj-study" %}
 <span class="git-red">|/</span> Author: Author A <a@c.com>
 <span class="git-red">|</span>  Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -1009,7 +1053,7 @@ Currently, we're on *branch* <span class="git-green">master</span>, as shown by 
 <span class="git-red">|</span>      Just testing. We want to see Git Objects.
 <span class="git-red">|</span>      We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -1026,13 +1070,13 @@ An **attached** `HEAD` is shown with an arrow pointing to the *branch* it is att
 
 We do `git checkout git-obj-study`, and then `git log --decorate --graph master git-obj-study` shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit branch="master" %}
+<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" branch="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ third-commit-date }}
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
 <span class="git-red">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit attached="git-obj-study" head=true %}
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=second-commit class="second-commit" attached="git-obj-study" head=true %}
 <span class="git-red">|/</span> Author: Author A <a@c.com>
 <span class="git-red">|</span>  Date:   {{ second-commit-date }}
 <span class="git-red">|</span>
@@ -1041,7 +1085,7 @@ We do `git checkout git-obj-study`, and then `git log --decorate --graph master 
 <span class="git-red">|</span>      Just testing. We want to see Git Objects.
 <span class="git-red">|</span>      We should be seeing Commits, Trees and Blobs.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
   Date:   {{ first-commit-date }}
 
@@ -1165,7 +1209,7 @@ Adds a commit while detached
 Commit that new change with `git commit -F {{ commit-msg-file }}`.
 
 {% assign detached-commit = site.data.git-lesson.git-commits.detached.id %}
-{% assign detached-commit-short = detached-commit | slice: 0, 5 %}
+{% assign detached-commit-short = detached-commit | slice: 0, 7 %}
 {% assign detached-commit-date = site.data.git-lesson.git-commits.detached.date %}
 {% assign detached-commit-timestamp = site.data.git-lesson.git-commits.detached.timestamp %}
 

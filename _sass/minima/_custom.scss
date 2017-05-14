@@ -99,3 +99,58 @@ div.figure {
 pre, code {
   background-color: #f7f7f7;
 }
+
+div#error-msg, div#info-msg {
+  display: none;
+}
+
+$error-msg-width: $content-width - $spacing-unit * 2;
+div#error-msg.displayed, div#info-msg.displayed {
+  display: block;
+  text-align: center;
+
+  width: $error-msg-width; /* Same as for .wrapper */
+  height: 3em;
+  margin: 0 auto;
+  padding: 0.8em;
+  background-color: #ff4444;
+  color: white;
+  border-radius: 10px;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -($error-msg-width / 2);
+  margin-top: -1.5em;
+}
+
+div#info-msg.displayed {
+  background-color: #44ff44;
+}
+
+span.goi {
+  cursor: pointer;
+}
+
+div.goi-edit {
+  display: none;
+}
+
+div.goi-edit.goi-edit-displayed {
+  display: block;
+  text-align: center;
+
+  width: $error-msg-width; /* Same as for .wrapper */
+  height: 5em;
+  margin: 0 auto;
+  padding: 0.8em;
+  background-color: #444444;
+  color: white;
+  border-radius: 10px;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -($error-msg-width / 2);
+  margin-top: -2.5em;
+}
