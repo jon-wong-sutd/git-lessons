@@ -11,7 +11,7 @@ goi.alertInvalidID = function(id, objName) {
   // Hide edit form.
   goi.hideGoiEdit(objName);
 
-  errorMsg.text('Invalid Git Object ID: ' + id);
+  errorMsg.html('Invalid Git Object ID: ' + id + '<br>(40-character hexadecimal)');
   errorMsg.addClass('displayed');
   window.setTimeout(function() {
     errorMsg.fadeOut(1000, function() {

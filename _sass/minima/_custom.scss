@@ -110,7 +110,7 @@ div#error-msg.displayed, div#info-msg.displayed {
   text-align: center;
 
   width: $error-msg-width; /* Same as for .wrapper */
-  height: 3em;
+  height: 5em;
   margin: 0 auto;
   padding: 0.8em;
   background-color: #ff4444;
@@ -121,7 +121,7 @@ div#error-msg.displayed, div#info-msg.displayed {
   left: 50%;
   top: 50%;
   margin-left: -($error-msg-width / 2);
-  margin-top: -1.5em;
+  margin-top: -2.5em;
 }
 
 div#info-msg.displayed {

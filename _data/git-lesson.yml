@@ -35,4 +35,4 @@ git-trees:
   folder-B: fac3336c78925507f50257e5124f57bcaa271732
   file-B: e7086e266d1d5c77563cf27bbada6e4fddd30057
 
-commit-msg-file: .git/COMMIT_EDIT_MSG
+commit-msg-file: .git/COMMIT_EDITMSG
