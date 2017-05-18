@@ -104,7 +104,7 @@ But you should especially note important tips like this:
 However, you should look out for fast-forward suggestions like this:
 
 <div class="forward" markdown="1">
-This lesson is about Git, and this *Overview* section is now over. Nothing more to see here. Onward!
+The last paragraph of this section mentions "*how to create Git branch*". Gloss over that quickly; Git *branch*es will be explored in detail later.
 </div>
 
 Lastly, you must execute shell (Bash) commands presented like this: <span class="perform">`ls -la`</span> (inline). And like this:
@@ -125,7 +125,11 @@ If you're on Linux or MacOS, you're a productive and efficient coder, and you sh
 
 If you're on Windows, you can install [Git for Windows](https://git-for-windows.github.io), and use *Git Bash*. Meantime, keep bugging [Jon](https://bitbucket.org/{{ site.bitbucket_username }}) to complete his "*Crash Course for Productivity on Linux/MacOS*".
 
-# Starting a Local Git Repository
+# First Steps
+
+We will start by creating our first Git *commit*. There will be a few first steps to do before we achieve that.
+
+## Local Git Repository
 
 A Git repo (short for repository) contains:
 
@@ -147,7 +151,7 @@ A Git repo tracks a *folder* of files, so the said **files** are really the file
 <p markdown="1">That means you really shouldn't `git init` in a *top-level folder* like `~/Documents` or `/usr/local`! You want to track the progress of your projects, not every single file in your computer.</p>
 </div>
 
-## The `.git` Folder
+### The `.git` Folder
 
 `ls -la` will show you the `.git` folder that was created when you started a new Git repo. This [hidden folder](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) contains Git data --- data regarding the **history** of your work, data about your credential, and other stuff we want to ignore for now.
 
@@ -187,7 +191,7 @@ Now, these new lines will have been inserted into `.git/config`. Doing <span cla
 <p>Local Git config parameters override global ones.</p>
 </div>
 
-## Working Copy of Project Files
+### Working Copy of Project Files
 
 Create file `story.txt` (eg. <span class="perform">emacs story.txt</span>), and enter into it these 3 lines:
 {% highlight text %}
@@ -208,7 +212,7 @@ Your text editor may insert a 4th line --- a blank line --- at the end of `story
 That is, with the exception of **untracked files** and **ignored files**, which we will explore later on.
 </div>
 
-# Git Status --- Change Summary
+## Git Status --- Change Summary
 
 <span class="perform">`git status`</span> will show this:
 <pre>
@@ -243,9 +247,7 @@ We'll follow Git's advice and *work towards* adding our new file to the Git repo
 - Whenever in doubt, and so on.
 </div>
 
-
-
-# Staging Area
+## Staging Area
 
 When telling Git to commit your new work, Git only commits what you place in the **staging area**.
 
@@ -295,7 +297,7 @@ Untracked files:
 
 In the above demonstration, you might have some new ideas you want to quickly write down in `rough_thoughts.txt` before you forget those ideas. Yet, you might not want those underdeveloped new ideas to be committed in your next set of changes.
 
-# Committing Your Work
+## Committing Your Work
 
 {% assign commit-msg-file = site.data.git-lesson.commit-msg-file %}
 
@@ -326,7 +328,7 @@ You then commit your work by doing <span class="perform">`git commit -F {{ commi
 </div>
 
 
-# Git Log --- A Timeline
+## Git Log --- A Timeline
 
 {% assign first-commit = site.data.git-lesson.git-commits.first.id %}
 {% assign first-commit-date = site.data.git-lesson.git-commits.first.date %}
@@ -359,7 +361,7 @@ The `git log` option `--decorate` shows *git branches/tags*, concepts that will 
 `git log` lets you see *what was done before* to decide *what to do next*. You'll also often look at previous *commit messages* to guide you in creating new *commit messages*.
 </div>
 
-## Navigating the Git Log
+### Navigating the Git Log
 
 `git log` shows the log in a `less` window ([navigation tips here](http://www.thegeekstuff.com/2010/02/unix-less-command-10-tips-for-effective-navigation)), which coincidentally is navigated similarly to a [`vi` window][vi].
 
@@ -378,7 +380,13 @@ Some basic navigation tips:
 * `q` --- quit `less` view
 </div>
 
-# Git Objects --- Commits, Trees, Blobs
+# Some Internals
+
+We start with Git objects, so that we can understand how Git *commit*s are built and hence grasp *what* Git *commit*s essentially are --- snapshots of your project (all its folders and files).
+
+Soon after that, we get a handle on some internals that are actually crucial to normal use of Git --- some of Git's vocabulary (or terminology).
+
+## Git Objects --- Commits, Trees, Blobs
 
 A Git **Commit** is collection of *folders and files* contained in that *commit*. In short, Git is really a tracker for a *filesystem*.
 
@@ -445,7 +453,7 @@ And now, we commit with <span class="perform">`git commit -F {{ commit-msg-file 
 {% assign second-commit-date = site.data.git-lesson.git-commits.second.date %}
 {% assign second-commit-timestamp = site.data.git-lesson.git-commits.second.timestamp %}
 
-## Git Object Identifier
+### Git Object Identifier
 
 A look at Git Log via <span class="perform">`git log --decorate --graph`</span> shows:
 <pre>
@@ -484,7 +492,7 @@ Think of these **ID**s as unique identifiers, each uniquely representing a Git o
 These **ID**s are actually [SHA-1](https://en.wikipedia.org/wiki/SHA-1) *message digest*s.
 </div>
 
-## Anatomy of a Commit
+### Anatomy of a Commit
 
 **In the following instructions, replace my *commit ID*s with your own.**
 
@@ -643,7 +651,7 @@ You will notice that the Git Object ID for *tree*s and *blob*s remain the same (
 A ***Commit* ID** takes into account the **timestamp** (time that the *commit* was created) of its *commit*. Hence, all *commit* IDs are different, even if the *snapshot* and *commit message* (*author*, *committer*  and *message*) remain the same.
 </div>
 
-# Git References
+## Git References
 
 <div class="tip" markdown="1">
 Git **references** allow us to refer to Git objects using *label*s (more human-friendly) rather than the *Git object ID*s.
@@ -671,7 +679,7 @@ Confirm this by doing <span class="perform">`cat .git/refs/heads/master`</span> 
 * <span class="git-green">master</span> <span class="second-commit-short goi">{{ second-commit-short }}</span> Adds nested folder structure</code>
 </pre>
 
-## Human-Friendlier Git Object IDs
+### Human-Friendlier Git Object IDs
 
 In the spirit of Git *reference*s, let's make *Git Object ID*s more human-friendly too.
 
@@ -701,7 +709,7 @@ A subsequent <span class="perform">`git log --decorate --graph`</span> shows 7-c
 If you ever need to see the full 40-character *Git Object ID* for your *commit*s, just add option `--no-abbrev` like so: `git log --decorate --graph --no-abbrev`. That option goes nearly everywhere, such as `git reflog --no-abbrev` (*reflog* is explained later).
 </div>
 
-## Swimming Upstream
+### Swimming Upstream
 
 <div class="tip" markdown="1">
 The `~` operator takes in a number that tells Git how many commits you want to swim upstream **relative to a Git reference**. The result is the *commit* Git lands on after performing that operation.
@@ -712,7 +720,7 @@ The `~` operator takes in a number that tells Git how many commits you want to s
 
 There is no way to swim *downstream*. Git *commit*s do not have a property that is a counterpart to `parent`.
 
-# The `HEAD`
+## The `HEAD`
 
 <div class="tip" markdown="1">
 The `HEAD` is a special Git reference that refers to the **current commit** you're on.
@@ -724,7 +732,7 @@ That is the definition, so to speak, of the `HEAD`. It concisely describes every
 
 We will next look at how to **manually move** the `HEAD`.
 
-## Moving the `HEAD`
+### Moving the `HEAD`
 
 <div class="tip" markdown="1">
 The `HEAD` is **manually moved** via a `git checkout <ref | id>` command, where `ref` can be any Git *reference* (*branch* or *tag*) and `id` is a *Git object ID*.
@@ -738,7 +746,7 @@ We will explore other ways of moving the `HEAD` later. For now, we stick with th
 
 The `HEAD` can have 3 states --- *attached*, *detached* and *initial*.
 
-## Initial `HEAD`
+### Initial `HEAD`
 
 When we created our Git repo via `git init`, these happened:
 * The default *branch* <span class="git-green">master</span> is *readied* (not yet created)
@@ -761,7 +769,7 @@ As can be seen, the usual state of the `HEAD` is *attached* (to *branch* <span c
 
 The usual state of the `HEAD`, during your normal use of Git, is that of being **attached** to a *branch*. We will explore this usual state next.
 
-## `HEAD` With Branch
+### `HEAD` With Branch
 
 This is the usual state of the `HEAD`, that of being **attached** to a *branch*.
 
@@ -783,7 +791,7 @@ We can see that the `HEAD` is currently *attached* to *branch* <span class="git-
 An **attached** `HEAD` is shown with an arrow pointing to the *branch* it is attached to. Like this: <code><span class="git-blue">HEAD -></span> <span class="git-green">branch-name</span></code>
 </div>
 
-## Detached `HEAD`
+### Detached `HEAD`
 
 A *detached* `HEAD` is used to take a look-see at any *commit*, especially *commit*s that are not at any *branch head*.
 
@@ -843,7 +851,7 @@ We re-attach the `HEAD` to *branch* <span class="git-green">master</span> with <
 ...</code>
 </pre>
 
-# Reflog
+## Reflog
 
 Git **reflog** is like an "*Undo history*" (recent history) for Git *references*. For example, the *reflog* for the `HEAD` shows the recent changes to the `HEAD`.
 
@@ -861,7 +869,7 @@ Omitting the Git *reference* in Git commands often means we mean to use `HEAD` f
 
 We will almost always be using *reflog* for the `HEAD`
 
-## *Reflog* for `HEAD`
+### *Reflog* for `HEAD`
 
 `git reflog` or `git reflog HEAD` shows the *reflog* for the `HEAD`.
 
@@ -890,7 +898,7 @@ Assuming you followed this Git lesson closely, your `HEAD`'s *reflog* should loo
 
 Let's recall our past actions and match them with the *reflog* above, from the earliest (`HEAD@{3}`) to the latest (`HEAD@{0}`).
 
-### In the Beginning
+#### In the Beginning
 
 When we created our Git repo (`git init`), Git created a *branch* <span class="git-green">master</span>. That *branch* is where the `HEAD` starts, where the `HEAD` is *attached*.
 
@@ -915,7 +923,7 @@ One of Agile's [first key paradigms](https://en.wikipedia.org/wiki/Agile_softwar
 
 You will see that `HEAD@{3}` corresponds with your *first-commit*.
 
-### Explored Git Objects
+#### Explored Git Objects
 
 How did we arrive at `HEAD@{2}`?
 
@@ -923,7 +931,7 @@ How did we arrive at `HEAD@{2}`?
 
 Our next action was a `git commit` that commited some nested folders and files in order to explore [Git Objects](#git-objects--commits-trees-blobs). This corresponds with your *second-commit*.
 
-### Detached the `HEAD`
+#### Detached the `HEAD`
 
 How did we arrive at `HEAD@{1}`?
 
@@ -931,7 +939,7 @@ How did we arrive at `HEAD@{1}`?
 
 We performed a checkout via `git checkout master~0` to *detach* the `HEAD`. Since [`~0`](#swimming-upstream) means "*zero steps upstream of* <span class="git-green">master</span>", the `HEAD` points to the same *commit* that <span class="git-green">master</span> points to. This corresponds with our *second-commit*.
 
-### Attached the `HEAD`
+#### Attached the `HEAD`
 
 How did we arrive at `HEAD@{0}`?
 
@@ -939,7 +947,7 @@ How did we arrive at `HEAD@{0}`?
 
 We performed a checkout via `git checkout master` to *attach* the `HEAD` to *branch* <span class="git-green">master</span>.
 
-## *Reflog* for Branches
+### *Reflog* for Branches
 
 `git reflog <branch>` shows the *reflog* for said *branch*.
 
@@ -1282,7 +1290,7 @@ Reset the *garbage collector* to default parameters by doing <span class="perfor
 Never change default parameters for the *garbage collector* under normal circumstances.
 </div>
 
-# To Work on a Branch
+## To Work on a Branch
 
 What does it mean to *work on a branch*? How is a *branch* **advanced**?
 
@@ -1298,7 +1306,7 @@ This was seen when we committed our *first-commit* and *second-commit* while on 
 
 We shall soon see that this *automatic advancing of a branch* does not occur if the `HEAD` is not attached to any branch.
 
-## Quick Word on Tags
+### Quick Word on Tags
 
 <div class="tip" markdown="1">
 *Tag*s are mere pointers, like *branch*es are. However, *tag*s do not have the same functionality (such as advancement with new *commit*s) nor semantics as *branch*es do. **Tags are mere pointers, and nothing more.**
@@ -1322,7 +1330,7 @@ Create a tag at the *second-commit* by doing <span class="perform">`git checkout
 ...</code>
 </pre>
 
-## Working a Detached `HEAD`
+### Working a Detached `HEAD`
 
 Checkout tag <span class="git-yellow">our-tag</span> by doing <span class="perform">`git checkout our-tag`</span>:
 <pre>
@@ -1362,7 +1370,7 @@ A <span class="perform">`git log --decorate --graph`</span> shows that the `HEAD
 ...</code>
 </pre>
 
-### Committing While Detached
+#### Committing While Detached
 
 We will now show what happens when a new *commit* is made on a *detached* `HEAD`.
 
@@ -1413,7 +1421,7 @@ Then <span class="perform">`git log --decorate --graph`</span> shows:
 A commit action on **detached** `HEAD` does not **advance** any *branch*. In effect, working with a **detached** `HEAD` is working *outside* of any *branch*.
 </div>
 
-### Leaving Commits Behind
+#### Leaving Commits Behind
 
 Let's complete our demonstration of how a commit created while detached can be lost.
 
@@ -1467,7 +1475,7 @@ To see that the `HEAD` has moved to *branch* <span class="git-green">git-obj-stu
 ...</code>
 </pre>
 
-### Jumping Through Timelines
+#### Jumping Through Timelines
 
 A *detached* `HEAD` does have its uses. You can move the `HEAD` to any *commit* (snapshot) in any timeline to take a look-see.
 
