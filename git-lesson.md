@@ -4,8 +4,7 @@ title: Git Lesson
 permalink: /git-lesson/
 ---
 
-<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
-<script src="../assets/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="../assets/toc.js"></script>
 <script src="../assets/git-obj-id.js"></script>
 
