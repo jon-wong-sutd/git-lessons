@@ -1536,7 +1536,7 @@ There are a few ways to perform an undo, and all of them are based on the idea t
 
 To retrieve a "*left behind*" *commit*, you can simply place a *branch* on it: `git branch <branch-name> <commit>`.
 
-Our <span class="perform">`git reflog`</span> should currently look like (omitted top 4 entries):
+Our <span class="perform">`git reflog`</span> should currently look like (omitted top 2 entries):
 <pre>
 <code><span class="git-yellow"><span class="detached-commit-short goi">{{ detached-commit-short }}</span></span> HEAD@{2}: commit: Adds a commit while detached
 <span class="git-yellow"><span class="second-commit-short goi">{{ second-commit-short }}</span></span> HEAD@{3}: checkout: moving from git-obj-study to our-tag
