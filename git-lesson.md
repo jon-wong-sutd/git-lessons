@@ -82,11 +82,9 @@ This Git lesson brings you through a typical workflow with Git, consisting 3 are
 
 * Local clone
 * Remote operations
-* Collaboration techniques
+* Collaboration techniques (more to come later)
 
-All 3 areas will be dealt with at the same time because typical Git workflows involve all 3, usually all at once. Git is primarily a *collaboration tool*.
-
-You will be running through use cases, from starting a Git repository to collaborating with other people.
+Git is primarily a *collaboration tool*.
 
 Even if you only use Git on your own, bear in mind that version control is necessary for you to "*collaborate with yourself*". We typically go through a decent length project often asking questions like "*why did I do that last month?*", "*what was I thinking when I made this decision?*", "***what if** I take a new fangled approach I just learned?*", and so on.
 
@@ -100,7 +98,6 @@ But you should especially note important tips like this:
 
 <div class="tip" markdown="1">
 <p>Grasp concepts first, lookup technical details later. Learning before working, looking before leaping!</p>
-<p>Go through this Git lesson quickly and sequentially, and don't think too hard. Important concepts will be explained along with relevant demonstrations.</p>
 <p>Important tips are places where you should pause and grasp the concepts just demonstrated.</p>
 <p>Shoot me an email if any part of this lesson bogs you down and impedes you from progressing rapidly.</p>
 </div>
@@ -117,7 +114,11 @@ cd ~/Document     # This is a comment you don't type in
 ls -la     # Comments do nothing, even if you type them in
 {% endhighlight %}</div>
 
-# Prerequistites
+In short, read and understand that concepts explained. The explanation is mostly demonstrated rather than described abstractly. Follow the demonstrations by executing commands that are styled as mentioned above.
+
+There will be no in-depth treatment of "*how*" to do stuff; you can google "*how to create Git branch*" and easily find `git branch <name> <ref>`. The focus of this Git lesson is on concepts (*what*) and rationale (*why*).
+
+# Prerequisites
 
 This Git lesson is taught using a *nix platform (eg Linux, MacOS), in particular Bash.
 
@@ -1707,9 +1708,9 @@ Let's start a leapfrog.
 A leapfrog loop starts with creating and checking out a new *branch*.
 </div>
 
-Create a new branch and checkout that branch in one command: <span class="perform">`git checkout -b daydream`</span>. A <span class="perform">`git log --decorate --graph`</span> should show:
+Create a new branch and checkout that branch in one command: <span class="perform">`git checkout -b author-A/daydream`</span>. A <span class="perform">`git log --decorate --graph`</span> should show:
 <pre>
-<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" head=true attached="daydream" branch="master"%}
+<code>{% include git-log/ch.html commit-id=third-commit class="third-commit" head=true attached="author-A/daydream" branch="master"%}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
 <span class="git-red">|</span>
@@ -1723,7 +1724,7 @@ Create a new branch and checkout that branch in one command: <span class="perfor
 ...</code>
 </pre>
 
-We will now make 2 commits on *branch* <span class="git-green">daydream</span>.
+We will now make 2 commits on *branch* <span class="git-green">author-A/daydream</span>.
 
 ### Quick First Commit
 
@@ -1783,9 +1784,9 @@ Add your work via <span class="perform">`git add story.txt`</span>, and commit v
 {% assign leapfrog-two-commit-date = site.data.git-lesson.git-commits.leapfrog-two.date %}
 {% assign leapfrog-two-commit-timestamp = site.data.git-lesson.git-commits.leapfrog-two.timestamp %}
 
-We return to *branch* <span class="git-green">master</span> with a <span class="perform">`git checkout master`</span>. A <span class="perform">`git log --decorate --graph daydream`</span> shows:
+We return to *branch* <span class="git-green">master</span> with a <span class="perform">`git checkout master`</span>. A <span class="perform">`git log --decorate --graph author-A/daydream`</span> shows:
 <pre>
-<code>{% include git-log/ch.html commit-id=leapfrog-two-commit class="leapfrog-two-commit" branch="daydream" %}
+<code>{% include git-log/ch.html commit-id=leapfrog-two-commit class="leapfrog-two-commit" branch="author-A/daydream" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ leapfrog-two-commit-date }}
 <span class="git-red">|</span>
@@ -1813,14 +1814,14 @@ We return to *branch* <span class="git-green">master</span> with a <span class="
 
 Edit `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span> to contain:
 {% highlight text %}
-Merge branch 'daydream'
+Merge branch 'author-A/daydream'
 
 The unicorn daydreams.
 {% endhighlight %}
 
 Add your work via <span class="perform">`git add story.txt`</span>.
 
-We perform a merge with <span class="perform">`git merge --no-ff --no-commit daydream`<span>.
+We perform a merge with <span class="perform">`git merge --no-ff --no-commit author-A/daydream`<span>.
 
 <div class="side-note" markdown="1">
 You can always abort the merge with `git merge --abort` if anything goes wrong. And then retry the merge again.
@@ -1833,7 +1834,7 @@ A leapfrog loop is closed by a merge with `--no-ff`. First, checkout the *branch
 </div>
 
 <div class="side-note" markdown="1">
-If you're able to use an editor (vi or emacs) to write your *commit messages* within your Bash shell, you can just do `git merge --no-ff daydream` to perform the merge in 1 step, rather than 2.
+If you're able to use an editor (vi or emacs) to write your *commit messages* within your Bash shell, you can just do `git merge --no-ff author-A/daydream` to perform the merge in 1 step, rather than 2.
 </div>
 
 {% assign merge-commit = site.data.git-lesson.git-commits.merge.id %}
@@ -1848,11 +1849,11 @@ And here is the loop with <span class="perform">`git log --decorate --graph`</sp
 <span class="git-red">|</span> <span class="git-green">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> <span class="git-green">|</span> Date:   {{ merge-commit-date }}
 <span class="git-red">|</span> <span class="git-green">|</span>
-<span class="git-red">|</span> <span class="git-green">|</span>     Merge branch 'daydream'
+<span class="git-red">|</span> <span class="git-green">|</span>     Merge branch 'author-A/daydream'
 <span class="git-red">|</span> <span class="git-green">|</span>
 <span class="git-red">|</span> <span class="git-green">|</span>     The unicorn daydreams.
 <span class="git-red">|</span> <span class="git-green">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=leapfrog-two-commit class="leapfrog-two-commit" branch="daydream" %}
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=leapfrog-two-commit class="leapfrog-two-commit" branch="author-A/daydream" %}
 <span class="git-red">|</span> <span class="git-green">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> <span class="git-green">|</span> Date:   {{ leapfrog-two-commit-date }}
 <span class="git-red">|</span> <span class="git-green">|</span>
@@ -1891,7 +1892,7 @@ A <span class="perform">`git log --decorate --graph --first-parent`</span> shows
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ merge-commit-date }}
 <span class="git-red">|</span>
-<span class="git-red">|</span>     Merge branch 'daydream'
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
 <span class="git-red">|</span>
 <span class="git-red">|</span>     The unicorn daydreams.
 <span class="git-red">|</span>
@@ -1911,28 +1912,30 @@ A <span class="perform">`git log --decorate --graph --first-parent`</span> shows
 
 Whatever mistakes and mishaps we had in our leapfrog is hidden from view like this.
 
-And that is also why we employ *leapfrog loop*s --- to hide away the messy details of our work from the main *branch*. In this case, our messy details are in *branch* <span class="git-green">daydream</span>, and our main *branch* is *branch* <span class="git-green">master</span>.
+And that is also why we employ *leapfrog loop*s --- to hide away the messy details of our work from the main *branch*. In this case, our messy details are in *branch* <span class="git-green">author-A/daydream</span>, and our main *branch* is *branch* <span class="git-green">master</span>.
 
-# Starting a Bare Git Repository
+# Remote (Bare) Git Repository
 
 A bare Git repo contains the **history** of your work on your files, but does not keep a *working copy* of your files.
 
 Make room for the bare Git repo by doing:
-{% highlight shell %}
+<div class="perform">{% highlight shell %}
 cd ..
 mv my-new-project clone-A     # Our local repo is now in folder 'clone-A'
 mkdir -p my-new-project/remote     # Create the folder for the bare repo
 mv clone-A my-new-project     # 'my-new-project' shall neatly contain our repos
 cd my-new-project
-{% endhighlight %}
+{% endhighlight %}</div>
 
 Create the bare repo, which we shall call *remote repo*, by doing:
-{% highlight shell %}
-mkdir remote     # Create new folder for bare repo
+<div class="perform">{% highlight shell %}
 cd remote
 git init --bare     # Create the bare repo
+ls -la     # Show the contents of the bare repo
 cd ..
-{% endhighlight %}
+{% endhighlight %}</div>
+
+Notice that the contents of folder `remote` looks exactly like the contents in folder `clone-A/.git`.
 
 <div class="forward" markdown="1">
 The above bare repo resides on your local harddisk, but is for all our intents and purposes akin to a *remote repo*. You shall see the concept *remote repo* demonstrated soon.
@@ -1961,13 +1964,13 @@ The *remote* name "*origin*" is the convention for representing the "*certified 
 </div>
 
 Point our *clone* to the *remote*:
-{% highlight shell %}
+<div class="perform">{% highlight shell %}
 cd clone-A
 git remote -v     # Should display nothing; no remotes linked to yet.
 git remote add orign ../remote     # Our remote is named "origin"
-{% endhighlight %}
+{% endhighlight %}</div>
 
-Checking for our added remote with `git remote -v`:
+Checking for our added remote with <span class="perform">`git remote -v`</span>:
 {% highlight text %}
 orign	../remote (fetch)
 orign	../remote (push)
@@ -1979,31 +1982,29 @@ Although it is possible to pull (fetch) from one remote repo and push to another
 
 ## Pushing Work To Remote
 
-We now push our current branch (`master`) up to `origin` by doing `git push origin master`:
+We now push our current branch (`master`) up to `origin` by doing <span class="perform">`git push origin master`</span>:
 {% highlight text %}
-Counting objects: 10, done.
+Counting objects: 13, done.
 Delta compression using up to 4 threads.
-Compressing objects: 100% (6/6), done.
-Writing objects: 100% (10/10), 926 bytes | 0 bytes/s, done.
-Total 10 (delta 0), reused 0 (delta 0)
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (13/13), 1.31 KiB | 0 bytes/s, done.
+Total 13 (delta 2), reused 0 (delta 0)
 To ../remote
  * [new branch]      master -> master
 {% endhighlight %}
 
 <div class="side-note" markdown="1">
-Git *branches* will be explained later on.
-</div>
-
-<div class="side-note" markdown="1">
-Typically, your first push to a remote should include the `-u` (set-upstream) option like this `git push -u origin master`. The above is a simplified scenario.
+Typically, your *first* push to a remote should include the `-u` (set-upstream) option like this `git push -u origin master`. The above is a simplified scenario.
 </div>
 
 Everything you saw in your `.git` folder inside your *clone* will be inside the *remote* (the bare Git repo).
 Both these commands should show you the same files:
-{% highlight shell %}
+<div class="perform">{% highlight shell %}
 find .git/objects -type f
 find ../remote/objects -type f
-{% endhighlight %}
+{% endhighlight %}</div>
+
+(The *remote* shows only the *commit*s from *branch* <span class="git-green">master</span> because we only pushed that *branch* up.)
 
 You can see that the bare repo does not reserve any space for *working copies of project files*; all Git data is stored at the top-level folder (`../remote`).
 
@@ -2011,62 +2012,168 @@ You can see that the bare repo does not reserve any space for *working copies of
 We never work on *remotes*, but instead work on *clones* and push our work up to *remotes*.
 </div>
 
-A look at Git Log via `git log --decorate --graph` tells us our remote now has branch 'master' too (*origin/master*):
+A look at Git Log via <span class="perform">`git log --decorate --graph --first-parent`</span> tells us our remote now has branch 'master' too (*origin/master*):
 <pre>
-<code>{% include git-log/ch.html commit-id=second-commit head=true attached="master" remote="origin/master" %}
+<code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" remote="origin/master" %}
+<span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
 <span class="git-red">|</span> Author: Author A <a@c.com>
-<span class="git-red">|</span> Date:   Wed May 10 10:45:25 2017 +0800
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
 <span class="git-red">|</span>
-<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
 <span class="git-red">|</span>
-<span class="git-red">|</span>     Just testing. We want to see Git Objects.
-<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>     The unicorn daydreams.
 <span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit %}
+{% include git-log/ch.html commit-id=third-commit class="third-commit" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
   Author: Author A <a@c.com>
-  Date:   Tue May 9 18:26:31 2017 +0800
+  Date:   Tue May 16 17:48:34 2017 +0800
 
       Adds first work on the story
-
-      I'd think up more descriptive information here if I could.
-      That first line above should be a short summary, with no ending period.
-      Then comes a blank line, and then details and descriptions follow.</code>
+...</code>
 </pre>
 
-
-
-
-
-
-
-# Remote Branches
-
-# Work-In-Progress Branches
-
-## Correct Small Typos
-
-Introduce `git commit --amend`.
-
-Only meant for correcting blatant and small typos we can spot quickly.
-
-Not meant for perfecting any particular commits. Show danger of repeatedly *amending* a commit; loss of history, potential loss of important changes.
-
-## Force Push
-
-Demonstrate typo correction with `git push -f`. Show why a **force push** should never be done on `master` branch.
-
-<div class="forward" markdown="1">
-Notice that branch <span class="git-red">origin/master</span> and <span class="git-green">master</span> are on different *commit*s. Later on, we will learn why it is generally not a good idea to *move* *branch*es (`git reset --hard` or `git branch -f`) **after** they have already been *push*ed to a *remote*. We will also learn about Git **remote**s. For now, we continue our story properly.
+<div class="tip" markdown="1">
+Remote *branch*es are shown in red, and prefixed by the name of the remote plus '/'. Eg. 'origin/master'.
 </div>
 
-## Branch-Merge Loops --- Leapfroging
+## Push to Publish
 
-Small and rapid commits on these branches. When changes are refined to usable level, merge them back onto main work-in-progress branch.
+*Branch*es (and consequently their attached *commit*s) are not visible to the rest of your team if you don't push them to the *remote*.
 
-Acts as scope containment for better focus.
+We will demonstrate this fact. We first clone the repo into folder `clone-B`:
+<div class="perform">{% highlight shell %}
+cd ..     # Go to parent folder, 1 up from clone-A
+git clone remote clone-B     # Clone repo at 'remote' into 'clone-B'
+cd clone-B     # Enter clone-B
+{% endhighlight %}</div>
 
-Show `--no-ff` merges and resultant closed loops.
+We then set our credential and some parameters:
+<div class="perform">{% highlight shell %}
+git config user.name "Author B"
+git config user.email b@d.com
+git config log.abbrevCommit true
+{% endhighlight %}</div>
 
+A `git log --decorate --graph --parent` shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" remote="origin/master" remote2="origin/HEAD" %}
+<span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=third-commit class="third-commit" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
+  Author: Author A <a@c.com>
+  Date:   Tue May 16 17:48:34 2017 +0800
 
+      Adds first work on the story
+...</code>
+</pre>
 
-# Pull Requests (for Peer Review)
+The remote *branch* <span class="git-red">origin/HEAD</span> simply points to the *branch* that is pulled down upon a `git clone`. We don't need a reference to it, so we can delete it in our `clone-B` via <span class="perform">`git branch -d -r origin/HEAD`</span>.
+
+The above Git log tells us our `clone-B` has access to *branch* <span class="git-green">master</span>. But what about *branch* <span class="git-green">git-obj-study</span>? Let's see with <span class="perform">`git log --decorate --graph git-obj-study`</span>:
+{% highlight text %}
+fatal: ambiguous argument 'git-obj-study': unknown revision or path not in the working tree.
+{% endhighlight %}
+
+Even <span class="perform">`git branch`</span> tells us that `clone-B`'s only *branch* is <span class="git-green">master</span>.
+
+Let's go back into `clone-A` to publish *branch* <span class="git-green">git-obj-study</span>:
+<div class="perform">{% highlight shell %}
+cd ../clone-A     # Enter clone-A folder
+git push origin git-obj-study     # Push branch 'git-obj-study'
+cd ../clone-B     # Enter clone-B folder
+{% endhighlight %}</div>
+
+<div class="tip" markdown="1">
+`git push <remote> <branch>` to publish *branch* <span class="git-green">&lt;branch&gt;</span> to *remote* <span class="git-red">&lt;remote&gt;</span>.
+</div>
+
+And we get `clone-B` to pull in the newly pushed *branch*:
+<div class="perform">{% highlight shell %}
+git pull     # Pull updates from remote
+git checkout git-obj-study     # Checkout branch 'git-obj-study'
+{% endhighlight %}</div>
+
+<div class="tip" markdown="1">
+`git pull` to pull down any new updates from *remote*(s).
+</div>
+
+Now, <span class="perform">`git log --decorate --graph`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="git-obj-study" remote="origin/git-obj-study" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ second-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+...</code>
+</pre>
+
+## Work on Own Branches
+
+Do not work on *branch*es belonging to other team members.
+
+Notice in [section Leapfrog Loop](#leapfrog-loop) that we created for "*Author A*" a *branch* named <span class="git-green">author-A/daydream</span>.
+
+<div class="tip" markdown="1">
+Create your own *branch*es by prefixing `your-name/` to the new *branch* names. Eg. <span class="git-green">author-A/daydream</span>.
+
+Work (create *commit*s) only on your own *branch*es.
+</div>
+
+In future, if I do write about *force push* (`git push -f`), I can explain why we only ever work on our own *branch*es.
+
+As for *branch* <span class="git-green">master</span>, usually only the project manager should have the authority to "*work*" on that --- the project manager merges *branch*es (leapfrog loops) into *branch* <span class="git-green">master</span>.
+
+# Go Forth!
+
+We're done with the Git lesson! Feel free to create *commit*s with both "*Author A*" and "*Author B*", and get a feel for how collaboration can work on Git repositories via *remote* and *clone*s.
+
+As a final tidbit, here's a clue about how to **ignore** the `rough_thoughts.txt` file we created. Create a `.gitignore` file in folder `clone-A`. And `clone-B` too, if you want to continue pretending to be both "*Author A*" and "*Author B*".
+
+<div class="tip" markdown="1">
+`.gitignore` entries permit wildcards that work in Bash. Eg `*.bak` ignores all files whose name end with `.bak`.
+
+Specifying paths are a little more involved:
+* A leading `/` targets only the folder where `gitignore` resides.
+    * Eg. `/config.cfg` ignores `/config.cfg` but not `/subfolder/config.cfg`.
+* No leading `/` targets all folders, including subfolders, recursively.
+    * Eg. `config.cfg` ignores all `config.cfg` files, even in subfolders.
+</div>
+
+# GitHub and BitBucket
+
+BitBucket allows your academic email address to get an unlimited account --- you can have any number of private repositories.
+
+GitHub is probably where you want to publish your proudest achievements.
+
+For security, **you should use SSH keys to login** to your Bitbucket and GitHub accounts. Feel free to contact me to ask for a write-up on this. Or you can contact BitBucket and GitHub to ask their support staff for help.
+
+<div class="tip" markdown="1">
+General rule of thumb for passwords:
+* Long and complex for account login.
+* Short and easy for private passphrase locking/unlocking your SSH keys.
+
+Each SSH key has 2 parts --- private and public. The private key never leaves your harddisk, never travels onto any network. You can read briefly into [Public-key Cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to get an idea of how SSH keys work.
+</div>
