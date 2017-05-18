@@ -154,3 +154,17 @@ div.goi-edit.goi-edit-displayed {
   margin-left: -($error-msg-width / 2);
   margin-top: -2.5em;
 }
+
+/* Shell commands */
+div.perform {
+  pre, code {
+    background-color: #00007f;
+    color: white;
+  }
+}
+span.perform {
+  code {
+    background-color: #00007f;
+    color: white;
+  }
+}

@@ -27,6 +27,22 @@ git-commits:
     id: 795babc8e58f20dd2647032afc5bf6de12e866cf
     timestamp: 1481489726
     date: Mon Dec 12 04:55:26 2016 +0800
+  amended:
+    id: 6aa7081a0874cef1839ed8db8aade2731971a866
+    timestamp: 1481490154
+    date: Mon Dec 12 05:02:34 2016 +0800
+  leapfrog-one:
+    id: ffc6ff62a1de57d0d9d233c474f6c34b795357a8
+    timestamp: 1481490667
+    date: Mon Dec 12 05:11:07 2016 +0800
+  leapfrog-two:
+    id: e58b350bb6fb03accc47e206e6b2920c016dfe81
+    timestamp: 1481490769
+    date: Mon Dec 12 05:12:49 2016 +0800
+  merge:
+    id: e20621b55e62f02fe9486aa12d874d7c08a66fa4
+    timestamp: 1481490855
+    date: Mon Dec 12 05:14:15 2016 +0800
 
 git-trees:
   first: 88dc468c538f956841dbd018e805ff2ba94248fb

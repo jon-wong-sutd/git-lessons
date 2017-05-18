@@ -2,7 +2,11 @@ var goi = goi || {};
 
 goi.isValidID = function(id) {
   var re = /^[0-9A-Fa-f]{40}$/g;
-  return re.test(id);
+  if (!re.test(id)) {
+    re = /^[0-9A-Fa-f]{7}$/g;
+    return re.test(id);
+  }
+  return false;
 };
 
 goi.alertInvalidID = function(id, objName) {
@@ -11,7 +15,7 @@ goi.alertInvalidID = function(id, objName) {
   // Hide edit form.
   goi.hideGoiEdit(objName);
 
-  errorMsg.html('Invalid Git Object ID: ' + id + '<br>(40-character hexadecimal)');
+  errorMsg.html('Invalid Git Object ID: ' + id + '<br>(40- or 7-character hexadecimal)');
   errorMsg.addClass('displayed');
   window.setTimeout(function() {
     errorMsg.fadeOut(1000, function() {
@@ -53,6 +57,8 @@ goi.editGoi = function(id, objName) {
     goi.alertInvalidID(id, objName);
     return;
   }
+  if (id.length == 7)
+    id = id + 'X'.repeat(40 - 7);
   goi.gitObjs[objName].id = id;
   $('span.' + objName).text(id);
   $('span.' + objName + '-short').text(id.substring(0, 7));
@@ -66,6 +72,8 @@ $(document).ready(function() {
   var objNames =
       ['first-commit', 'second-commit', 'third-commit',
        'to-lose-commit', 'detached-commit',
+       'amended-commit', 'leapfrog-one-commit', 'leapfrog-two-commit',
+       'merge-commit',
        'first-tree', 'second-tree', 'folder-A-tree', 'folder-B-tree', 'file-B-blob'];
 
   // Create commit representational objects and their event handlers.
