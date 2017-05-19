@@ -6,7 +6,7 @@ goi.isValidID = function(id) {
     re = /^[0-9A-Fa-f]{7}$/g;
     return re.test(id);
   }
-  return false;
+  return true;
 };
 
 goi.alertInvalidID = function(id, objName) {
