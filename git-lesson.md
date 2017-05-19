@@ -113,7 +113,7 @@ cd ~/Document     # This is a comment you don't type in
 ls -la     # Comments do nothing, even if you type them in
 {% endhighlight %}</div>
 
-In short, read and understand that concepts explained. The explanation is mostly demonstrated rather than described abstractly. Follow the demonstrations by executing commands that are styled as mentioned above.
+In short, read and understand the concepts explained. The explanation is mostly demonstrated rather than described abstractly. Follow the demonstrations by executing commands that are styled as mentioned above.
 
 There will be no in-depth treatment of "*how*" to do stuff; you can google "*how to create Git branch*" and easily find `git branch <name> <ref>`. The focus of this Git lesson is on concepts (*what*) and rationale (*why*).
 
