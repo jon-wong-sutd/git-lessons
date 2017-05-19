@@ -194,6 +194,8 @@ Now, these new lines will have been inserted into `.git/config`. Doing <span cla
 ### Working Copy of Project Files
 
 Create file `story.txt` (eg. <span class="perform">emacs story.txt</span>), and enter into it these 3 lines:
+{% assign linenos = "1 2 3" | split: " " %}
+{% include linenos.html numbers=linenos %}
 {% highlight text %}
 Once upon a time, there was a unicorn.
 
@@ -502,6 +504,8 @@ Let's look at the *second-commit* via
 <div class="perform"><pre>
 <code>git cat-file -p <span class="second-commit-short goi">{{ second-commit-short }}</span></code>
 </pre></div>
+{% assign linenos = "1 2 3 4 5 6 7 8 9" | split: " " %}
+{% include linenos.html numbers=linenos %}
 <pre>
 <code>tree <span class="second-tree goi">{{ second-tree }}</span>
 parent <span class="first-commit goi">{{ first-commit }}</span>
@@ -539,7 +543,8 @@ And to confirm that our *second-commit* really links to our *first-commit*, we t
 <div class="perform">
 <pre><code>git cat-file -p <span class="first-commit-short goi">{{ first-commit-short }}</span></code></pre>
 </div>
-
+{% assign linenos = "1 2 3 4 5 6 7 8 9" | split: " " %}
+{% include linenos.html numbers=linenos %}
 <pre>
 <code>tree <span class="first-tree goi">{{ first-tree }}</span>
 author Author A <a@c.com> {{ first-commit-timestamp }} +0800
@@ -620,8 +625,8 @@ This is file-B.
 
 To fully take stock of all the Git objects we currently have, <span class="perform">`find .git/objects -type f`</span> shows:
 {% highlight text %}
-.git/objects/{{ first-commit | slice: 0, 2 }}/{{ first-commit | slice: 2, 100 }}
-.git/objects/{{ second-commit | slice: 0, 2 }}/{{ second-commit | slice: 2, 100 }}
+.git/objects/{{ first-tree | slice: 0, 2 }}/{{ first-tree | slice: 2, 100 }}
+.git/objects/{{ second-tree | slice: 0, 2 }}/{{ second-tree | slice: 2, 100 }}
 ... and so on ...
 {% endhighlight %}
 
@@ -633,7 +638,7 @@ Note that the Git objects are likely organized into a [hashtable](https://en.wik
 
 <div class="side-note">
 <p markdown="1">To check their types (**Commit**, **Tree**, **Blob**), you can do `find .git/objects -type f | cut -d'/' -f3,4 | sed 's/\///' | xargs -I %ID -t git cat-file -t %ID`.</p>
-<p markdown="1">Or simply do them 1 by 1: `git cat-file -t <1st-5-digits-of-ID>`.</p>
+<p markdown="1">Or simply do them 1 by 1: `git cat-file -t <1st-7-digits-of-ID>`.</p>
 </div>
 
 <div class="tip" markdown="1">
@@ -738,6 +743,10 @@ We will next look at how to **manually move** the `HEAD`.
 The `HEAD` is **manually moved** via a `git checkout <ref | id>` command, where `ref` can be any Git *reference* (*branch* or *tag*) and `id` is a *Git object ID*.
 </div>
 
+<div class="tip" markdown="1">
+Quick tip on **command specification format**. Angle brackets (`< >`) denote required parameters, square brackets (`[ ]`) denote optional parameters. The vertical bar (`|`) denotes "*or*". Therefore, the above spec means "*you must include a ref (Git reference) or an id (Git object ID)*".
+</div>
+
 There are other ways of moving the `HEAD`, the most commonly seen of which is the **advancement** via a `git commit`. As per the definition of the `HEAD`, the `HEAD` is *advanced* to the newly created *commit* upon a `git commit`. This method of moving the `HEAD` is referred to as **creating a commit**, and is not a manual movement of the `HEAD`. We've seen this happen when we created our *first-commit* and *second-commit*.
 
 <div class="forward" markdown="1">
@@ -775,7 +784,7 @@ This is the usual state of the `HEAD`, that of being **attached** to a *branch*.
 
 When we created our first *commit*, the `HEAD` was **advanced** to our newly created *first-commit*. And similarly for *second-commit*.
 
-Note that the *branch* to which the `HEAD` is *attached* to is *advanced similarly*.
+Note that the *branch* to which the `HEAD` is *attached* is *advanced similarly*.
 
 We can see that the `HEAD` is currently *attached* to *branch* <span class="git-green">master</span> via <span class="perform">`git log --decorate --graph`</span>:
 <pre>
@@ -838,7 +847,7 @@ The subsequent <span class="perform">`git log --decorate`</span> shows that the 
 Even though we're still on the same *commit* that *branch* <span class="git-green">master</span> is on, the `HEAD` is detached.
 
 <div class="tip" markdown="1">
-**Checking out** (switching to) a *branch* (`git checkout <branch>`) **attaches** the `HEAD` to the branch.
+**Checking out** (switching to) a *branch* (`git checkout <branch>`) **attaches** the `HEAD` to the *branch*.
 </div>
 
 We re-attach the `HEAD` to *branch* <span class="git-green">master</span> with <span class="perform">`git checkout master`</span>. Then, a <span class="perform">`git log --decorate --graph`</span> shows:
@@ -969,7 +978,7 @@ A Git **branch** is conceptually a **string of connected *commit*s**, and is tec
 
 We will first demonstrate that a Git *branch* is simply a Git *reference* (pointer).
 
-Currently, the only branch we have is the "*master*" branch, shown by <span class="performed">`git branch`</span>.
+Currently, the only branch we have is the "*master*" branch, shown by <span class="perform">`git branch`</span>.
 
 <div class="tip" markdown="1">
 The branch name "*master*" is the convention for the *main branch* of a Git repo.
@@ -991,7 +1000,7 @@ Our "*master*" branch is pointing to our second commit, as shown by <span class=
 ...</code>
 </pre>
 
-Let's create a new *branch* named "*temp*" at our *first-commit* by doing <span class="perform">`git branch temp master~1`</span>. A <span class="perform">`git log --decorate --graph master`</span> shows:
+Let's create a new *branch* named "*temp*" at our *first-commit* by doing <span class="perform">`git branch temp master~1`</span>. A <span class="perform">`git log --decorate --graph`</span> shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="master" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -1064,7 +1073,9 @@ Our story will continue properly from the *first-commit*. The *second-commit* wa
 </pre>
 
 Edit file `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to contain (new lines 3-6):
-{% highlight text linenos %}
+{% assign linenos = "1 2 3 4 5 6 7" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
 Once upon a time, there was a unicorn.
 
 The unicorn saw a rainbow.
@@ -1074,7 +1085,7 @@ The unicorn felt nothing about it.
 The unicorn looked around.
 {% endhighlight %}
 
-Add our new work to the *staging area* by doing <span class="perform">`git add story`</span>.
+Add our new work to the *staging area* by doing <span class="perform">`git add story.txt`</span>.
 
 Edit file `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span>) to contain:
 {% highlight text %}
@@ -1140,8 +1151,10 @@ We will soon see that *branch*es are important for keeping *commit*s (keeping th
 
 We will demonstrate how the *garbage collector* deletes an *unreferenced commit*. We first create a commit we intend to lose.
 
-Edit `story.txt` (<span class="perform">`emacs story.txt`</span>) to add 2 lines at the end:
-{% highlight text linenos %}
+Edit `story.txt` (<span class="perform">`emacs story.txt`</span>) to add lines 8-9 at the end:
+{% assign linenos = "1 2 3 4 5 6 7 8 9" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
 Once upon a time, there was a unicorn.
 
 The unicorn saw a rainbow.
@@ -1224,7 +1237,7 @@ We can see that our *to-lose-commit* is now **unreachable** by doing <span class
 </div>
 
 <div class="forward" markdown="1">
-We will be looking an **unreferenced** *commit*s right afther this section.
+We will be looking at **unreferenced** *commit*s right afther this section.
 </div>
 
 <div class="tip" markdown="1">
@@ -1276,8 +1289,8 @@ Now, <span class="perform">`git gc`</span> will delete our *to-lose-commit*, as 
 
 As expected, <span class="perform">`git reflog`</span> shows that our top 2 entries were deleted:
 <pre>
-<code><span class="git-yellow"><span class="third-commit-short goi">{{ third-commit-short }}</span></span> HEAD@{2}: commit: Unicorn encounters a rainbow
-<span class="git-yellow"><span class="first-commit-short goi">{{ first-commit-short }}</span></span> HEAD@{3}: reset: moving to master~1</code>
+<code><span class="git-yellow"><span class="third-commit-short goi">{{ third-commit-short }}</span></span> HEAD@{0}: commit: Unicorn encounters a rainbow
+<span class="git-yellow"><span class="first-commit-short goi">{{ first-commit-short }}</span></span> HEAD@{1}: reset: moving to master~1</code>
 </pre>
 
 The removal of those 2 entries rendered our *to-lose-commit* **unreferenced**, not just **unreachable**. That is why the *garbage collector* was able to delete our *to-lose-commit*.
@@ -1332,7 +1345,7 @@ Create a tag at the *second-commit* by doing <span class="perform">`git checkout
 
 ### Working a Detached `HEAD`
 
-Checkout tag <span class="git-yellow">our-tag</span> by doing <span class="perform">`git checkout our-tag`</span>:
+Checkout tag <span class="git-yellow">our-tag</span> by doing <span class="perform">`git checkout our-tag`</span>. Git issues a warning:
 <pre>
 <code>Note: checking out 'our-tag'.
 
@@ -1374,7 +1387,9 @@ A <span class="perform">`git log --decorate --graph`</span> shows that the `HEAD
 
 We will now show what happens when a new *commit* is made on a *detached* `HEAD`.
 
-Add 2 lines at the end of `story.txt` (eg. <span class="perform">`emacs story.txt`</span>):
+Add 2 lines (4-5) at the end of `story.txt` (eg. <span class="perform">`emacs story.txt`</span>):
+{% assign linenos = "1 2 3 4 5" | split: " " %}
+{% include linenos.html numbers=linenos %}
 {% highlight text %}
 Once upon a time, there was a unicorn.
 
@@ -1453,7 +1468,7 @@ To repeat for reinforcement, *branch*es are the only normal way to access (reach
 Worse than *tag*s, the `HEAD` is not at all intended to *keep commits*. The`HEAD` changes depending on which *branch* you checkout, and can potentially leave *commit*s behind.
 
 To see that the `HEAD` has moved to *branch* <span class="git-green">git-obj-study</span>, and has left our *detached-commit* behind:
-<pre><code>git log --decorate --graph <span class="detached-commit-short goi">{{ detached-commit-short }}</span></code></pre>
+<div class="perform"><pre><code>git log --decorate --graph <span class="detached-commit-short goi">{{ detached-commit-short }}</span></code></pre></div>
 <pre>
 <code>{% include git-log/ch.html commit-id=detached-commit class="detached-commit" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -1483,7 +1498,7 @@ Just remember that you need to attach the `HEAD` to a *branch* before you start 
 
 Let's jump to an earlier time in *branch* <span class="git-green">git-obj-study</span>. Suppose we want to reminisce about how we started off when we created this *branch*.
 
-A `git checkout git-obj-study~1` puts us 1 *commit* upstream:
+A <span class="perform">`git checkout git-obj-study~1`</span> puts us 1 *commit* upstream:
 <pre>
 <code>Note: checking out 'git-obj-study~1'.
 
@@ -1499,7 +1514,7 @@ do so (now or later) by using -b with the checkout command again. Example:
 HEAD is now at <span class="first-commit-short goi">{{ first-commit-short }}</span>... Adds first work on the story</code>
 </pre>
 
-And `git log --decorate` shows:
+And <span class="perform">`git log --decorate`</span> shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=first-commit class="first-commit" head=true lone=true %}
 Author: Author A <a@c.com>
@@ -1512,13 +1527,13 @@ Date:   {{ first-commit-date }}
     Then comes a blank line, and then details and descriptions follow.</code>
 </pre>
 
-Let's take a look-see. A `ls -a` shows:
+Let's take a look-see. A <span class="perform">`ls -a`</span> shows:
 <pre>
 <code>./                  <span class="git-blue">.git</span>/               story.txt
 ../                 rough_thoughts.txt</code>
 </pre>
 
-And `cat story.txt` shows:
+And <span class="perform">`cat story.txt`</span> shows:
 {% highlight text %}
 Once upon a time, there was a unicorn.
 
@@ -1555,9 +1570,9 @@ Our *detached-commit* is still **unreachable**, as seen by <span class="perform"
 <pre><code>dangling commit <span class="detached-commit goi">{{ detached-commit }}</span></code></pre>
 
 Creating a new *branch* on <span class="detached-commit-short goi">{{ detached-commit-short }}</span> will make it *reachable*:
-<pre><code>git branch reclaim-detached <span class="detached-commit-short goi">{{ detached-commit-short }}</span></code></pre>
+<div class="perform"><pre><code>git branch reclaim-detached <span class="detached-commit-short goi">{{ detached-commit-short }}</span></code></pre></div>
 
-And now, `git fsck --no-reflogs` should show that all *commit*s are *reachable*.
+And now, <span class="perform">`git fsck --no-reflogs`</span> should show that all *commit*s are *reachable*.
 
 <div class="tip" markdown="1">
 *Branch*es make *commit*s **reachable**.
@@ -1585,7 +1600,7 @@ Date:   {{ first-commit-date }}
 
 Move the `HEAD` back into the past by 2 steps: <span class="perform">`git reset --hard HEAD@{2}`</span>
 
-Now, <span class="perform">`git log --decorate`</span> shows:
+Now, <span class="perform">`git log --decorate --graph`</span> shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=detached-commit class="detached-commit" head=true branch="reclaim-detached" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -1617,6 +1632,11 @@ Recall that each *commit* is a **snapshot** of the entire project at some point 
 
 Think of it this way. We created a *snapshot* (our *detached-commit*) right after that at *second-commit*. Then we moved the `HEAD` somewhere else and gave up on *detached-commit*; it was *unreachable* by any *branch* since we *committed* while detached. After that, we changed our mind about losing *detached-commit*. So we backtracked the `HEAD` to the point where it landed again on *detached-commit*.
 
+A <span class="perform">`git reflog`</span> shows that we backtracked the `HEAD`:
+<pre>
+<code><span class="git-yellow"><span class="detached-commit-short goi">{{ detached-commit-short }}</span></span> HEAD@{0}: reset: moving to HEAD@{2}</code>
+</pre>
+
 ## Same for Branches
 
 The "undo history" (*reflog*s) for *branch*es work the same way as the *reflog* for the `HEAD`.
@@ -1624,7 +1644,7 @@ The "undo history" (*reflog*s) for *branch*es work the same way as the *reflog* 
 In case you accidentally shift a *branch* via `git branch -f <branch> <wrong-commit>`, you can check its *reflog* to see which "*correct commit*" it was on before that accident.
 
 <div class="tip" markdown="1">
-Be absolutely sure before you run `git branch -D <branch>`, which *force deletes* the specified *branch*, and totally nukes the *reflog* (undo history) for said *branch*.
+Be absolutely sure before you run `git branch -D <branch>`, which *force deletes* the specified *branch*, and totally nukes the *reflog* (undo history) for said *branch*. **Force-deleting a *branch* can potentially lead to lost *commit*s.**
 </div>
 
 ## Amending Last Commit
@@ -1641,7 +1661,7 @@ We decided to include more details in the commit message.
 This is an amended commit.
 {% endhighlight %}
 
-Then <span class="perform">`git commit --amend -F {{ commit-msg-file }}`</span>
+Then <span class="perform">`git commit --amend -F {{ commit-msg-file }}`</span> to amend our last *commit*.
 
 {% assign amended-commit = site.data.git-lesson.git-commits.amended.id %}
 {% assign amended-commit-short = amended-commit | slice: 0, 7 %}
@@ -1659,7 +1679,7 @@ We can see that a new *commit* --- our *amended-commit* --- has been created. A 
 <span class="git-red">|</span>     We decided to include more details in the commit message.
 <span class="git-red">|</span>     This is an amended commit.
 <span class="git-red">|</span>
-<span class="git-red">|</span> {% include git-log/ch.html commit-id=detached-commit class="detached-commit" head=true branch="reclaim-detached" %}
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=detached-commit class="detached-commit" branch="reclaim-detached" %}
 <span class="git-red">|/</span> Author: Author A <a@c.com>
 <span class="git-red">|</span>  Date:   {{ detached-commit-date }}
 <span class="git-red">|</span>
@@ -1736,7 +1756,9 @@ We will now make 2 commits on *branch* <span class="git-green">author-A/daydream
 ### Quick First Commit
 
 Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to add lines 8-9 at the end:
-{% highlight text linenos %}
+{% assign linenos = "1 2 3 4 5 6 7 8 9" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
 Once upon a time, there was a unicorn.
 
 The unicorn saw a rainbow.
@@ -1757,8 +1779,10 @@ Add your work via <span class="perform">`git add story.txt`</span>, and commit v
 
 ### Insert Afterthought
 
-Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to add lines 8-9:
-{% highlight text linenos %}
+Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to add lines 9-10:
+{% assign linenos = "1 2 3 4 5 6 7 8 9 10 11" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
 Once upon a time, there was a unicorn.
 
 The unicorn saw a rainbow.
@@ -1852,7 +1876,7 @@ If you're able to use an editor (vi or emacs) to write your *commit messages* wi
 And here is the loop with <span class="perform">`git log --decorate --graph`</span>:
 <pre>
 <code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" %}
-<span class="git-red">|</span><span class="git-green">\</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
+<span class="git-red">|</span><span class="git-green">\</span>  Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
 <span class="git-red">|</span> <span class="git-green">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> <span class="git-green">|</span> Date:   {{ merge-commit-date }}
 <span class="git-red">|</span> <span class="git-green">|</span>
@@ -1895,7 +1919,7 @@ Adding the `--first-parent` option to `git log` will hide leapfrog details.
 A <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" %}
-<span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
+<span class="git-red">|</span>  Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
 <span class="git-red">|</span> Author: Author A <a@c.com>
 <span class="git-red">|</span> Date:   {{ merge-commit-date }}
 <span class="git-red">|</span>
@@ -1954,28 +1978,28 @@ The above bare repo resides on your local harddisk, but is for all our intents a
 **Clone**s are non-bare local repos we work on. Your *clone* is your local copy of the Git repo you work on (see "*remote*" soon after this).
 </div>
 
-In our case here, we have a *clone* in folder '*clone-A*'.
+In our case here, we have a *clone* in folder `clone-A`.
 
 <div class="tip" markdown="1">
 **Remote**s are bare repos we push to, and collaborate on. Consider a *remote* as a "*certified true copy*" of sorts, which is also clearly implied by the contrasting term "*clone*". They also act like "*cloud backups*" (if you're using [GitHub](github.com) or [BitBucket](bitbucket.org)), in case your *clones* get damaged.
 </div>
 
-Our *remote* in this case resides in folder '*remote*'.
+Our *remote* in this case resides in folder `remote`.
 
 <div class="forward" markdown="1">
 We will look at situating our *remote* on GitHub and BitBucket later on.
-</div>
-
-<div class="tip" markdown="1">
-The *remote* name "*origin*" is the convention for representing the "*certified true copy*" repo for the project.
 </div>
 
 Point our *clone* to the *remote*:
 <div class="perform">{% highlight shell %}
 cd clone-A
 git remote -v     # Should display nothing; no remotes linked to yet.
-git remote add orign ../remote     # Our remote is named "origin"
+git remote add origin ../remote     # Our remote is named "origin"
 {% endhighlight %}</div>
+
+<div class="tip" markdown="1">
+The *remote* name "*origin*" is the convention for representing the "*certified true copy*" repo for the project.
+</div>
 
 Checking for our added remote with <span class="perform">`git remote -v`</span>:
 {% highlight text %}
@@ -1989,7 +2013,7 @@ Although it is possible to pull (fetch) from one remote repo and push to another
 
 ## Pushing Work To Remote
 
-We now push our current branch (`master`) up to `origin` by doing <span class="perform">`git push origin master`</span>:
+We now push our current *branch* <span class="git-green">master</span> up to `origin` by doing <span class="perform">`git push -u origin master`</span>:
 {% highlight text %}
 Counting objects: 13, done.
 Delta compression using up to 4 threads.
@@ -2001,11 +2025,21 @@ To ../remote
 {% endhighlight %}
 
 <div class="side-note" markdown="1">
-Typically, your *first* push to a remote should include the `-u` (set-upstream) option like this `git push -u origin master`. The above is a simplified scenario.
+Typically, your *first* push to a remote should include the `-u` (set-upstream) option like this `git push -u origin master`. That associates *branch* <span class="git-green">master</span> with *branch* <span class="git-red">origin/master</span>. That way, the next time you're on *branch* <span class="git-green">master</span>, you can simply do `git push` and Git knows you mean `git push origin master` (and similarly for `git pull`).
+</div>
+
+<div class="tip" markdown="1">
+The "*upstream*" in the context of *remote branch*es is different from the *time travel branch*es we spoke of. In the context of *remote branch*es, **upstream** is the "*certified true copy*" that clones (**downstream**s) pull from and push to. The key idea here is to specify the "*certified true copy*" for your project's *branch*es.
+</div>
+
+<div class="forward" markdown="1">
+It is possible to have different *branch*es pull from (and push to) separate *remote*s. An example use case is when I need to use a BitBucket private repo to track/store my project, and I use [GitHub Pages](https://pages.github.com) to publish my project's documentation. In such a case, I would have 2 **remote**s --- <span class="git-red">origin</span> would point to a BitBucket repo while <span class="git-red">doc</span> (arbitrary name) would point to GitHub repo.
+
+Shoot me an email if you want me to rush out a tutorial for the above use case (very common for staff in SUTD).
 </div>
 
 Everything you saw in your `.git` folder inside your *clone* will be inside the *remote* (the bare Git repo).
-Both these commands should show you the same files:
+Both these commands should show you the same files (`../remote/objects` has less files):
 <div class="perform">{% highlight shell %}
 find .git/objects -type f
 find ../remote/objects -type f
@@ -2019,7 +2053,7 @@ You can see that the bare repo does not reserve any space for *working copies of
 We never work on *remotes*, but instead work on *clones* and push our work up to *remotes*.
 </div>
 
-A look at Git Log via <span class="perform">`git log --decorate --graph --first-parent`</span> tells us our remote now has branch 'master' too (*origin/master*):
+A look at Git Log via <span class="perform">`git log --decorate --graph --first-parent`</span> tells us our *remote* now has *branch* <span class="git-green">master</span> too (<span class="git-red">origin/master</span>):
 <pre>
 <code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" remote="origin/master" %}
 <span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
@@ -2066,7 +2100,7 @@ git config user.email b@d.com
 git config log.abbrevCommit true
 {% endhighlight %}</div>
 
-A `git log --decorate --graph --parent` shows:
+A <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
 <pre>
 <code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" remote="origin/master" remote2="origin/HEAD" %}
 <span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
@@ -2103,12 +2137,12 @@ Even <span class="perform">`git branch`</span> tells us that `clone-B`'s only *b
 Let's go back into `clone-A` to publish *branch* <span class="git-green">git-obj-study</span>:
 <div class="perform">{% highlight shell %}
 cd ../clone-A     # Enter clone-A folder
-git push origin git-obj-study     # Push branch 'git-obj-study'
+git push -u origin git-obj-study     # Push branch 'git-obj-study'
 cd ../clone-B     # Enter clone-B folder
 {% endhighlight %}</div>
 
 <div class="tip" markdown="1">
-`git push <remote> <branch>` to publish *branch* <span class="git-green">&lt;branch&gt;</span> to *remote* <span class="git-red">&lt;remote&gt;</span>.
+`git push <remote> <branch>` to publish *branch* <span class="git-green">&lt;branch&gt;</span> to *remote* <span class="git-red">&lt;remote&gt;</span>. Add option `-u` if pushing that *branch* for the first time.
 </div>
 
 And we get `clone-B` to pull in the newly pushed *branch*:
@@ -2168,6 +2202,10 @@ Specifying paths are a little more involved:
 * No leading `/` targets all folders, including subfolders, recursively.
     * Eg. `config.cfg` ignores all `config.cfg` files, even in subfolders.
 </div>
+
+# Conflicts
+
+Under construction. This section will talk about collaboration techniques, including *conflict resolution*.
 
 # GitHub and BitBucket
 
