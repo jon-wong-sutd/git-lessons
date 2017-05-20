@@ -303,7 +303,7 @@ In the above demonstration, you might have some new ideas you want to quickly wr
 
 {% assign commit-msg-file = site.data.git-lesson.commit-msg-file %}
 
-You can use any text editor to create file `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span>. Enter into it these 5 lines:
+You can use any text editor to create file `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span>). Enter into it these 5 lines:
 {% highlight text %}
 Adds first work on the story
 
@@ -2155,7 +2155,7 @@ git checkout git-obj-study     # Checkout branch 'git-obj-study'
 `git pull` to pull down any new updates from *remote*(s).
 </div>
 
-Now, <span class="perform">`git log --decorate --graph`</span> shows:
+Now, <span class="perform">`git log --decorate --graph`</span> shows that `clone-B` can see *branch* <span class="git-green">git-obj-study</span>:
 <pre>
 <code>{% include git-log/ch.html commit-id=second-commit class="second-commit" head=true attached="git-obj-study" remote="origin/git-obj-study" %}
 <span class="git-red">|</span> Author: Author A <a@c.com>
@@ -2222,3 +2222,53 @@ General rule of thumb for passwords:
 
 Each SSH key has 2 parts --- private and public. The private key never leaves your harddisk, never travels onto any network. You can read briefly into [Public-key Cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to get an idea of how SSH keys work.
 </div>
+
+# TODOs
+
+Introduce `diff-highlight`.
+
+## Installing `diff-highlight`
+
+Install the `diff-highlight` program:
+<div class="perform">{% highlight shell %}
+mkdir ~/bin
+curl https://raw.githubusercontent.com/git/git/master/contrib/diff-highlight/diff-highlight > ~/bin/diff-highlight
+chmod +x ~/bin/diff-highlight
+{% endhighlight %}</div>
+
+### Executable Path
+
+Check if the `diff-highlight` program is on your *executable path*: Doing <span class="perform">`which diff-highlight`</span> should show:
+{% highlight text %}
+/Users/<username>/bin/diff-highlight
+{% endhighlight %}
+
+**If there was no output** from the above command, you will have to add `~/bin` to your *executable path*:
+<div class="perform">{% highlight shell %}
+echo "PATH=~/bin:\$PATH" >> ~/.bashrc
+{% endhighlight %}
+</div>
+
+**If you're using MacOS**, you must also ensure that your `~/.bash_profile` has this line:
+{% highlight text %}
+[[ -s ~/.bashrc ]] && source ~/.bashrc
+{% endhighlight %}
+
+Usually, a MacOS's `~/.bash_profile` should contain only that 1 line.
+
+After adding `~/bin` to your *executable path*, you must restart your Bash terminal.
+
+<div class="side-note" markdown="1">
+If you're on Linux, you can try to do `source /etc/environment && source ~/.bashrc` without having to restart your Bash terminal.
+
+If you're on MacOS, you can try to do `source /etc/profile` instead. Yes, MacOS is a little non-standard in the way it handles shell configuration.
+</div>
+
+## Using `diff-highlight`
+
+Now, tell Git to always use `diff-highlight`:
+<div class="perform">{% highlight shell %}
+git config --global pager.log "diff-highlight | less"
+git config --global pager.show "diff-highlight | less"
+git config --global pager.diff "diff-highlight | less"
+{% endhighlight %}</div>

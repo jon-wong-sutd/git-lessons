@@ -162,12 +162,17 @@ div.perform {
     color: white;
   }
 }
+
 span.perform {
   code {
     display: inline-block;
     background-color: #00007f;
     color: white;
   }
+}
+
+code.highlighter-rouge {
+  display: inline-block;
 }
 
 /* Line numbers */
