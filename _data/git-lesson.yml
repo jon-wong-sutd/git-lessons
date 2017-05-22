@@ -43,6 +43,18 @@ git-commits:
     id: e20621b55e62f02fe9486aa12d874d7c08a66fa4
     timestamp: 1481490855
     date: Mon Dec 12 05:14:15 2016 +0800
+  work-A:
+    id: db07e578243f14f050480ec87ed064d596af7811
+    timestamp: 1481491182
+    date: Mon Dec 12 05:19:42 2016 +0800
+  work-A-merge:
+    id: a4305c8c1bb31b1530e16b79615f3f73787f78dd
+    timestamp: 1481491523
+    date: Mon Dec 12 05:25:23 2016 +0800
+  work-B:
+    id: afc9e0c78410ddd9eb474b041fa11c40380d1876
+    timestamp: 1481491731
+    date: Mon Dec 12 05:28:51 2016 +0800
 
 git-trees:
   first: 88dc468c538f956841dbd018e805ff2ba94248fb

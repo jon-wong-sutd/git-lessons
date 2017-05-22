@@ -5,6 +5,7 @@ permalink: /git-lesson/
 ---
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--<script src="../assets/jquery-3.2.1.min.js"></script>-->
 <script src="../assets/toc.js"></script>
 <script src="../assets/git-obj-id.js"></script>
 
@@ -72,6 +73,18 @@ Enter your own *leapfrog-two-commit* ID: <input type="text"><br>
 </div>
 <div id="merge-commit-edit" class="goi-edit" markdown="1">
 Enter your own *merge-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="work-A-commit-edit" class="goi-edit" markdown="1">
+Enter your own *work-A-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="work-A-merge-commit-edit" class="goi-edit" markdown="1">
+Enter your own *work-A-merge-commit* ID: <input type="text"><br>
+(Enter to submit; Escape to cancel)
+</div>
+<div id="work-B-commit-edit" class="goi-edit" markdown="1">
+Enter your own *work-B-commit* ID: <input type="text"><br>
 (Enter to submit; Escape to cancel)
 </div>
 
@@ -2029,7 +2042,7 @@ Typically, your *first* push to a remote should include the `-u` (set-upstream) 
 </div>
 
 <div class="tip" markdown="1">
-The "*upstream*" in the context of *remote branch*es is different from the *time travel branch*es we spoke of. In the context of *remote branch*es, **upstream** is the "*certified true copy*" that clones (**downstream**s) pull from and push to. The key idea here is to specify the "*certified true copy*" for your project's *branch*es.
+The "*upstream*" in the context of *remote branch*es is different from the *time travel branch*es we spoke of. In the context of *remote branch*es, **upstream** is the "*certified true copy*" that *clone*s (**downstream**s) pull from and push to. The key idea for the `-u` option is to specify the "*certified true copy*" for your project's *branch*es.
 </div>
 
 <div class="forward" markdown="1">
@@ -2053,7 +2066,7 @@ You can see that the bare repo does not reserve any space for *working copies of
 We never work on *remotes*, but instead work on *clones* and push our work up to *remotes*.
 </div>
 
-A look at Git Log via <span class="perform">`git log --decorate --graph --first-parent`</span> tells us our *remote* now has *branch* <span class="git-green">master</span> too (<span class="git-red">origin/master</span>):
+A look at Git log via <span class="perform">`git log --decorate --graph --first-parent`</span> tells us our *remote* now has *branch* <span class="git-green">master</span> too (<span class="git-red">origin/master</span>):
 <pre>
 <code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true attached="master" remote="origin/master" %}
 <span class="git-red">|</span>  Merge: {{ third-commit-short }} {{ leapfrog-two-commit-short }}
@@ -2084,7 +2097,7 @@ Remote *branch*es are shown in red, and prefixed by the name of the remote plus 
 
 ## Push to Publish
 
-*Branch*es (and consequently their attached *commit*s) are not visible to the rest of your team if you don't push them to the *remote*.
+*Branch*es (and consequently the *commit*s rendered *reachable* only by them) are not visible to the rest of your team if you don't push them to the *remote*.
 
 We will demonstrate this fact. We first clone the repo into folder `clone-B`:
 <div class="perform">{% highlight shell %}
@@ -2092,6 +2105,10 @@ cd ..     # Go to parent folder, 1 up from clone-A
 git clone remote clone-B     # Clone repo at 'remote' into 'clone-B'
 cd clone-B     # Enter clone-B
 {% endhighlight %}</div>
+
+<div class="tip" markdown="1">
+We *clone* a *remote* by doing `git clone <remote> <folder>`, where `<remote>` is the location of the *remote* and `<folder>` is the folder to create that will hold the *clone*.
+</div>
 
 We then set our credential and some parameters:
 <div class="perform">{% highlight shell %}
@@ -2116,16 +2133,14 @@ A <span class="perform">`git log --decorate --graph --first-parent`</span> shows
 <span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
 <span class="git-red">|</span>
 <span class="git-red">|</span>     Unicorn encounters a rainbow
-<span class="git-red">|</span>
-{% include git-log/ch.html commit-id=first-commit class="first-commit" %}
-  Author: Author A <a@c.com>
-  Date:   Tue May 16 17:48:34 2017 +0800
-
-      Adds first work on the story
 ...</code>
 </pre>
 
-The remote *branch* <span class="git-red">origin/HEAD</span> simply points to the *branch* that is pulled down upon a `git clone`. We don't need a reference to it, so we can delete it in our `clone-B` via <span class="perform">`git branch -d -r origin/HEAD`</span>.
+<div class="tip" markdown="1">
+The remote *branch* <span class="git-red">origin/HEAD</span> simply points to the *branch* that is pulled down upon a `git clone`. We don't need a reference to it in the *clone*s. It serves the *remote*, not the *clone*s.
+</div>
+
+We delete *branch* <span class="git-red">origin/HEAD</span> in our `clone-B` via <span class="perform">`git branch -r -d origin/HEAD`</span>.
 
 The above Git log tells us our `clone-B` has access to *branch* <span class="git-green">master</span>. But what about *branch* <span class="git-green">git-obj-study</span>? Let's see with <span class="perform">`git log --decorate --graph git-obj-study`</span>:
 {% highlight text %}
@@ -2138,15 +2153,15 @@ Let's go back into `clone-A` to publish *branch* <span class="git-green">git-obj
 <div class="perform">{% highlight shell %}
 cd ../clone-A     # Enter clone-A folder
 git push -u origin git-obj-study     # Push branch 'git-obj-study'
-cd ../clone-B     # Enter clone-B folder
 {% endhighlight %}</div>
 
 <div class="tip" markdown="1">
-`git push <remote> <branch>` to publish *branch* <span class="git-green">&lt;branch&gt;</span> to *remote* <span class="git-red">&lt;remote&gt;</span>. Add option `-u` if pushing that *branch* for the first time.
+`git push -u <remote> <branch>` to publish *branch* <span class="git-green">&lt;branch&gt;</span> to *remote* <span class="git-red">&lt;remote&gt;</span>.
 </div>
 
 And we get `clone-B` to pull in the newly pushed *branch*:
 <div class="perform">{% highlight shell %}
+cd ../clone-B     # Enter clone-B folder
 git pull     # Pull updates from remote
 git checkout git-obj-study     # Checkout branch 'git-obj-study'
 {% endhighlight %}</div>
@@ -2170,6 +2185,659 @@ Now, <span class="perform">`git log --decorate --graph`</span> shows that `clone
       Adds first work on the story
 ...</code>
 </pre>
+
+## Remote Branch
+
+We will contrast **remote branch** versus **branch on remote**.
+
+<div class="tip" markdown="1">
+A **remote branch** is merely a *tracking branch*, which *tracks* (corresponds with) a **branch on the remote**.
+
+A **remote branch** is like a pointer that resides in the *clone*. A **branch on the remote** resides in the *remote*.
+</div>
+
+To see that concept demonstrated, we will create a *remote branch*, delete it, and then see that the *remote repo* still has the corresponding *branch*.
+
+We create *branch* <span class="git-green">temp</span> at our *first-commit* via <span class="perform">`git branch temp HEAD~1`</span>. We then push that *branch* up via <span class="perform">`git push -u origin temp`</span>. Finally, <span class="perform">`git log --decorate temp`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=first-commit class="first-commit" branch="temp" remote="origin/temp" %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+...</code>
+</pre>
+
+We confirm that the *remote repo* actually has *branch* <span class="git-green">temp</span>. We enter the *remote repo* with <span class="perform">`cd ../remote`</span>. We then check the log via <span class="perform">`git log --decorate temp`</span>:
+<pre>
+<code>{% include git-log/ch.html commit-id=first-commit class="first-commit" full-id=true branch="temp" %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+...</code>
+</pre>
+
+A <span class="perform">`git branch -v`</span> also shows:
+<pre><code>  temp             <span class="first-commit goi">{{ first-commit-short }}</span> Adds first work on the story</code></pre>
+
+We now return to `clone-B` and delete the *remote branch* <span class="git-red">origin/temp</span> and also local *branch* <span class="git-green">temp</span>:
+<div class="perform">{% highlight shell %}
+cd ../clone-B
+git branch -rd origin/temp
+git branch -d temp
+{% endhighlight %}</div>
+
+Our *first-commit* no longer holds *remote branch* <span class="git-red">origin/temp</span> nor local *branch* <span class="git-green">temp</span>. A <span class="perform">`git log temp`</span> and a <span class="perform">`git log origin/temp`</span> both show:
+{% highlight text %}
+fatal: ambiguous argument 'temp': unknown revision or path not in the working tree.
+{% endhighlight %}
+
+We will see that the *remote repo* still has *branch* <span class="git-green">temp</span>:
+<div class="perform">{% highlight shell %}
+cd ../remote
+git log --decorate temp
+{% endhighlight %}</div>
+<pre>
+<code>{% include git-log/ch.html commit-id=first-commit class="first-commit" full-id=true branch="temp" %}
+  Author: Author A <a@c.com>
+  Date:   {{ first-commit-date }}
+
+      Adds first work on the story
+...</code>
+</pre>
+
+As can be seen, a **remote branch** is merely a *tracking branch* that tracks (corresponds with) a **branch on a remote**.
+
+We now return to `clone-B` to delete the *branch on the remote*  (we normally don't have direct access to a *remote repo*):
+<div class="perform">{% highlight shell %}
+cd ../clone-B
+git push origin --delete temp
+{% endhighlight %}</div>
+
+Now, the *remote repo* truly has *branch* <span class="git-green">temp</span> deleted:
+<div class="perform">{% highlight shell %}
+cd ../remote
+git log --decorate temp
+{% endhighlight %}</div>
+{% highlight text %}
+fatal: ambiguous argument 'temp': unknown revision or path not in the working tree.
+{% endhighlight %}
+
+# Collaboration
+
+A typical collaboration technique is the "*peer review*".
+
+To demonstrate such collaboration, we will be getting "*Author A*" to commit some changes on a *branch* and then to notify someone else to do a review of those changes. Finally, after the review, the work will be merged back into *branch* <span class="git-green">master</span>.
+
+## The Work
+
+We enter `clone-A` now with <span class="perform">`cd ../clone-A`</span>. We then create a new *branch* and checkout the *branch* (recall [section Leapfrog Loop](#leapfrog-loop)) via <span class="perform">`git checkout -b author-A/rainbow`</span>.
+
+Our *branch* <span class="git-green">author-A/rainbow</span> should be at our *merge-commit*, as seen via <span class="perform">`git log --decorate --graph --first-parent`</span>:
+<pre>
+<code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true branch="master" attached="author-A/rainbow" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=third-commit class="third-commit" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+...</code>
+</pre>
+
+Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to change line 5:
+{% assign linenos = "1 2 3 4 5 6 7 8 9 10 11" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
+Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it unremarkable.
+
+The unicorn looked around.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.
+{% endhighlight %}
+
+Edit `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span> to contain:
+{% highlight text %}
+Unicorn finds rainbow unremarkable
+{% endhighlight %}
+
+{% assign work-A-commit = site.data.git-lesson.git-commits.work-A.id %}
+{% assign work-A-commit-short = work-A-commit | slice: 0, 7 %}
+{% assign work-A-commit-date = site.data.git-lesson.git-commits.work-A.date %}
+{% assign work-A-commit-timestamp = site.data.git-lesson.git-commits.work-A.timestamp %}
+
+Add your work via <span class="perform">`git add story.txt`</span>, and then commit it via <span class="perform">`git commit -F {{ commit-msg-file }}`</span>. Then <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=work-A-commit class="work-A-commit" head=true attached="author-A/rainbow" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ work-A-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow unremarkable
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=merge-commit class="merge-commit" branch="master" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+## Publishing for Review
+
+"*Author A*" will now publish the work, so that someone else can review it.
+
+Do <span class="perform">`git push -u origin author-A/rainbow`</span> to publish the work. A <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=work-A-commit class="work-A-commit" head=true attached="author-A/rainbow" remote="origin/author-A/rainbow" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ work-A-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow unremarkable
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=merge-commit class="merge-commit" branch="master" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+### Pull Request
+
+There is a concept called "*Pull Request*" (PR). A PR is a piece of communication going from the *work/change publisher* ("*Author A*", in our case) to the *reviewer* ("*Author C*", which we will soon create).
+
+PRs are not a part of Git. GitHub, BitBucket and GitLab (terms it as "*Merge Request*") had to implement this feature themselves.
+
+For now, we only need to know that a PR is merely a message of this structure:
+{% highlight yaml %}
+From Branch: origin/author-A/rainbow
+To Branch: origin/master
+Description: Makes rainbow more integal to the story.
+{% endhighlight %}
+
+That is all a PR essentially is --- a request to merge (from) a *work branch* onto a *main branch*. That request is sent to a reviewer.
+
+Suppose "*Author A*" sends the above PR to "*Author C*".
+
+## The Review
+
+We now simulate an "*Author C*". Create a clone `clone-C` by doing:
+<div class="perform">{% highlight shell %}
+cd ..
+git clone remote clone-C
+cd clone-C
+git branch -rd origin/HEAD
+{% endhighlight %}</div>
+
+We then set the credential for "*Author C*", as well as some parameters:
+<div class="perform">{% highlight shell %}
+git config user.name "Author C"
+git config user.email c@e.com
+git config log.abbrevCommit true
+{% endhighlight %}</div>
+
+Next, we pull updates from the *remote*, and then checkout the work we need to review:
+<div class="perform">{% highlight shell %}
+git pull
+git checkout author-A/rainbow
+{% endhighlight %}</div>
+
+### Installing `diff-highlight`
+
+Git has a related program called `diff-highlight` that makes `git diff` more visually informative.
+
+Install the `diff-highlight` program:
+<div class="perform">{% highlight shell %}
+mkdir ~/bin
+curl https://raw.githubusercontent.com/git/git/master/contrib/diff-highlight/diff-highlight > ~/bin/diff-highlight
+chmod +x ~/bin/diff-highlight
+{% endhighlight %}</div>
+
+#### Executable Path
+
+Check if the `diff-highlight` program is on your *executable path*: Doing <span class="perform">`which diff-highlight`</span> should show:
+{% highlight text %}
+/Users/<username>/bin/diff-highlight
+{% endhighlight %}
+
+**If there was no output** from the above command, you will have to add `~/bin` to your *executable path*:
+<div class="perform">{% highlight shell %}
+echo "PATH=~/bin:\$PATH" >> ~/.bashrc
+{% endhighlight %}
+</div>
+
+**If you're using MacOS**, you must also ensure that your `~/.bash_profile` has this line:
+{% highlight text %}
+[[ -s ~/.bashrc ]] && source ~/.bashrc
+{% endhighlight %}
+
+Usually, a MacOS's `~/.bash_profile` should contain only that 1 line.
+
+After adding `~/bin` to your *executable path*, you must restart your Bash terminal.
+
+<div class="side-note" markdown="1">
+If you're on Linux, you can try to do `source /etc/environment && source ~/.bashrc` without having to restart your Bash terminal.
+
+If you're on MacOS, you can try to do `source /etc/profile` instead. Yes, MacOS is a little non-standard in the way it handles shell configuration.
+</div>
+
+#### Using `diff-highlight`
+
+Now, tell Git to always use `diff-highlight`:
+<div class="perform">{% highlight shell %}
+git config --global pager.log "diff-highlight | less"
+git config --global pager.show "diff-highlight | less"
+git config --global pager.diff "diff-highlight | less"
+{% endhighlight %}</div>
+
+### Diff
+
+The *reviewer* looks at the *work* (or *changes*).
+
+<div class="tip" markdown="1">
+To view the *work/changes*, do `git diff <ours> <theirs>`, where `<ours>` is the *commit* on which we will be applying changes (via `git merge`) from `<theirs>`.
+</div>
+
+In this case, *branch* <span class="git-green">author-A/rainbow</span> contains the new changes to be applied onto *branch* <span class="git-green">master</span>. Therefore, we do <span class="perform">`git diff master author-A/rainbow`</span>:
+<pre>
+<code><span class="bold">diff --git a/story.txt b/story.txt
+index 700b75e..6806d4f 100644
+--- a/story.txt
++++ b/story.txt</span>
+<span class="git-blue">@@ -2,7 +2,7 @@</span> Once upon a time, there was a unicorn.
+
+ The unicorn saw a rainbow.
+
+<span class="git-red">-The unicorn f<span class="diff">elt nothing about it</span>.</span>
+<span class="git-green">+The unicorn f<span class="diff">ound it unremarkable</span>.</span>
+
+ The unicorn looked around.</code>
+</pre>
+
+It is very obvious that "*Author A*" replaced "*elt nothing about it*" with "*ound it unremarkable*".
+
+### Discussion
+
+In this case, the changes are simple and easy to understand.
+
+But to learn about how discussions are typically conducted, let's assume the reviewer still has concerns, and chooses to hold a discussion with "*Author A*". For example, the reviewer may question the purpose of the "*rainbow*" in the story, since the unicorn had no response to the "*rainbow*" at all. In response, "*Author A*" may justify the existence of the "*rainbow*" by claiming that the "*rainbow*" will have a purpose only later on in the story, via a "*surprise plot twist*" perhaps. Moreover, "*Author A*" can claim that deeming the "*rainbow*" "*unremarkable*" is a non-trivial response.
+
+Let's assume that the reviewer accepts the justification given by "*Author A*", and therefore accepts the change put forward by "*Author A*".
+
+### Merge
+
+The reviewer will now *merge* the work into *branch* <span class="git-green">master</span>.
+
+Create `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span>) to contain:
+{% highlight text %}
+Merge branch 'author-A/rainbow'
+{% endhighlight %}
+
+Perform the merge, commit it, and then push it:
+<div class="perform">{% highlight shell %}
+git checkout master     # Recall: always checkout the 'onto' branch
+git merge --no-ff --no-commit author-A/rainbow     # Do the merge
+git commit -F {{ commit-msg-file }}     # Commit the merge
+git push     # Push the merge
+{% endhighlight %}</div>
+
+When working on a GitHub, BitBucket or GitLab platform, a PR is merged on the *remote repo*, not from a *clone* like what was seen in the above merge process. Don't worry, such a platform-facilitated merge is a lot more convenient than the above manual merge process.
+
+{% assign work-A-merge-commit = site.data.git-lesson.git-commits.work-A-merge.id %}
+{% assign work-A-merge-commit-short = work-A-merge-commit | slice: 0, 7 %}
+{% assign work-A-merge-commit-date = site.data.git-lesson.git-commits.work-A-merge.date %}
+{% assign work-A-merge-commit-timestamp = site.data.git-lesson.git-commits.work-A-merge.timestamp %}
+
+A <span class="perform">`git log --decorate --graph --first-parent`</span> now should show:
+<pre>
+<code>{% include git-log/ch.html commit-id=work-A-merge-commit class="work-A-merge-commit" head=true attached="master" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="merge-commit-short goi">{{ merge-commit-short }}</span> <span class="work-A-commit-short goi">{{ work-A-commit-short }}</span>
+<span class="git-red">|</span> Author: Author C <c@e.com>
+<span class="git-red">|</span> Date:   {{ work-A-merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/rainbow'
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=merge-commit class="merge-commit" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<div class="forward" markdown="1">
+We will next see "merge conflict" enter this merge stage, making this stage a lot more involved.
+</div>
+
+## Conflict
+
+<div class="tip" markdown="1">
+A **merge conflict** occurs when 2 separate *branch*es change the same line in the same file.
+</div>
+
+To demonstrate a **merge conflict**, we get "*Author B*" to create work that changes the same lines affected by the work of "*Author A*".
+
+The workflow is about the same as the case without *merge conflict*, but with conflict discussion and resolution added:
+* Work is done.
+* PR is created, and conflict is discovered.
+* Conflict is discussed among relevant parties.
+* Conflict is resolved.
+* PR is sent to reviewer.
+* Work is reviewed, and then merged.
+
+Note that the "*PR creation*" step will now be fleshed out properly. It is more involved than previously described.
+
+### Work Done
+
+"*Author B*" will now create a *branch* <span class="git-green">author-B/rainbow</span>:
+<div class="perform">{% highlight shell %}
+cd ../clone-B     # Go to clone-B
+git checkout master     # Always leapfrog from 'master'
+git checkout -b author-B/rainbow     # Create the work branch
+{% endhighlight %}</div>
+
+A <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=merge-commit class="merge-commit" head=true branch="master" attached="author-B/rainbow" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=third-commit class="third-commit" %}
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+...</code>
+</pre>
+
+Notice that we're starting our work from an older tip of *branch* <span class="git-green">master</span> --- there is no sign of work from "*Author A*". This is intentional in this demonstration. It is a typical scenario.
+
+<div class="tip" markdown="1">
+The hallmark of Git is *rapid*, *asynchronous* work. Nobody waits on anybody to start work.
+</div>
+
+In this case, we're assuming that "*Author B*" started work on *branch* <span class="git-green">author-B/rainbow</span> *before* "*Author A*" even finished work on *branch* <span class="git-green">author-A/rainbow</span>.
+
+We now do some work.
+
+Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to change line 5 and add lines 9-10:
+{% assign linenos = "1 2 3 4 5 6 7 8 9 10 11 12 13" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
+Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it exciting.
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.
+{% endhighlight %}
+
+A <span class="perform">`git diff story.txt`</span> shows:
+<pre>
+<code><span class="bold">diff --git a/story.txt b/story.txt
+index 700b75e..b669429 100644
+--- a/story.txt
++++ b/story.txt</span>
+<span class="git-blue">@@ -2,7 +2,7 @@</span> Once upon a time, there was a unicorn.
+
+ The unicorn saw a rainbow.
+
+<span class="git-red">-The unicorn f<span class="diff">elt nothing about it</span>.</span>
+<span class="git-green">+The unicorn f<span class="diff">ound it exciting</span>.</span>
+
+ The unicorn looked around.
+
+<span class="git-green">+The unicorn moved towards the rainbow.
++</span>
+ The unicorn dreamed of clouds.
+
+ The unicorn thought about cotton candy.
+</code>
+</pre>
+
+<div class="tip" markdown="1">
+It is good practice to review your unstaged changes via `git diff <file>` before staging your changes.
+</div>
+
+Create `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span>) to contain:
+{% highlight text %}
+Unicorn finds rainbow exciting
+{% endhighlight %}
+
+{% assign work-B-commit = site.data.git-lesson.git-commits.work-B.id %}
+{% assign work-B-commit-short = work-B-commit | slice: 0, 7 %}
+{% assign work-B-commit-date = site.data.git-lesson.git-commits.work-B.date %}
+{% assign work-B-commit-timestamp = site.data.git-lesson.git-commits.work-B.timestamp %}
+
+Add your work via <span class="perform">`git add story.txt`</span>, and then commit it via <span class="perform">`git commit -F {{ commit-msg-file }}`</span>. Finally, we push the work via <span class="perform">`git push -u origin author-B/rainbow`</span>. Then <span class="perform">`git log --decorate --graph --first-parent`</span> shows:
+<pre>
+<code>{% include git-log/ch.html commit-id=work-B-commit class="work-B-commit" head=true attached="author-B/rainbow" remote="origin/author-B/rainbow" %}
+<span class="git-red">|</span> Author: Author B <b@d.com>
+<span class="git-red">|</span> Date:   {{ work-B-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow exciting
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=merge-commit class="merge-commit" branch="master" remote="origin/master" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+### PR Created
+
+We next have "*Author B*" create the following PR:
+{% highlight yaml %}
+From Branch: origin/author-B/rainbow
+To Branch: origin/master
+Description: Unicorn responds the the rainbow
+{% endhighlight %}
+
+"*Author B*" now has the responbility to perform a "*test merge*" of the work onto *branch* <span class="git-green">master</span>.
+
+<div class="tip" markdown="1">
+It is never the reviewer's responsibility to discover and resolve *merge conflicts*. The *work/change publisher* should be responsible instead.
+</div>
+
+<div class="tip" markdown="1">
+Platforms that feature PR mechanism will perform this "*test merge*" automatically, discover *merge conflicts*, and inform you immediately about them.
+
+For learning purposes, we continue to perform the "*test merge*" ourselves.
+</div>
+
+"*Author B*" performs the "*test merge*" via:
+<div class="perform">{% highlight shell %}
+git pull     # Pull in updates from remote
+git checkout master     # Checkout branch 'master'
+git merge --no-ff --no-commit author-B/rainbow
+{% endhighlight %}</div>
+
+Git tells us there's a *merge conflict*:
+{% highlight text %}
+Auto-merging story.txt
+CONFLICT (content): Merge conflict in story.txt
+Automatic merge failed; fix conflicts and then commit the result.
+{% endhighlight %}
+
+<div class="tip" markdown="1">
+**Merge conflict**s are described inside the files where *conflict*s occur.
+</div>
+
+Editing `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) shows:
+{% assign linenos = "3 4 5 6 7 8 9 10 11 12 13 14 15" | split: " " %}
+{% include linenos.html numbers=linenos %}
+<pre class="conflict">
+<code>The unicorn saw a rainbow.
+
+<span class="bound"><<<<<<< HEAD</span>
+<span class="old">The unicorn found it <span class="diff">unremarkable</span>.</span>
+<span class="bound">||||||| merged common ancestors</span>
+<span class="common">The unicorn felt nothing about it.</span>
+<span class="bound">=======</span>
+<span class="new">The unicorn found it <span class="diff">exciting</span>.</span>
+<span class="bound">>>>>>>> author-B/rainbow</span>
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.</code>
+</pre>
+
+The above colorful highlighting is provided by `emacs`. Even if your text editor doesn't show those colors, you should be able to compare the text easily.
+
+Recall: To view the *work/changes*, do `git diff <ours> <theirs>`, where `<ours>` is the *commit* on which we will be applying changes (via `git merge`) from `<theirs>`. In our case now, `<ours>` would be *branch* <span class="git-green">master</span> and `<theirs>` would be *branch* <span class="git-green">author-B/rainbow</span>.
+
+The <span class="conflict-old">red section</span> shows the "*old*" value, the value already on *branch* <span class="git-green">master</span>.
+
+The <span class="conflict-new">green section</span> shows the "*new*" value, the value on *branch* <span class="git-green">author-B/rainbow</span>.
+
+The <span class="conflict-common">yellow section</span> shows the "*common value*" from which both the "*new*" and "*old*" values stemmed (forked).
+
+Let's see where that "*fork*" is, via <span class="perform">`git log --decorate --graph --first-parent master author-B/rainbow`</span>:
+<pre>
+<code>{% include git-log/ch.html commit-id=work-B-commit class="work-B-commit" head=true attached="author-B/rainbow" remote="origin/author-B/rainbow" %}
+<span class="git-red">|</span> Author: Author B <b@d.com>
+<span class="git-red">|</span> Date:   {{ work-B-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow exciting
+<span class="git-red">|</span>
+<span class="git-red">|</span> {% include git-log/ch.html commit-id=work-A-merge-commit class="work-A-merge-commit" head=true attached="master" remote="origin/master" %}
+<span class="git-red">|/</span>  Author: Author C <c@e.com>
+<span class="git-red">|</span>   Date:   {{ work-A-merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>       Merge branch 'author-A/rainbow'
+<span class="git-red">|</span>
+{% include git-log/ch.html commit-id=merge-commit class="merge-commit" %}
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">{{ third-commit-short }}</span> <span class="leapfrog-two-commit-short goi">{{ leapfrog-two-commit-short }}</span>
+<span class="git-red">|</span> Author: Author A <a@c.com>
+<span class="git-red">|</span> Date:   {{ merge-commit-date }}
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+The fork is obviously at our *merge-commit*, where we merged in the unicorn's thoughts about "*clouds and cotton candy*", and where the unicorn still "*felt nothing about*" the rainbow.
+
+We now abort the "*test merge*" via <span class="perform">`git merge --abort`</span>. We don't have the right to merge our work into *branch* <span class="git-green">master</span> now, because our work is not yet reviewed.
+
+### Conflict Discussion
+
+At this point of the workflow, "*Author B*" should discuss the conflict with "*Author A*".
+
+A typical start of such a discussion would be these question from "*Author B*" to "*Author A*":
+* "*Did you intend to have the unicorn find the rainbow unremarkable?*"
+* "*Will I break anything if I now decide that the unicorn finds the rainbow exciting?*"
+
+In our case, let's simplify the scenario and have "*Author A*" tell "*Author B*" to "*go ahead with your changes because I now agree that the unicorn should not find the rainbow unremarkable*". In short, "*Author A*" agrees to have her own changes overwritten by changes from "*Author B*".
+
+<div class="side-note" markdown="1">
+In more complex scenarios, both authors may incorporate parts of each other's work.
+</div>
+
+### Conflict Resolution
+
+"*Author B*" goes back to *branch* <span class="git-green">author-B/rainbow</span> and attempts to incorporate the "*latest updates*" on *branch* <span class="git-green">master</span> onto the *work branch* (*branch* <span class="git-green">author-B/rainbow</span>):
+<div class="perform">{% highlight shell %}
+git checkout author-B/rainbow
+git merge --no-ff --no-commit master
+{% endhighlight %}</div>
+
+Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span> to see the *merge conflict*:
+{% assign linenos = "3 4 5 6 7 8 9 10 11 12 13 14 15" | split: " " %}
+{% include linenos.html numbers=linenos %}
+<pre class="conflict">
+<code>The unicorn saw a rainbow.
+
+<span class="bound"><<<<<<< HEAD</span>
+<span class="old">The unicorn found it <span class="diff">exciting</span>.</span>
+<span class="bound">||||||| merged common ancestors</span>
+<span class="common">The unicorn felt nothing about it.</span>
+<span class="bound">=======</span>
+<span class="new">The unicorn found it <span class="diff">unremarkable</span>.</span>
+<span class="bound">>>>>>>> author-B/rainbow</span>
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.</code>
+</pre>
+
+<div class="tip" markdown="1">
+Non-conflicting changes are merged in without conflict alerts.
+
+The above line 15 is an example. It is a new line added.
+</div>
+
+"*Author B*" easily sees that our intended changes now involves removing lines 7-11 and line 5. We want to keep *our* changes (on *branch* <span class="git-green">author-B/rainbow</span>), and discard *their* changes (on *branch* <span class="git-green">master</span>). The final contents of `story.txt` should be:
+{% assign linenos = "1 2 3 4 5 6 7 8 9 10 11 12 13" | split: " " %}
+{% include linenos.html numbers=linenos %}
+{% highlight text %}
+Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it exciting.
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.
+{% endhighlight %}
+
+Edit `{{ commit-msg-file }}` (eg. <span class="perform">`emacs {{ commit-msg-file }}`</span> to contain:
+{% highlight text %}
+Pulls in updates from 'master'
+{% endhighlight %}
+
+Commit the merge via <span class="perform">`git commit -F {{ commit-msg-file }}`</span>.
+
+Finally, the PR is sent to the reviewer, and the review proceeds. And that concludes our demonstration of **merge conflicts**.
+
+<div class="side-note" markdown="1">
+For a cleaner Git history, *merge conflict*s can be resolved via *rebasing*. Let me know if your project manager needs me to teach *rebasing*.
+</div>
 
 ## Work on Own Branches
 
@@ -2203,10 +2871,6 @@ Specifying paths are a little more involved:
     * Eg. `config.cfg` ignores all `config.cfg` files, even in subfolders.
 </div>
 
-# Conflicts
-
-Under construction. This section will talk about collaboration techniques, including *conflict resolution*.
-
 # GitHub and BitBucket
 
 BitBucket allows your academic email address to get an unlimited account --- you can have any number of private repositories.
@@ -2222,53 +2886,3 @@ General rule of thumb for passwords:
 
 Each SSH key has 2 parts --- private and public. The private key never leaves your harddisk, never travels onto any network. You can read briefly into [Public-key Cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to get an idea of how SSH keys work.
 </div>
-
-# TODOs
-
-Introduce `diff-highlight`.
-
-## Installing `diff-highlight`
-
-Install the `diff-highlight` program:
-<div class="perform">{% highlight shell %}
-mkdir ~/bin
-curl https://raw.githubusercontent.com/git/git/master/contrib/diff-highlight/diff-highlight > ~/bin/diff-highlight
-chmod +x ~/bin/diff-highlight
-{% endhighlight %}</div>
-
-### Executable Path
-
-Check if the `diff-highlight` program is on your *executable path*: Doing <span class="perform">`which diff-highlight`</span> should show:
-{% highlight text %}
-/Users/<username>/bin/diff-highlight
-{% endhighlight %}
-
-**If there was no output** from the above command, you will have to add `~/bin` to your *executable path*:
-<div class="perform">{% highlight shell %}
-echo "PATH=~/bin:\$PATH" >> ~/.bashrc
-{% endhighlight %}
-</div>
-
-**If you're using MacOS**, you must also ensure that your `~/.bash_profile` has this line:
-{% highlight text %}
-[[ -s ~/.bashrc ]] && source ~/.bashrc
-{% endhighlight %}
-
-Usually, a MacOS's `~/.bash_profile` should contain only that 1 line.
-
-After adding `~/bin` to your *executable path*, you must restart your Bash terminal.
-
-<div class="side-note" markdown="1">
-If you're on Linux, you can try to do `source /etc/environment && source ~/.bashrc` without having to restart your Bash terminal.
-
-If you're on MacOS, you can try to do `source /etc/profile` instead. Yes, MacOS is a little non-standard in the way it handles shell configuration.
-</div>
-
-## Using `diff-highlight`
-
-Now, tell Git to always use `diff-highlight`:
-<div class="perform">{% highlight shell %}
-git config --global pager.log "diff-highlight | less"
-git config --global pager.show "diff-highlight | less"
-git config --global pager.diff "diff-highlight | less"
-{% endhighlight %}</div>
