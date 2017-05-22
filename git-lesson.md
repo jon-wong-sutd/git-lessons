@@ -401,7 +401,7 @@ We start with Git objects, so that we can understand how Git *commit*s are built
 
 Soon after that, we get a handle on some internals that are actually crucial to normal use of Git --- some of Git's vocabulary (or terminology).
 
-## Git Objects --- Commits, Trees, Blobs
+## Git Objects
 
 A Git **Commit** is collection of *folders and files* contained in that *commit*. In short, Git is really a tracker for a *filesystem*.
 
@@ -697,7 +697,7 @@ Confirm this by doing <span class="perform">`cat .git/refs/heads/master`</span> 
 * <span class="git-green">master</span> <span class="second-commit-short goi">{{ second-commit-short }}</span> Adds nested folder structure</code>
 </pre>
 
-### Human-Friendlier Git Object IDs
+### Human-Friendlier GOIs
 
 In the spirit of Git *reference*s, let's make *Git Object ID*s more human-friendly too.
 
@@ -1142,7 +1142,7 @@ The **head**, aka *tip*, of a **branch** is the latest *commit* (furthest *downs
 
 The fork for these 2 *branch*es is at our *first-commit*, just FYI.
 
-## Branches and Garbage Collection
+## Garbage Collection
 
 *Branch*es are important because they provide the only (normal) way for you to access *commit*s.
 
@@ -2669,7 +2669,7 @@ We next have "*Author B*" create the following PR:
 {% highlight yaml %}
 From Branch: origin/author-B/rainbow
 To Branch: origin/master
-Description: Unicorn responds the the rainbow
+Description: Unicorn responds to the rainbow
 {% endhighlight %}
 
 "*Author B*" now has the responbility to perform a "*test merge*" of the work onto *branch* <span class="git-green">master</span>.
