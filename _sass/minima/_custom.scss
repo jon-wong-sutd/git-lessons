@@ -92,6 +92,68 @@
   color: #54bcce;
 }
 
+/* Git diff view */
+span.bold {
+  font-weight: bold;
+}
+
+.git-red .diff {
+  color: white;
+  background-color: red;
+}
+.git-green .diff {
+  color: white;
+  background-color: green;
+}
+
+/* Git conflict view */
+pre.conflict {
+
+  span.bound, span.old, span.new, span.common {
+    display: inline-block;
+    width: 100%;
+  }
+
+  span.bound {
+    background-color: #d7d7d7;
+  }
+
+  span.old {
+    background-color: #ffd7d7;
+
+    .diff {
+      background-color: #dfa7a7;
+    }
+  }
+
+  span.new {
+    background-color: #d7ffd7;
+
+    .diff {
+      background-color: #a7dfa7;
+    }
+  }
+
+  span.common {
+    background-color: #ffffd7;
+  }
+}
+
+/* For reference to conflict view from normal text */
+span.conflict-old {
+  background-color: #ffd7d7;
+
+}
+
+span.conflict-new {
+  background-color: #d7ffd7;
+}
+
+span.conflict-common {
+  background-color: #ffffd7;
+}
+
+
 div.figure {
   text-align: center;
 }
