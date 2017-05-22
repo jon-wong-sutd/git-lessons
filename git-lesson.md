@@ -735,6 +735,18 @@ A subsequent <span class="perform">`git log --decorate --graph`</span> shows 7-c
 If you ever need to see the full 40-character *Git Object ID* for your *commit*s, just add option `--no-abbrev` like so: `git log --decorate --graph --no-abbrev`. That option goes nearly everywhere, such as `git reflog --no-abbrev` (*reflog* is explained later).
 </div>
 
+Since we're on the topic of making things more *human-friendly*, you can explore [Git Aliases](https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases). Here's a quick example for an oft-used `git log --decorate --graph`: <span class="perform">`git config alias.lg "log --decorate --graph"`</span>
+
+You can add option `--global` (like `git config --global`) if you want that alias for all your Git repos.
+
+Now, try <span class="perform">`git lg`</span>. You'll see that it is exactly equivalent to `git log --decorate --graph`.
+
+Have fun making aliases for long and cumbersome Git commands!
+
+<div class="tip" markdown="1">
+Git Aliases can simplify complex Git commands. Saves you a lot of typing!
+</div>
+
 ### Swimming Upstream
 
 <div class="tip" markdown="1">
@@ -1258,7 +1270,7 @@ We can see that our *to-lose-commit* is now **unreachable** by doing <span class
 </div>
 
 <div class="forward" markdown="1">
-We will be looking at **unreferenced** *commit*s right afther this section.
+We will be looking at **unreferenced** *commit*s right after this section.
 </div>
 
 <div class="tip" markdown="1">
