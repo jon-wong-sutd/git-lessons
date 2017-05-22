@@ -64,14 +64,21 @@
 
 ul#markdown-toc {
   list-style: none;
+  column-count: 2;
 
   ul {
     list-style: none;
   }
 
+  li {
+    break-inside: avoid-column;
+  }
+
   > li {
     border-radius: 10px;
     border: 1px solid;
+    padding-left: 5px;
+    margin-bottom: 5px;
   }
 
   > li:nth-child(1), > li:nth-child(2),
