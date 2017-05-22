@@ -94,7 +94,7 @@ This Git lesson brings you through a typical workflow with Git, consisting 3 are
 
 * Local clone
 * Remote operations
-* Collaboration techniques (more to come later)
+* Collaboration techniques
 
 Git is primarily a *collaboration tool*.
 
@@ -166,7 +166,7 @@ A Git repo tracks a *folder* of files, so the said **files** are really the file
 
 ### The `.git` Folder
 
-`ls -la` will show you the `.git` folder that was created when you started a new Git repo. This [hidden folder](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) contains Git data --- data regarding the **history** of your work, data about your credential, and other stuff we want to ignore for now.
+<span class="perform">`ls -la`</span> will show you the `.git` folder that was created when you started a new Git repo. This [hidden folder](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) contains Git data --- data regarding the **history** of your work, data about your credential, and other stuff we want to ignore for now.
 
 <div class="tip"><p markdown="1">The `.git` folder is what defines your Git repo.</p></div>
 
@@ -206,7 +206,7 @@ Now, these new lines will have been inserted into `.git/config`. Doing <span cla
 
 ### Working Copy
 
-Create file `story.txt` (eg. <span class="perform">emacs story.txt</span>), and enter into it these 3 lines:
+Create file `story.txt` (eg. <span class="perform">`emacs story.txt`</span>), and enter into it these 3 lines:
 {% assign linenos = "1 2 3" | split: " " %}
 {% include linenos.html numbers=linenos %}
 {% highlight text %}
@@ -409,7 +409,7 @@ We start with Git objects, so that we can understand how Git *commit*s are built
 
 Soon after that, we get a handle on some internals that are actually crucial to normal use of Git --- some of Git's vocabulary (or terminology).
 
-## Git Objects
+## Git Objects --- Commits, Trees, Blobs
 
 A Git **Commit** is collection of *folders and files* contained in that *commit*. In short, Git is really a tracker for a *filesystem*.
 
