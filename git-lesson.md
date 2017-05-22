@@ -204,7 +204,7 @@ Now, these new lines will have been inserted into `.git/config`. Doing <span cla
 <p>Local Git config parameters override global ones.</p>
 </div>
 
-### Working Copy of Project Files
+### Working Copy
 
 Create file `story.txt` (eg. <span class="perform">emacs story.txt</span>), and enter into it these 3 lines:
 {% assign linenos = "1 2 3" | split: " " %}
@@ -228,6 +228,14 @@ That is, with the exception of **untracked files** and **ignored files**, which 
 </div>
 
 ## Git Status --- Change Summary
+
+<div class="tip" markdown="1">
+`git status` shows a summary of the changes you've made since the last commit.
+</div>
+
+<div class="forward" markdown="1">
+There is no *last commit* as of right now. But the phrase "*since the last commit*" will become clearer later on.
+</div>
 
 <span class="perform">`git status`</span> will show this:
 <pre>

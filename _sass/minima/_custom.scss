@@ -98,6 +98,8 @@ ul#markdown-toc {
   height: 20vh;
   min-height: 140px;
   overflow: scroll;
+  max-width: 30vw;
+  min-width: 250px;
 
   a.current {
     background-color: #ffeeee;
@@ -107,6 +109,7 @@ ul#markdown-toc {
     list-style-type: none;
     list-style-position: inside;
     padding: 0;
+    white-space: nowrap;
   }
 
   > ul {
