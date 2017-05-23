@@ -82,7 +82,7 @@ ul#markdown-toc {
   }
 
   > li:nth-child(1), > li:nth-child(2),
-  > li:nth-child(10), > li:nth-child(11) {
+  > li:nth-last-child(2), > li:nth-last-child(1) {
     border: none;
   }
 }
