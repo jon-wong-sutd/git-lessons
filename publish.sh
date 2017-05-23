@@ -3,7 +3,7 @@
 git branch -f gh-pages
 git checkout gh-pages
 
-jekyll build --config _config.yml,_build.yml
+JEKYLL_ENV=production jekyll build --config _config.yml,_build.yml
 
 git rm -rf assets # jquery ignored
 rm -rf assets
