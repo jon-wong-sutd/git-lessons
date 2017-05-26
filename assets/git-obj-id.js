@@ -53,8 +53,8 @@ goi.editGoi = function(id, objName) {
     goi.alertInvalidID(id, objName);
     return;
   }
-  if (id.length == 7)
-    id = id + 'X'.repeat(40 - 7);
+  if (id.length < 40)
+    id = id + 'X'.repeat(40 - id.length);
   goi.gitObjs[objName].id = id;
   $('span.' + objName).text(id);
   $('span.' + objName + '-short').text(id.substring(0, 7));

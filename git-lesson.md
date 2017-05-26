@@ -1,6 +1,8 @@
 ---
 layout: page
-title: Git Lesson
+title: Git Mastery in 1 Hour
+navtitle: Git Mastery
+excerpt: Git Mastery via Concepts First! Concept mastery makes you an expert. Let search engines handle the 'how' of Git.
 permalink: /git-lesson/
 ---
 
@@ -18,80 +20,11 @@ permalink: /git-lesson/
 <div id="menu" markdown="1" draggable="true">
 </div>
 
-<!-- Forms to edit commit IDs -->
-<div id="error-msg"></div>
-<div id="info-msg"></div>
-
-<div id="first-commit-edit" class="goi-edit" markdown="1">
-Enter your own *first-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="second-commit-edit" class="goi-edit" markdown="1">
-Enter your own *second-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="third-commit-edit" class="goi-edit" markdown="1">
-Enter your own *third-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="to-lose-commit-edit" class="goi-edit" markdown="1">
-Enter your own *to-lose-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="detached-commit-edit" class="goi-edit" markdown="1">
-Enter your own *detached-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="amended-commit-edit" class="goi-edit" markdown="1">
-Enter your own *amended-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="first-tree-edit" class="goi-edit" markdown="1">
-Enter your own *first-tree* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="second-tree-edit" class="goi-edit" markdown="1">
-Enter your own *second-tree* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="folder-A-tree-edit" class="goi-edit" markdown="1">
-Enter your own *folder-A-tree* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="folder-B-tree-edit" class="goi-edit" markdown="1">
-Enter your own *folder-B-tree* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="file-B-blob-edit" class="goi-edit" markdown="1">
-Enter your own *file-B-blob* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="leapfrog-one-commit-edit" class="goi-edit" markdown="1">
-Enter your own *leapfrog-one-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="leapfrog-two-commit-edit" class="goi-edit" markdown="1">
-Enter your own *leapfrog-two-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="merge-commit-edit" class="goi-edit" markdown="1">
-Enter your own *merge-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="work-A-commit-edit" class="goi-edit" markdown="1">
-Enter your own *work-A-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="work-A-merge-commit-edit" class="goi-edit" markdown="1">
-Enter your own *work-A-merge-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
-<div id="work-B-commit-edit" class="goi-edit" markdown="1">
-Enter your own *work-B-commit* ID: <input type="text"><br>
-(Enter to submit; Escape to cancel)
-</div>
+{% include commit-id-forms.html %}
 
 # Overview
+
+This Git lesson focuses on giving you a firm grasp of key Git concepts. Concept mastery makes you an expert. You should leave the "how" to search engines (like Google). Knowing *how* to cut wood doesn't make you a carpenter!
 
 This Git lesson brings you through a typical workflow with Git, consisting 3 areas.
 
@@ -131,7 +64,7 @@ ls -la     # Comments do nothing, even if you type them in
 
 In short, read and understand the concepts explained. The explanation is mostly demonstrated rather than described abstractly. Follow the demonstrations by executing commands that are styled as mentioned above.
 
-There will be no in-depth treatment of "*how*" to do stuff; you can google "*how to create Git branch*" and easily find `git branch <name> <ref>`. The focus of this Git lesson is on concepts (*what*) and rationale (*why*).
+Before we start, let's remind ourselves that "*concepts matter most*". There will be no in-depth treatment of "*how*" to do stuff; you can google "*how to create Git branch*" and easily find `git branch <name> <ref>`. The focus of this Git lesson is on concepts (*what*) and rationale (*why*).
 
 # Prerequisites
 

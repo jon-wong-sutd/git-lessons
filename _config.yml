@@ -25,6 +25,10 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 bitbucket_username:  jon_wong_sutd
 google_analytics: UA-100010542-1
 
+# Header pages shown at header
+header_pages:
+  - git-lesson.md
+
 # Build settings
 markdown: kramdown
 theme: minima
