@@ -1746,6 +1746,12 @@ Adds cotton candy thought
 
 Add your work via <span class="perform">`git add story.txt`</span>, and commit via <span class="perform">`git commit -F {{ commit-msg-file }}`</span>.
 
+<div class="tip" markdown="1">
+It is good practice to make **small** and **rapid** *commit*s.
+</div>
+
+This first *commit* simulates a case where we're quick to commit our work and forgot a line about "*clouds*" which we will be adding in a second *commit* coming up next.
+
 ### Insert Afterthought
 
 Edit `story.txt` (eg. <span class="perform">`emacs story.txt`</span>) to add lines 9-10:
@@ -1771,6 +1777,14 @@ Adds cloud thought
 {% endhighlight %}
 
 Add your work via <span class="perform">`git add story.txt`</span>, and commit via <span class="perform">`git commit -F {{ commit-msg-file }}`</span>.
+
+This second *commit* simulates an "*afterthought*" where we insert a line about "*clouds*" we missed out in the first *commit*.
+
+<div class="tip" markdown="1">
+It is alright to make mistakes in Git, especially in a "*leapfrog loop*".
+
+This is the reason we use a "*leapfrog loop*" to house a unit of work. We can work *fast*, make *mistakes* and make *corrections*. *Hindsight* is 20/20. Exercise some foresight, but don't forget to use lots of *hindsight*!
+</div>
 
 ## Closing the Loop
 
