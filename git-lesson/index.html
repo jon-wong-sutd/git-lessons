@@ -1,0 +1,3243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Git Mastery in 1 Hour</title>
+  <meta name="description" content="Git Mastery via Concepts First! Concept mastery makes you an expert. Let search engines handle the &#39;how&#39; of Git.">
+
+  <link rel="stylesheet" href="/git-lessons/assets/main.css">
+  <link rel="canonical" href="/git-lessons/git-lesson/">
+  <link rel="alternate" type="application/rss+xml" title="Git Lessons" href="/git-lessons/feed.xml">
+  
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-100010542-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/git-lessons/">Git Lessons</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+            <a class="page-link" href="/git-lessons/git-lesson/">Git Mastery</a>
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Git Mastery in 1 Hour</h1>
+  </header>
+
+  <div class="post-content">
+    
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script src="../assets/toc.js"></script>
+
+<script src="../assets/git-obj-id.js"></script>
+
+<ul id="markdown-toc">
+  <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
+  <li><a href="#prerequisites" id="markdown-toc-prerequisites">Prerequisites</a></li>
+  <li><a href="#first-steps" id="markdown-toc-first-steps">First Steps</a>    <ul>
+      <li><a href="#local-git-repository" id="markdown-toc-local-git-repository">Local Git Repository</a>        <ul>
+          <li><a href="#the-git-folder" id="markdown-toc-the-git-folder">The <code class="highlighter-rouge">.git</code> Folder</a></li>
+          <li><a href="#working-copy" id="markdown-toc-working-copy">Working Copy</a></li>
+        </ul>
+      </li>
+      <li><a href="#git-status--change-summary" id="markdown-toc-git-status--change-summary">Git Status — Change Summary</a></li>
+      <li><a href="#staging-area" id="markdown-toc-staging-area">Staging Area</a></li>
+      <li><a href="#committing-your-work" id="markdown-toc-committing-your-work">Committing Your Work</a></li>
+      <li><a href="#git-log--a-timeline" id="markdown-toc-git-log--a-timeline">Git Log — A Timeline</a>        <ul>
+          <li><a href="#navigating-the-git-log" id="markdown-toc-navigating-the-git-log">Navigating the Git Log</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#some-internals" id="markdown-toc-some-internals">Some Internals</a>    <ul>
+      <li><a href="#git-objects--commits-trees-blobs" id="markdown-toc-git-objects--commits-trees-blobs">Git Objects — Commits, Trees, Blobs</a>        <ul>
+          <li><a href="#git-object-identifier" id="markdown-toc-git-object-identifier">Git Object Identifier</a></li>
+          <li><a href="#anatomy-of-a-commit" id="markdown-toc-anatomy-of-a-commit">Anatomy of a Commit</a></li>
+        </ul>
+      </li>
+      <li><a href="#git-references" id="markdown-toc-git-references">Git References</a>        <ul>
+          <li><a href="#human-friendlier-gois" id="markdown-toc-human-friendlier-gois">Human-Friendlier GOIs</a></li>
+          <li><a href="#swimming-upstream" id="markdown-toc-swimming-upstream">Swimming Upstream</a></li>
+        </ul>
+      </li>
+      <li><a href="#the-head" id="markdown-toc-the-head">The <code class="highlighter-rouge">HEAD</code></a>        <ul>
+          <li><a href="#moving-the-head" id="markdown-toc-moving-the-head">Moving the <code class="highlighter-rouge">HEAD</code></a></li>
+          <li><a href="#initial-head" id="markdown-toc-initial-head">Initial <code class="highlighter-rouge">HEAD</code></a></li>
+          <li><a href="#head-with-branch" id="markdown-toc-head-with-branch"><code class="highlighter-rouge">HEAD</code> With Branch</a></li>
+          <li><a href="#detached-head" id="markdown-toc-detached-head">Detached <code class="highlighter-rouge">HEAD</code></a></li>
+        </ul>
+      </li>
+      <li><a href="#reflog" id="markdown-toc-reflog">Reflog</a>        <ul>
+          <li><a href="#reflog-for-head" id="markdown-toc-reflog-for-head"><em>Reflog</em> for <code class="highlighter-rouge">HEAD</code></a>            <ul>
+              <li><a href="#in-the-beginning" id="markdown-toc-in-the-beginning">In the Beginning</a></li>
+              <li><a href="#explored-git-objects" id="markdown-toc-explored-git-objects">Explored Git Objects</a></li>
+              <li><a href="#detached-the-head" id="markdown-toc-detached-the-head">Detached the <code class="highlighter-rouge">HEAD</code></a></li>
+              <li><a href="#attached-the-head" id="markdown-toc-attached-the-head">Attached the <code class="highlighter-rouge">HEAD</code></a></li>
+            </ul>
+          </li>
+          <li><a href="#reflog-for-branches" id="markdown-toc-reflog-for-branches"><em>Reflog</em> for Branches</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#branches" id="markdown-toc-branches">Branches</a>    <ul>
+      <li><a href="#branch-head" id="markdown-toc-branch-head">Branch Head</a></li>
+      <li><a href="#garbage-collection" id="markdown-toc-garbage-collection">Garbage Collection</a>        <ul>
+          <li><a href="#unreachable-commits" id="markdown-toc-unreachable-commits">Unreachable Commits</a></li>
+          <li><a href="#reflog--safety-net" id="markdown-toc-reflog--safety-net">Reflog — Safety Net</a></li>
+        </ul>
+      </li>
+      <li><a href="#to-work-on-a-branch" id="markdown-toc-to-work-on-a-branch">To Work on a Branch</a>        <ul>
+          <li><a href="#quick-word-on-tags" id="markdown-toc-quick-word-on-tags">Quick Word on Tags</a></li>
+          <li><a href="#working-a-detached-head" id="markdown-toc-working-a-detached-head">Working a Detached <code class="highlighter-rouge">HEAD</code></a>            <ul>
+              <li><a href="#committing-while-detached" id="markdown-toc-committing-while-detached">Committing While Detached</a></li>
+              <li><a href="#leaving-commits-behind" id="markdown-toc-leaving-commits-behind">Leaving Commits Behind</a></li>
+              <li><a href="#jumping-through-timelines" id="markdown-toc-jumping-through-timelines">Jumping Through Timelines</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#undo" id="markdown-toc-undo">Undo</a>    <ul>
+      <li><a href="#use-branch-make-reachable" id="markdown-toc-use-branch-make-reachable">Use Branch, Make Reachable</a></li>
+      <li><a href="#backtrack-head" id="markdown-toc-backtrack-head">Backtrack <code class="highlighter-rouge">HEAD</code></a></li>
+      <li><a href="#same-for-branches" id="markdown-toc-same-for-branches">Same for Branches</a></li>
+      <li><a href="#amending-last-commit" id="markdown-toc-amending-last-commit">Amending Last Commit</a></li>
+      <li><a href="#amending-earlier-commits" id="markdown-toc-amending-earlier-commits">Amending Earlier Commits</a></li>
+    </ul>
+  </li>
+  <li><a href="#merging" id="markdown-toc-merging">Merging</a>    <ul>
+      <li><a href="#leapfrog-loop" id="markdown-toc-leapfrog-loop">Leapfrog Loop</a>        <ul>
+          <li><a href="#quick-first-commit" id="markdown-toc-quick-first-commit">Quick First Commit</a></li>
+          <li><a href="#insert-afterthought" id="markdown-toc-insert-afterthought">Insert Afterthought</a></li>
+        </ul>
+      </li>
+      <li><a href="#closing-the-loop" id="markdown-toc-closing-the-loop">Closing the Loop</a>        <ul>
+          <li><a href="#hiding-leapfrog-details" id="markdown-toc-hiding-leapfrog-details">Hiding Leapfrog Details</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#remote-bare-git-repository" id="markdown-toc-remote-bare-git-repository">Remote (Bare) Git Repository</a>    <ul>
+      <li><a href="#clone-vs-remote" id="markdown-toc-clone-vs-remote"><em>Clone</em> vs <em>Remote</em></a></li>
+      <li><a href="#pushing-work-to-remote" id="markdown-toc-pushing-work-to-remote">Pushing Work To Remote</a></li>
+      <li><a href="#push-to-publish" id="markdown-toc-push-to-publish">Push to Publish</a></li>
+      <li><a href="#remote-branch" id="markdown-toc-remote-branch">Remote Branch</a></li>
+    </ul>
+  </li>
+  <li><a href="#collaboration" id="markdown-toc-collaboration">Collaboration</a>    <ul>
+      <li><a href="#the-work" id="markdown-toc-the-work">The Work</a></li>
+      <li><a href="#publishing-for-review" id="markdown-toc-publishing-for-review">Publishing for Review</a>        <ul>
+          <li><a href="#pull-request" id="markdown-toc-pull-request">Pull Request</a></li>
+        </ul>
+      </li>
+      <li><a href="#the-review" id="markdown-toc-the-review">The Review</a>        <ul>
+          <li><a href="#installing-diff-highlight" id="markdown-toc-installing-diff-highlight">Installing <code class="highlighter-rouge">diff-highlight</code></a>            <ul>
+              <li><a href="#executable-path" id="markdown-toc-executable-path">Executable Path</a></li>
+              <li><a href="#using-diff-highlight" id="markdown-toc-using-diff-highlight">Using <code class="highlighter-rouge">diff-highlight</code></a></li>
+            </ul>
+          </li>
+          <li><a href="#diff" id="markdown-toc-diff">Diff</a></li>
+          <li><a href="#discussion" id="markdown-toc-discussion">Discussion</a></li>
+          <li><a href="#merge" id="markdown-toc-merge">Merge</a></li>
+        </ul>
+      </li>
+      <li><a href="#conflict" id="markdown-toc-conflict">Conflict</a>        <ul>
+          <li><a href="#work-done" id="markdown-toc-work-done">Work Done</a></li>
+          <li><a href="#pr-created" id="markdown-toc-pr-created">PR Created</a></li>
+          <li><a href="#conflict-discussion" id="markdown-toc-conflict-discussion">Conflict Discussion</a></li>
+          <li><a href="#conflict-resolution" id="markdown-toc-conflict-resolution">Conflict Resolution</a></li>
+        </ul>
+      </li>
+      <li><a href="#work-on-own-branches" id="markdown-toc-work-on-own-branches">Work on Own Branches</a></li>
+    </ul>
+  </li>
+  <li><a href="#go-forth" id="markdown-toc-go-forth">Go Forth!</a></li>
+  <li><a href="#github-and-bitbucket" id="markdown-toc-github-and-bitbucket">GitHub and BitBucket</a></li>
+</ul>
+
+<div id="menu" draggable="true"></div>
+
+<!-- Forms to edit commit IDs -->
+<div id="error-msg"></div>
+<div id="info-msg"></div>
+
+<div id="first-commit-edit" class="goi-edit">
+  <p>Enter your own <em>first-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="second-commit-edit" class="goi-edit">
+  <p>Enter your own <em>second-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="third-commit-edit" class="goi-edit">
+  <p>Enter your own <em>third-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="to-lose-commit-edit" class="goi-edit">
+  <p>Enter your own <em>to-lose-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="detached-commit-edit" class="goi-edit">
+  <p>Enter your own <em>detached-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="amended-commit-edit" class="goi-edit">
+  <p>Enter your own <em>amended-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="first-tree-edit" class="goi-edit">
+  <p>Enter your own <em>first-tree</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="second-tree-edit" class="goi-edit">
+  <p>Enter your own <em>second-tree</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="folder-A-tree-edit" class="goi-edit">
+  <p>Enter your own <em>folder-A-tree</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="folder-B-tree-edit" class="goi-edit">
+  <p>Enter your own <em>folder-B-tree</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="file-B-blob-edit" class="goi-edit">
+  <p>Enter your own <em>file-B-blob</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="leapfrog-one-commit-edit" class="goi-edit">
+  <p>Enter your own <em>leapfrog-one-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="leapfrog-two-commit-edit" class="goi-edit">
+  <p>Enter your own <em>leapfrog-two-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="merge-commit-edit" class="goi-edit">
+  <p>Enter your own <em>merge-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="work-A-commit-edit" class="goi-edit">
+  <p>Enter your own <em>work-A-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="work-A-merge-commit-edit" class="goi-edit">
+  <p>Enter your own <em>work-A-merge-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+<div id="work-B-commit-edit" class="goi-edit">
+  <p>Enter your own <em>work-B-commit</em> ID: <input type="text" /><br />
+(Enter to submit; Escape to cancel)</p>
+</div>
+
+<h1 id="overview">Overview</h1>
+
+<p>This Git lesson focuses on giving you a firm grasp of key Git concepts. Concept mastery makes you an expert. You should leave the “how” to search engines (like Google). Knowing <em>how</em> to cut wood doesn’t make you a carpenter!</p>
+
+<p>This Git lesson brings you through a typical workflow with Git, consisting 3 areas.</p>
+
+<ul>
+  <li>Local clone</li>
+  <li>Remote operations</li>
+  <li>Collaboration techniques</li>
+</ul>
+
+<p>Git is primarily a <em>collaboration tool</em>.</p>
+
+<p>Even if you only use Git on your own, bear in mind that version control is necessary for you to “<em>collaborate with yourself</em>”. We typically go through a decent length project often asking questions like “<em>why did I do that last month?</em>”, “<em>what was I thinking when I made this decision?</em>”, “<em><strong>what if</strong> I take a new fangled approach I just learned?</em>”, and so on.</p>
+
+<p>This Git lesson is written to be as trim as possible. You can safely ignore side notes like this:</p>
+
+<div class="side-note">
+Serious about programming? Get the cheapest Mac there is. It is difficult to find cheap Linux laptops in Singapore, possibly due to the IT culture (or lack thereof) in Singapore.
+</div>
+
+<p>But you should especially note important tips like this:</p>
+
+<div class="tip">
+  <p>Grasp concepts first, lookup technical details later. Learning before working, looking before leaping!</p>
+  <p>Important tips are places where you should pause and grasp the concepts just demonstrated.</p>
+  <p>Shoot me an email if any part of this lesson bogs you down and impedes you from progressing rapidly.</p>
+</div>
+
+<p>However, you should look out for fast-forward suggestions like this:</p>
+
+<div class="forward">
+  <p>The last paragraph of this section mentions “<em>how to create Git branch</em>”. Gloss over that quickly; Git <em>branch</em>es will be explored in detail later.</p>
+</div>
+
+<p>Lastly, you must execute shell (Bash) commands presented like this: <span class="perform"><code class="highlighter-rouge">ls -la</code></span> (inline). And like this:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ~/Document     <span class="c"># This is a comment you don't type in</span>
+ls -la     <span class="c"># Comments do nothing, even if you type them in</span></code></pre></figure>
+</div>
+
+<p>In short, read and understand the concepts explained. The explanation is mostly demonstrated rather than described abstractly. Follow the demonstrations by executing commands that are styled as mentioned above.</p>
+
+<p>Before we start, let’s remind ourselves that “<em>concepts matter most</em>”. There will be no in-depth treatment of “<em>how</em>” to do stuff; you can google “<em>how to create Git branch</em>” and easily find <code class="highlighter-rouge">git branch &lt;name&gt; &lt;ref&gt;</code>. The focus of this Git lesson is on concepts (<em>what</em>) and rationale (<em>why</em>).</p>
+
+<h1 id="prerequisites">Prerequisites</h1>
+
+<p>This Git lesson is taught using a *nix platform (eg Linux, MacOS), in particular Bash.</p>
+
+<p>If you’re on Linux or MacOS, you’re a productive and efficient coder, and you should expect to blaze through this Git lesson in less than an hour.</p>
+
+<p>If you’re on Windows, you can install <a href="https://git-for-windows.github.io">Git for Windows</a>, and use <em>Git Bash</em>. Meantime, keep bugging <a href="https://bitbucket.org/jon_wong_sutd">Jon</a> to complete his “<em>Crash Course for Productivity on Linux/MacOS</em>”.</p>
+
+<h1 id="first-steps">First Steps</h1>
+
+<p>We will start by creating our first Git <em>commit</em>. There will be a few first steps to do before we achieve that.</p>
+
+<h2 id="local-git-repository">Local Git Repository</h2>
+
+<p>A Git repo (short for repository) contains:</p>
+
+<ul>
+  <li>A copy of the <strong>files</strong> that you’re working on (aka <em>working copy</em>)</li>
+  <li>The <strong>history</strong> of your work on said files.</li>
+</ul>
+
+<p>You start a local Git repo like this:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ~/Documents     <span class="c"># Keep all your work in your own folder.</span>
+mkdir my-new-project     <span class="c"># This folder will contain the files for your new project.</span>
+<span class="nb">cd </span>my-new-project     <span class="c"># Enter the folder you created above.</span>
+git init     <span class="c"># Start the Git repo in this folder.</span></code></pre></figure>
+</div>
+
+<p>A Git repo tracks a <em>folder</em> of files, so the said <strong>files</strong> are really the files in that <em>folder</em>.</p>
+
+<div class="tip">
+<p>A Git repo resides in a <em>folder</em>, and can potentially (and usually does) track all files in that <em>folder</em>.</p>
+<p>That means you really shouldn’t <code class="highlighter-rouge">git init</code> in a <em>top-level folder</em> like <code class="highlighter-rouge">~/Documents</code> or <code class="highlighter-rouge">/usr/local</code>! You want to track the progress of your projects, not every single file in your computer.</p>
+</div>
+
+<h3 id="the-git-folder">The <code class="highlighter-rouge">.git</code> Folder</h3>
+
+<p><span class="perform"><code class="highlighter-rouge">ls -la</code></span> will show you the <code class="highlighter-rouge">.git</code> folder that was created when you started a new Git repo. This <a href="https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory">hidden folder</a> contains Git data — data regarding the <strong>history</strong> of your work, data about your credential, and other stuff we want to ignore for now.</p>
+
+<div class="tip"><p>The <code class="highlighter-rouge">.git</code> folder is what defines your Git repo.</p></div>
+
+<p>We’re now interested in <code class="highlighter-rouge">.git/config</code>, where your credential is stored. The content of that file (do <span class="perform"><code class="highlighter-rouge">cat .git/config</code></span>) should currently be (with some omissions):</p>
+
+<figure class="highlight"><pre><code class="language-conf" data-lang="conf">[<span class="n">core</span>]
+	<span class="n">filemode</span> = <span class="n">true</span>   <span class="c"># false if you're on Windows
+</span>	<span class="n">bare</span> = <span class="n">false</span>
+    ...</code></pre></figure>
+
+<p>Let’s input a credential for you now, using fictitious, but important, values. Follow along, please!</p>
+
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git config user.name <span class="s2">"Author A"</span>
+git config user.email a@c.com</code></pre></figure>
+</div>
+
+<p>Now, these new lines will have been inserted into <code class="highlighter-rouge">.git/config</code>. Doing <span class="perform"><code class="highlighter-rouge">cat .git/config</code></span> shows:</p>
+
+<figure class="highlight"><pre><code class="language-conf" data-lang="conf">[<span class="n">user</span>]
+	<span class="n">name</span> = <span class="n">Author</span> <span class="n">A</span>
+	<span class="n">email</span> = <span class="n">a</span>@<span class="n">c</span>.<span class="n">com</span></code></pre></figure>
+
+<div class="side-note">
+<p>As you would intuitively perceive, you can have different credentials for different projects. A typical use case would be having one credential for work (eg, user_id@sutd.edu.sg) and another for personal projects (eg, user_id@gmail.com).</p>
+</div>
+
+<p><em>Manually editing</em> that config file is possible and equivalent to performing <code class="highlighter-rouge">git config</code>.</p>
+
+<div class="side-note">
+<p>If there is a credential you almost always use, you can put it in the global Git config at <code class="highlighter-rouge">~/.gitconfig</code> via a command like <code class="highlighter-rouge">git config --global user.name "Author A"</code>.</p>
+<p>Local Git config parameters override global ones.</p>
+</div>
+
+<h3 id="working-copy">Working Copy</h3>
+
+<p>Create file <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>), and enter into it these 3 lines:</p>
+
+<pre class="linenos"><code>1
+2
+3
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn looked around.</code></pre></figure>
+
+<div class="side-note">
+  <p>Your text editor may insert a 4th line — a blank line — at the end of <code class="highlighter-rouge">story.txt</code>. The historical reasons for that stem from <a href="http://c0x.coding-guidelines.com/5.1.1.2.html#123">C Standards for non-empty files</a>, from <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206">Posix’s definition of <em>Line</em></a>, and various other sources related to <em>software’s ability to process instructions in text files</em>. In this Git lesson, we don’t care about any of that; our <code class="highlighter-rouge">story.txt</code> is a story, not computer instructions. Just be consistent in the way you write your files, ending new-line or no.</p>
+</div>
+
+<div class="tip">
+<p>Everything outside of the <code class="highlighter-rouge">.git</code> folder is a <strong>working copy</strong> of the files you are working on for the project.</p>
+</div>
+
+<div class="forward">
+  <p>That is, with the exception of <strong>untracked files</strong> and <strong>ignored files</strong>, which we will explore later on.</p>
+</div>
+
+<h2 id="git-status--change-summary">Git Status — Change Summary</h2>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git status</code> shows a summary of the changes you’ve made since the last commit.</p>
+</div>
+
+<div class="forward">
+  <p>There is no <em>last commit</em> as of right now. But the phrase “<em>since the last commit</em>” will become clearer later on.</p>
+</div>
+
+<p><span class="perform"><code class="highlighter-rouge">git status</code></span> will show this:</p>
+<pre>
+<code>On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+    <span class="git-red">story.txt</span>
+
+nothing added to commit but untracked files present (use "git add" to track)</code>
+</pre>
+
+<p>You have added a new file to your Git repo. New files — files not yet tracked by your Git repo — are called <strong>untracked files</strong>.</p>
+
+<div class="side-note">
+Untracked files are shown in red.
+</div>
+
+<p>Ignore all other information in that output for now.</p>
+
+<p>We’ll follow Git’s advice and <em>work towards</em> adding our new file to the Git repo.</p>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git status</code> is a command you will use very often:
+</p>
+  <ul>
+    <li>Before you start work on a new set of changes (initial check)</li>
+    <li>In the process of staging files (progress check)</li>
+    <li>Before you commit changes (final check)</li>
+    <li>Whenever in doubt, and so on.</li>
+  </ul>
+</div>
+
+<h2 id="staging-area">Staging Area</h2>
+
+<p>When telling Git to commit your new work, Git only commits what you place in the <strong>staging area</strong>.</p>
+
+<p><span class="perform"><code class="highlighter-rouge">git add story.txt</code></span> will put <code class="highlighter-rouge">story.txt</code> into the <em>staging area</em>, and a subsequent <span class="perform"><code class="highlighter-rouge">git status</code></span> will show:</p>
+<pre>
+<code>On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached &lt;file&gt;..." to unstage)
+
+    <span class="git-green">story.txt</span></code>
+</pre>
+
+<div class="side-note">
+Staged work (new files or updates to existing files) are shown in green.
+</div>
+
+<p>You can unstage work using <code class="highlighter-rouge">git rm --cached &lt;file&gt;</code>. Feel free to practice unstaging the staged work and re-staging that work.</p>
+
+<div class="tip">
+<p>The <em>staging area</em> allows you to work on multiple ideas rapidly — as and when they come to mind — but yet still be able to organize your changes into <em>coherent</em> and <em>integral</em> units.</p>
+</div>
+
+<p>To demonstrate the purpose of having a <em>staging area</em>, create a new file <code class="highlighter-rouge">rough_thoughts.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs rough_thoughts.txt</code></span>) and enter this line:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Random disorganized thoughts. Don't want to git-track this.</code></pre></figure>
+
+<p><span class="perform"><code class="highlighter-rouge">git status</code></span> will now show:</p>
+<pre>
+<code>On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached &lt;file&gt;..." to unstage)
+
+    <span class="git-green">story.txt</span>
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+    <span class="git-red">rough_thoughts.txt</span></code>
+</pre>
+
+<p>In the above demonstration, you might have some new ideas you want to quickly write down in <code class="highlighter-rouge">rough_thoughts.txt</code> before you forget those ideas. Yet, you might not want those underdeveloped new ideas to be committed in your next set of changes.</p>
+
+<h2 id="committing-your-work">Committing Your Work</h2>
+
+<p>You can use any text editor to create file <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>). Enter into it these 5 lines:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds first work on the story
+
+I'd think up more descriptive information here if I could.
+That first line above should be a short summary, with no ending period.
+Then comes a blank line, and then details and descriptions follow.</code></pre></figure>
+
+<div class="tip">
+  <p>The file <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> is the only file you will ever create in folder <code class="highlighter-rouge">.git</code>. Git actually creates that file itself under certain circumstances.</p>
+</div>
+
+<p>You then commit your work by doing <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<div class="side-note">
+<p>If you want to use Emacs as a <em>commit message editor</em>, you can configure Git to use Emacs. Do the configuration with <code class="highlighter-rouge">git config --global core.editor emacs</code>. The default editor is <a href="https://www.cs.colostate.edu/helpdocs/vi.html">vi</a>. You can then verify your editor configuration in <code class="highlighter-rouge">~/.gitconfig</code>. That file can also be edited by hand.</p>
+<p>You can then do just <code class="highlighter-rouge">git commit -v</code> and see your chosen text editor pop up, enter your commit message, save like you’re saving a file (you’re actually saving <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code>), and finally exit the text editor. That sequence of actions will commit your changes.</p>
+</div>
+
+<div class="tip">
+<p>It is usually better to collect your thoughts in a file when you construct your commit message. The <code class="highlighter-rouge">-F</code> option lets you specify a file that contains your commit message.</p>
+</div>
+
+<h2 id="git-log--a-timeline">Git Log — A Timeline</h2>
+
+<p><span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> will show your first commit. Later on when you have more commits, <code class="highlighter-rouge">git log</code> will show a connected graph (timeline) of all your commits. Right now, you only have 1 commit:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then whatever descriptive things I wanna say.</code>
+</pre>
+
+<div class="tip">
+  <p>Click on the <em>commit ID</em> above to enter your own value. The rest of this lesson will follow suit. You can click on any <em>commit ID</em> anywhere and do the same edit.</p>
+</div>
+
+<p>Especially note the credential attached to that commit. Recall from <a href="#the-git-folder">a previous section</a> where you configured your credential for this Git repo. This credential is what gets attached to every commit you make in this Git repo.</p>
+
+<div class="forward">
+  <p>The <code class="highlighter-rouge">git log</code> option <code class="highlighter-rouge">--decorate</code> shows <em>git branches/tags</em>, concepts that will be explained later. The option <code class="highlighter-rouge">--graph</code> shows a visual representation (with connecting lines) of how <em>commits</em>  connect and form, well, a graph. How <em>commits</em> connect to one another will also be explained later.</p>
+</div>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git log</code> lets you see <em>what was done before</em> to decide <em>what to do next</em>. You’ll also often look at previous <em>commit messages</em> to guide you in creating new <em>commit messages</em>.</p>
+</div>
+
+<h3 id="navigating-the-git-log">Navigating the Git Log</h3>
+
+<p><code class="highlighter-rouge">git log</code> shows the log in a <code class="highlighter-rouge">less</code> window (<a href="http://www.thegeekstuff.com/2010/02/unix-less-command-10-tips-for-effective-navigation">navigation tips here</a>), which coincidentally is navigated similarly to a <a href="https://www.cs.colostate.edu/helpdocs/vi.html"><code class="highlighter-rouge">vi</code> window</a>.</p>
+
+<div class="side-note">
+  <p>Turns out many *nix productivity tools are inter-related! Learn one, learn all! You’ll see <code class="highlighter-rouge">vi</code>-like navigation in <code class="highlighter-rouge">less</code>, and <code class="highlighter-rouge">emacs</code>-like navigation in <code class="highlighter-rouge">bash</code>.</p>
+</div>
+
+<p>Shorten the height of your <code class="highlighter-rouge">bash</code> terminal such that <code class="highlighter-rouge">git log --decorate --graph</code> output exceeds that height. The log will be displayed in a <code class="highlighter-rouge">less</code> window, and you can practice navigating in that window.</p>
+
+<div class="tip">
+  <p>Some basic navigation tips:</p>
+  <ul>
+    <li><code class="highlighter-rouge">j</code> — move down one line</li>
+    <li><code class="highlighter-rouge">k</code> — move up one line</li>
+    <li><code class="highlighter-rouge">Ctrl-f</code> — move down one screen</li>
+    <li><code class="highlighter-rouge">Ctrl-b</code> — move up one screen</li>
+    <li><code class="highlighter-rouge">q</code> — quit <code class="highlighter-rouge">less</code> view</li>
+  </ul>
+</div>
+
+<h1 id="some-internals">Some Internals</h1>
+
+<p>We start with Git objects, so that we can understand how Git <em>commit</em>s are built and hence grasp <em>what</em> Git <em>commit</em>s essentially are — snapshots of your project (all its folders and files).</p>
+
+<p>Soon after that, we get a handle on some internals that are actually crucial to normal use of Git — some of Git’s vocabulary (or terminology).</p>
+
+<h2 id="git-objects--commits-trees-blobs">Git Objects — Commits, Trees, Blobs</h2>
+
+<p>A Git <strong>Commit</strong> is collection of <em>folders and files</em> contained in that <em>commit</em>. In short, Git is really a tracker for a <em>filesystem</em>.</p>
+
+<div class="tip">
+  <p>A Git <strong>Commit</strong> is a <strong>snapshot</strong> of all your project files at a particular time (the time you created that <em>commit</em>). And your <em>project files</em> are represented by a collection of <em>folders and files</em>, potentially involving nested <em>folders</em>.</p>
+</div>
+
+<p>That’s almost all you need to know about a Git <strong>Commit</strong>. Besides being a <strong>snapshot</strong> of all your project files, a Git <strong>Commit</strong> also has relations to other Git <strong>Commit</strong>s.</p>
+
+<p>Technically, under the hood, Git represents <em>folders</em> with <em>trees</em> and <em>files</em> with <em>blobs</em>.</p>
+
+<p>Now, we shall see how a Git <strong>Commit</strong> is a <strong>snapshot</strong> and how it relates to other Git <strong>Commit</strong>s.</p>
+
+<p>Create a subfolder <code class="highlighter-rouge">folder-A</code> and a file <code class="highlighter-rouge">file-A.txt</code> inside:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">mkdir folder-A
+<span class="nb">echo</span> <span class="s2">"This is file-A."</span> &gt; folder-A/file-A.txt</code></pre></figure>
+</div>
+
+<p>Create a subfolder <code class="highlighter-rouge">folder-B</code> inside <code class="highlighter-rouge">folder-A</code>, and files <code class="highlighter-rouge">file-B.txt</code> and <code class="highlighter-rouge">file-C.txt</code> inside:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">mkdir folder-A/folder-B
+<span class="nb">echo</span> <span class="s2">"This is file-B."</span> &gt; folder-A/folder-B/file-B.txt
+<span class="nb">echo</span> <span class="s2">"This is file-C."</span> &gt; folder-A/folder-B/file-C.txt</code></pre></figure>
+</div>
+
+<p>Stage our new changes with <span class="perform"><code class="highlighter-rouge">git add folder-A</code></span>.</p>
+
+<div class="side-note">
+  <p>The <code class="highlighter-rouge">git add</code> command accepts <em>folders</em> and <em>files</em> as inputs, the former being handled recursively.</p>
+</div>
+
+<p>Check our <em>staging area</em> with <span class="perform"><code class="highlighter-rouge">git status</code></span>:</p>
+<pre>
+<code>On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+	<span class="git-green">new file:   folder-A/file-A.txt</span>
+	<span class="git-green">new file:   folder-A/folder-B/file-B.txt</span>
+	<span class="git-green">new file:   folder-A/folder-B/file-C.txt</span>
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+	<span class="git-red">rough_thoughts.txt</span></code>
+</pre>
+
+<div class="forward">
+  <p>Assuming we don’t ever want to commit <code class="highlighter-rouge">rough_thoughts.txt</code>, it can be annoying to see Git constantly telling us that is an <em>untracked file</em>. Later on, we will learn how to tell Git to ignore certain folders and/or files.</p>
+</div>
+
+<p>We construct our <em>commit message</em> by editing <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>):</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds nested folder structure
+
+Just testing. We want to see Git Objects.
+We should be seeing Commits, Trees and Blobs.</code></pre></figure>
+
+<p>And now, we commit with <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<h3 id="git-object-identifier">Git Object Identifier</h3>
+
+<p>A look at Git Log via <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit goi">118a9ac701be36a849423e65f4ab2bebf75ddbfe</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Just testing. We want to see Git Objects.
+<span class="git-red">|</span>     We should be seeing Commits, Trees and Blobs.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+
+      I'd think up more descriptive information here if I could.
+      That first line above should be a short summary, with no ending period.
+      Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
+<div class="tip">
+  <p>Click on the <em>Git Object ID</em>s above to enter your own value. The rest of this lesson will follow suit. You can click on any <em>Git Object ID</em>s anywhere and do the same edit.</p>
+</div>
+
+<div class="tip">
+  <p>Think of these <strong>ID</strong>s as unique identifiers, each uniquely representing a Git object (<em>commit</em>, <em>tree</em> or <em>blob</em>).</p>
+</div>
+
+<div class="side-note">
+  <p>These <strong>ID</strong>s are actually <a href="https://en.wikipedia.org/wiki/SHA-1">SHA-1</a> <em>message digest</em>s.</p>
+</div>
+
+<h3 id="anatomy-of-a-commit">Anatomy of a Commit</h3>
+
+<p><strong>In the following instructions, replace my <em>commit ID</em>s with your own.</strong></p>
+
+<p>Let’s look at the <em>second-commit</em> via</p>
+<div class="perform"><pre>
+<code>git cat-file -p <span class="second-commit-short goi">118a9ac</span></code>
+</pre></div>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+
+<pre>
+<code>tree <span class="second-tree goi">19a6f72ee10a50fa32d42edc5070f12f876414b7</span>
+parent <span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span>
+author Author A &lt;a@c.com&gt; 1481488427 +0800
+committer Author A &lt;a@c.com&gt; 1481488427 +0800
+
+Adds nested folder structure
+
+Just testing. We want to see Git Objects.
+We should be seeing Commits, Trees and Blobs.</code>
+</pre>
+
+<div class="tip">
+  <p>Click on the <em>Git Object ID</em>s above, even the <em>tree ID</em>, to enter your own value. The rest of this lesson will follow suit. You can click on any <em>Git Object ID</em>s anywhere and do the same edit.</p>
+</div>
+
+<p>From the third line of that output, we see the <em>commit message</em> for our <em>second-commit</em>.</p>
+
+<p>The second line indicates that our <em>second-commit</em> is linked to our <em>first-commit</em> (via the property <code class="highlighter-rouge">parent</code>).</p>
+<div class="figure">
+  <p><img src="../assets/commit-parent.svg" alt="commits-joined" /></p>
+</div>
+
+<div class="tip">
+  <p>New <em>commit</em>s are added <strong>downstream</strong>. Swimming <strong>upstream</strong> brings you to earlier commits. The above example has <em>commit C1</em> upsteam of <em>commit C2</em>.</p>
+</div>
+
+<div class="forward">
+  <p>We will learn later that <em>commits</em> are connected as <a href="https://en.wikibooks.org/wiki/Data_Structures/Singly_Linked_Lists">Singly Linked Lists</a>, but in reverse order; later commits link to earlier commits, and not vice versa. We will also learn that <em>commits</em> can have multiple <em>parents</em>, which is the mechanism by which we <em>merge branches (timelines)</em>.</p>
+</div>
+
+<p>And to confirm that our <em>second-commit</em> really links to our <em>first-commit</em>, we take a peek at the <em>first-commit</em> by doing:</p>
+<div class="perform">
+<pre><code>git cat-file -p <span class="first-commit-short goi">2b55199</span></code></pre>
+</div>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+
+<pre>
+<code>tree <span class="first-tree goi">88dc468c538f956841dbd018e805ff2ba94248fb</span>
+author Author A &lt;a@c.com&gt; 1481488284 +0800
+committer Author A &lt;a@c.com&gt; 1481488284 +0800
+
+Adds first work on the story
+
+I'd think up more descriptive information here if I could.
+That first line above should be a short summary, with no ending period.
+Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
+<div class="forward">
+  <p>Git objects <strong>tree</strong> and <strong>blob</strong> are only useful here for the concept exploration of <strong>commit</strong>. You won’t be bothering with <em>tree</em> or <em>blob</em> once we have taken apart the anatomy of a <em>commit</em>.</p>
+</div>
+
+<p>The <em>first-tree</em> and <em>second-tree</em> are 2 different <em>snapshots</em>, the first being taken by our <em>first-commit</em> and the second by our <em>second-commit</em>. Based on the folders and files we created so far, we know both trees look like:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">first-tree
+  |
+  |-- story.txt
+
+second-tree
+  |
+  |-- story.txt
+  |-- folder-A
+          |
+          |-- file-A.txt
+          |-- folder-B
+                  |
+                  |-- file-B.txt
+                  |-- file-C.txt</code></pre></figure>
+
+<p>Just a little more down the rabbit hole…</p>
+
+<p>Let’s confirm that our <em>second-tree</em> does indeed contain the hierarchy we conjectured above.</p>
+<div class="perform"><pre><code>git cat-file -p <span class="second-tree-short goi">19a6f72</span></code></pre></div>
+<pre>
+<code>040000 tree <span class="folder-A-tree goi">0ea6ae12ebb0a96b85d57edd8bd433deb08f663e</span>	folder-A
+100644 blob 2a8621f3fe966d677330a471450bd54a539162a2	story.txt</code>
+</pre>
+
+<p>Indeed, our <em>second-tree</em> has a tree (<code class="highlighter-rouge">folder-A</code>) and a blob (<code class="highlighter-rouge">story.txt</code>).</p>
+
+<p>Chase that nested <em>tree</em> further down by:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="folder-A-tree-short goi">0ea6ae1</span></code></pre></div>
+<pre>
+<code>100644 blob 0e82526a4ea4a0031220e1e872d2c6abab945ccb	file-A.txt
+040000 tree <span class="folder-B-tree goi">fac3336c78925507f50257e5124f57bcaa271732</span>	folder-B</code>
+</pre>
+
+<p>And further down by:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="folder-B-tree-short goi">fac3336</span></code></pre></div>
+<pre>
+<code>100644 blob <span class="file-B-blob goi">e7086e266d1d5c77563cf27bbada6e4fddd30057</span>	file-B.txt
+100644 blob 8458d5e043e7546ff08a0292699a75536f87bcaa	file-C.txt</code>
+</pre>
+
+<p>And finally, a peek into a <strong>Blob</strong> Git object by:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="file-B-blob-short goi">e7086e2</span></code></pre></div>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">This is file-B.</code></pre></figure>
+
+<p>To fully take stock of all the Git objects we currently have, <span class="perform"><code class="highlighter-rouge">find .git/objects -type f</code></span> shows:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">.git/objects/88/dc468c538f956841dbd018e805ff2ba94248fb
+.git/objects/19/a6f72ee10a50fa32d42edc5070f12f876414b7
+... and so on ...</code></pre></figure>
+
+<p>You can find your recorded <em>commit IDs</em> among the above output.</p>
+
+<div class="side-note">
+  <p>Note that the Git objects are likely organized into a <a href="https://en.wikipedia.org/wiki/Hash_table">hashtable</a>, where the 1st 2 digits of the <em>object ID</em> is the <em>bucket ID</em>.</p>
+</div>
+
+<div class="side-note">
+<p>To check their types (<strong>Commit</strong>, <strong>Tree</strong>, <strong>Blob</strong>), you can do <code class="highlighter-rouge">find .git/objects -type f | cut -d'/' -f3,4 | sed 's/\///' | xargs -I %ID -t git cat-file -t %ID</code>.</p>
+<p>Or simply do them 1 by 1: <code class="highlighter-rouge">git cat-file -t &lt;1st-7-digits-of-ID&gt;</code>.</p>
+</div>
+
+<div class="tip">
+  <p>A Git <strong>Commit</strong> has 3 components:</p>
+  <ul>
+    <li>Snapshot — of the project folders/files (Git <strong>Tree</strong> object)</li>
+    <li>Parent(s) — 0 or more links to immediate parent(s) (Git <strong>Commit</strong> object)</li>
+    <li>Commit Message — the <em>commit message</em> for itself (plain text)</li>
+  </ul>
+</div>
+
+<div class="forward">
+  <p>You will notice that the Git Object ID for <em>tree</em>s and <em>blob</em>s remain the same (same for yours and mine), but that for <em>commit</em>s are different. We’ll look into <em>commit</em> IDs later on, when we explore <em>commit amends</em>.</p>
+</div>
+
+<div class="tip">
+  <p>A <strong><em>Commit</em> ID</strong> takes into account the <strong>timestamp</strong> (time that the <em>commit</em> was created) of its <em>commit</em>. Hence, all <em>commit</em> IDs are different, even if the <em>snapshot</em> and <em>commit message</em> (<em>author</em>, <em>committer</em>  and <em>message</em>) remain the same.</p>
+</div>
+
+<h2 id="git-references">Git References</h2>
+
+<div class="tip">
+  <p>Git <strong>references</strong> allow us to refer to Git objects using <em>label</em>s (more human-friendly) rather than the <em>Git object ID</em>s.</p>
+</div>
+
+<p>The types of Git <em>references</em> are:</p>
+<ul>
+  <li><em>Branch</em> (local and remote)</li>
+  <li><em>Tag</em></li>
+  <li><code class="highlighter-rouge">HEAD</code> (special kind of reference, special semantics)</li>
+</ul>
+
+<div class="forward">
+  <p><strong>Branch</strong>es, <strong>Tag</strong>s and the <code class="highlighter-rouge">HEAD</code> will be explained in more detail later.</p>
+</div>
+
+<p>We currently have 1 branch — “<em>master</em>”. (<code class="highlighter-rouge">git branch</code> shows all branches)</p>
+
+<p>This is actually a <em>reference</em> to our <em>second-commit</em>, as seen by <span class="perform"><code class="highlighter-rouge">git log --decorate --oneline master</code></span>:</p>
+<pre>
+<code><span class="git-yellow"><span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span> Adds nested folder structure
+<span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> Adds first work on the story</code>
+</pre>
+
+<p>Confirm this by doing <span class="perform"><code class="highlighter-rouge">cat .git/refs/heads/master</code></span> and also <span class="perform"><code class="highlighter-rouge">git branch -v</code></span>. Note that the <em>Git object ID</em> is the same in both places:</p>
+<pre><code><span class="second-commit goi">118a9ac701be36a849423e65f4ab2bebf75ddbfe</span>
+* <span class="git-green">master</span> <span class="second-commit-short goi">118a9ac</span> Adds nested folder structure</code>
+</pre>
+
+<h3 id="human-friendlier-gois">Human-Friendlier GOIs</h3>
+
+<p>In the spirit of Git <em>reference</em>s, let’s make <em>Git Object ID</em>s more human-friendly too.</p>
+
+<div class="tip">
+  <p><em>Git Object ID</em>s is still <em>not</em> the right way to work in Git. Git <em>reference</em>s is the right way!</p>
+</div>
+
+<p>We set a parameter for <code class="highlighter-rouge">git log</code> like this: <span class="perform"><code class="highlighter-rouge">git config log.abbrevCommit true</code></span>.</p>
+
+<p>A subsequent <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows 7-character <em>commit ID</em>s:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<div class="tip">
+  <p>If you ever need to see the full 40-character <em>Git Object ID</em> for your <em>commit</em>s, just add option <code class="highlighter-rouge">--no-abbrev</code> like so: <code class="highlighter-rouge">git log --decorate --graph --no-abbrev</code>. That option goes nearly everywhere, such as <code class="highlighter-rouge">git reflog --no-abbrev</code> (<em>reflog</em> is explained later).</p>
+</div>
+
+<p>Since we’re on the topic of making things more <em>human-friendly</em>, you can explore <a href="https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases">Git Aliases</a>. Here’s a quick example for an oft-used <code class="highlighter-rouge">git log --decorate --graph</code>: <span class="perform"><code class="highlighter-rouge">git config alias.lg "log --decorate --graph"</code></span></p>
+
+<p>You can add option <code class="highlighter-rouge">--global</code> (like <code class="highlighter-rouge">git config --global</code>) if you want that alias for all your Git repos.</p>
+
+<p>Now, try <span class="perform"><code class="highlighter-rouge">git lg</code></span>. You’ll see that it is exactly equivalent to <code class="highlighter-rouge">git log --decorate --graph</code>.</p>
+
+<p>Have fun making aliases for long and cumbersome Git commands!</p>
+
+<div class="tip">
+  <p>Git Aliases can simplify complex Git commands. Saves you a lot of typing!</p>
+</div>
+
+<h3 id="swimming-upstream">Swimming Upstream</h3>
+
+<div class="tip">
+  <p>The <code class="highlighter-rouge">~</code> operator takes in a number that tells Git how many commits you want to swim upstream <strong>relative to a Git reference</strong>. The result is the <em>commit</em> Git lands on after performing that operation.</p>
+</div>
+
+<p><span class="perform"><code class="highlighter-rouge">git log --decorate --oneline master~1</code></span> shows us our <em>first-commit</em>, which is 1 step upstream of our <em>second-commit</em>:</p>
+<pre><code><span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> Adds first work on the story</code></pre>
+
+<p>There is no way to swim <em>downstream</em>. Git <em>commit</em>s do not have a property that is a counterpart to <code class="highlighter-rouge">parent</code>.</p>
+
+<h2 id="the-head">The <code class="highlighter-rouge">HEAD</code></h2>
+
+<div class="tip">
+  <p>The <code class="highlighter-rouge">HEAD</code> is a special Git reference that refers to the <strong>current commit</strong> you’re on.</p>
+
+  <p>Your <em>next new commit</em> will have this <em>current commit</em> as its <em>parent</em>, and that <em>new commit</em> becomes the new <strong>current commit</strong>.</p>
+</div>
+
+<p>That is the definition, so to speak, of the <code class="highlighter-rouge">HEAD</code>. It concisely describes everything that the <code class="highlighter-rouge">HEAD</code> does (its function), besides what the <code class="highlighter-rouge">HEAD</code> is (a Git <em>reference</em>).</p>
+
+<p>We will next look at how to <strong>manually move</strong> the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<h3 id="moving-the-head">Moving the <code class="highlighter-rouge">HEAD</code></h3>
+
+<div class="tip">
+  <p>The <code class="highlighter-rouge">HEAD</code> is <strong>manually moved</strong> via a <code class="highlighter-rouge">git checkout &lt;ref | id&gt;</code> command, where <code class="highlighter-rouge">ref</code> can be any Git <em>reference</em> (<em>branch</em> or <em>tag</em>) and <code class="highlighter-rouge">id</code> is a <em>Git object ID</em>.</p>
+</div>
+
+<div class="tip">
+  <p>Quick tip on <strong>command specification format</strong>. Angle brackets (<code class="highlighter-rouge">&lt; &gt;</code>) denote required parameters, square brackets (<code class="highlighter-rouge">[ ]</code>) denote optional parameters. The vertical bar (<code class="highlighter-rouge">|</code>) denotes “<em>or</em>”. Therefore, the above spec means “<em>you must include a ref (Git reference) or an id (Git object ID)</em>”.</p>
+</div>
+
+<p>There are other ways of moving the <code class="highlighter-rouge">HEAD</code>, the most commonly seen of which is the <strong>advancement</strong> via a <code class="highlighter-rouge">git commit</code>. As per the definition of the <code class="highlighter-rouge">HEAD</code>, the <code class="highlighter-rouge">HEAD</code> is <em>advanced</em> to the newly created <em>commit</em> upon a <code class="highlighter-rouge">git commit</code>. This method of moving the <code class="highlighter-rouge">HEAD</code> is referred to as <strong>creating a commit</strong>, and is not a manual movement of the <code class="highlighter-rouge">HEAD</code>. We’ve seen this happen when we created our <em>first-commit</em> and <em>second-commit</em>.</p>
+
+<div class="forward">
+  <p>We will explore other ways of moving the <code class="highlighter-rouge">HEAD</code> later. For now, we stick with the <code class="highlighter-rouge">git checkout &lt;ref | id&gt;</code> method, in particular <code class="highlighter-rouge">git checkout &lt;branch&gt;</code>.</p>
+</div>
+
+<p>The <code class="highlighter-rouge">HEAD</code> can have 3 states — <em>attached</em>, <em>detached</em> and <em>initial</em>.</p>
+
+<h3 id="initial-head">Initial <code class="highlighter-rouge">HEAD</code></h3>
+
+<p>When we created our Git repo via <code class="highlighter-rouge">git init</code>, these happened:</p>
+<ul>
+  <li>The default <em>branch</em> <span class="git-green">master</span> is <em>readied</em> (not yet created)</li>
+  <li>The <code class="highlighter-rouge">HEAD</code> is <em>attached</em> to <span class="git-green">master</span>.</li>
+  <li>The <code class="highlighter-rouge">HEAD</code> refers to no <em>commit</em> (none exist yet) — an initial state.</li>
+</ul>
+
+<p>This is the only time when the <code class="highlighter-rouge">HEAD</code> exists in that initial state.</p>
+
+<div class="tip">
+  <p>A Git <strong>branch</strong> is conceptually a <strong>string of connected <em>commit</em>s</strong>, and is technically just a Git <strong>reference</strong> (pointer). That’s all we need to know about <em>branch</em>es for now.</p>
+</div>
+
+<div class="forward">
+  <p>The concept of <strong>branch</strong> will be explored in more detail later on.</p>
+</div>
+
+<p>We need to know nothing more of this <em>initial</em> state. We don’t work with this <em>initial</em> state.</p>
+
+<p>As can be seen, the usual state of the <code class="highlighter-rouge">HEAD</code> is <em>attached</em> (to <em>branch</em> <span class="git-green">master</span> by default). This is true even when the <code class="highlighter-rouge">HEAD</code> is in its <em>initial</em> state.</p>
+
+<p>The usual state of the <code class="highlighter-rouge">HEAD</code>, during your normal use of Git, is that of being <strong>attached</strong> to a <em>branch</em>. We will explore this usual state next.</p>
+
+<h3 id="head-with-branch"><code class="highlighter-rouge">HEAD</code> With Branch</h3>
+
+<p>This is the usual state of the <code class="highlighter-rouge">HEAD</code>, that of being <strong>attached</strong> to a <em>branch</em>.</p>
+
+<p>When we created our first <em>commit</em>, the <code class="highlighter-rouge">HEAD</code> was <strong>advanced</strong> to our newly created <em>first-commit</em>. And similarly for <em>second-commit</em>.</p>
+
+<p>Note that the <em>branch</em> to which the <code class="highlighter-rouge">HEAD</code> is <em>attached</em> is <em>advanced similarly</em>.</p>
+
+<p>We can see that the <code class="highlighter-rouge">HEAD</code> is currently <em>attached</em> to <em>branch</em> <span class="git-green">master</span> via <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...</code>
+</pre>
+
+<div class="tip">
+  <p>An <strong>attached</strong> <code class="highlighter-rouge">HEAD</code> is shown with an arrow pointing to the <em>branch</em> it is attached to. Like this: <code><span class="git-blue">HEAD -&gt;</span> <span class="git-green">branch-name</span></code></p>
+</div>
+
+<h3 id="detached-head">Detached <code class="highlighter-rouge">HEAD</code></h3>
+
+<p>A <em>detached</em> <code class="highlighter-rouge">HEAD</code> is used to take a look-see at any <em>commit</em>, especially <em>commit</em>s that are not at any <em>branch head</em>.</p>
+
+<div class="forward">
+  <p>We will discuss <strong>branch head</strong> in detail later on.</p>
+</div>
+
+<div class="tip">
+  <p>Performing a <strong>checkout</strong> with a Git <em>branch</em> plus a <a href="#swimming-upstream"><code class="highlighter-rouge">~</code> operator</a> will lead to a <em>detached</em> <code class="highlighter-rouge">HEAD</code>.</p>
+
+  <p>In fact, performing a <strong>checkout</strong> with <em>just the branch reference</em> itself is the only way to <em>attach</em> <code class="highlighter-rouge">HEAD</code>.</p>
+</div>
+
+<p>To see a <em>detached</em> <code class="highlighter-rouge">HEAD</code>, we do a checkout via <span class="perform"><code class="highlighter-rouge">git checkout master~0</code></span>, to which Git issues this warning:</p>
+<pre>
+<code>Note: checking out 'master~0'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b &lt;new-branch-name&gt;
+
+HEAD is now at <span class="second-commit-short goi">118a9ac</span>... Adds first work on the story</code>
+</pre>
+
+<div class="forward">
+  <p>We will discuss <strong>detached</strong> <code class="highlighter-rouge">HEAD</code> in more detail later, along with its typical use case and its common pitfalls. We will leave the above warning alone for now.</p>
+</div>
+
+<p>The subsequent <span class="perform"><code class="highlighter-rouge">git log --decorate</code></span> shows that the <code class="highlighter-rouge">HEAD</code> is not <em>attached</em> to any <em>branch</em>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD</span>, <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...</code>
+</pre>
+
+<p>Even though we’re still on the same <em>commit</em> that <em>branch</em> <span class="git-green">master</span> is on, the <code class="highlighter-rouge">HEAD</code> is detached.</p>
+
+<div class="tip">
+  <p><strong>Checking out</strong> (switching to) a <em>branch</em> (<code class="highlighter-rouge">git checkout &lt;branch&gt;</code>) <strong>attaches</strong> the <code class="highlighter-rouge">HEAD</code> to the <em>branch</em>.</p>
+</div>
+
+<p>We re-attach the <code class="highlighter-rouge">HEAD</code> to <em>branch</em> <span class="git-green">master</span> with <span class="perform"><code class="highlighter-rouge">git checkout master</code></span>. Then, a <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...</code>
+</pre>
+
+<h2 id="reflog">Reflog</h2>
+
+<p>Git <strong>reflog</strong> is like an “<em>Undo history</em>” (recent history) for Git <em>references</em>. For example, the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code> shows the recent changes to the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p><em>Reflog</em>s only exist for <em>branch</em>es and for the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>It is meaningless to have <em>reflog</em>s for <em>tag</em>s, since <em>tag</em>s do not (and are not meant to) move like <em>branch</em>es and the <code class="highlighter-rouge">HEAD</code> do.</p>
+
+<p><code class="highlighter-rouge">git reflog &lt;branch&gt;</code> shows the <em>reflog</em> for <em>branch</em> <span class="git-green">&lt;branch&gt;</span></p>
+
+<p><code class="highlighter-rouge">git reflog</code> or <code class="highlighter-rouge">git reflog HEAD</code> shows the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code></p>
+
+<div class="tip">
+  <p>Omitting the Git <em>reference</em> in Git commands often means we mean to use <code class="highlighter-rouge">HEAD</code> for the <em>reference</em> parameter. Eg <code class="highlighter-rouge">git log</code> is equivalent to <code class="highlighter-rouge">git log HEAD</code>.</p>
+</div>
+
+<p>We will almost always be using <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code></p>
+
+<h3 id="reflog-for-head"><em>Reflog</em> for <code class="highlighter-rouge">HEAD</code></h3>
+
+<p><code class="highlighter-rouge">git reflog</code> or <code class="highlighter-rouge">git reflog HEAD</code> shows the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<div class="tip">
+  <p>A Git <strong>reflog</strong> for the <code class="highlighter-rouge">HEAD</code> shows the <strong>recent changes</strong> to the <code class="highlighter-rouge">HEAD</code>.</p>
+  <ul>
+    <li><strong>Advancement</strong> (upon a new <em>commit</em>) — denoted by <strong>commit</strong></li>
+    <li><strong>Checkout</strong> — denoted by <strong>checkout</strong></li>
+    <li><strong>Forced Movement</strong> (via <code class="highlighter-rouge">git reset --hard</code>) — denoted by <strong>reset: moving</strong></li>
+  </ul>
+</div>
+
+<div class="forward">
+  <p>We will look at <code class="highlighter-rouge">git reset</code> later on.</p>
+</div>
+
+<p>So far, we have witnessed 2 types of <code class="highlighter-rouge">HEAD</code> <em>change</em>: <strong>commit</strong> and <strong>checkout</strong>. Let’s also witness them in the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git reflog</code></span> shows us these recent changes to the <code class="highlighter-rouge">HEAD</code>:</p>
+<pre>
+<code><span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{0}: checkout: moving from <span class="second-commit goi">118a9ac701be36a849423e65f4ab2bebf75ddbfe</span> to master
+<span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{1}: checkout: moving from master to master~0
+<span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{2}: commit: Adds nested folder structure
+<span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> HEAD@{3}: commit (initial): Adds first work on the story</code>
+</pre>
+
+<p>Assuming you followed this Git lesson closely, your <code class="highlighter-rouge">HEAD</code>’s <em>reflog</em> should look exactly like the above.</p>
+
+<p>Let’s recall our past actions and match them with the <em>reflog</em> above, from the earliest (<code class="highlighter-rouge">HEAD@{3}</code>) to the latest (<code class="highlighter-rouge">HEAD@{0}</code>).</p>
+
+<h4 id="in-the-beginning">In the Beginning</h4>
+
+<p>When we created our Git repo (<code class="highlighter-rouge">git init</code>), Git created a <em>branch</em> <span class="git-green">master</span>. That <em>branch</em> is where the <code class="highlighter-rouge">HEAD</code> starts, where the <code class="highlighter-rouge">HEAD</code> is <em>attached</em>.</p>
+
+<p>How did we arrive at <code class="highlighter-rouge">HEAD@{3}</code>?</p>
+
+<pre><code><span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> HEAD@{3}: commit (initial): Adds first work on the story</code></pre>
+
+<p>Our first actions were to:</p>
+<ul>
+  <li>Create a new file <code class="highlighter-rouge">story.txt</code> and enter some lines of text into it.</li>
+  <li>Stage our work on <code class="highlighter-rouge">story.txt</code> (<code class="highlighter-rouge">git add</code>)</li>
+  <li>Commit our work (<code class="highlighter-rouge">git commit</code>)</li>
+</ul>
+
+<p>Yet, only the <code class="highlighter-rouge">git commit</code> action was recorded on the <em>reflog</em>. This gives us an important lesson:</p>
+
+<div class="tip">
+  <p>Make <em>commit</em>s often. Git is only responsible for tracking your work when you <strong>commit</strong>.</p>
+</div>
+
+<div class="side-note">
+  <p>One of Agile’s <a href="https://en.wikipedia.org/wiki/Agile_software_development#Iterative.2C_incremental_and_evolutionary">first key paradigms</a> is <em>iterative and incremental</em> — that is, commit your work often and in small pieces. What is work? Mistakes are work because they efficiently prune solution spaces. Eurekas are work because they are solutions themselves.</p>
+</div>
+
+<p>You will see that <code class="highlighter-rouge">HEAD@{3}</code> corresponds with your <em>first-commit</em>.</p>
+
+<h4 id="explored-git-objects">Explored Git Objects</h4>
+
+<p>How did we arrive at <code class="highlighter-rouge">HEAD@{2}</code>?</p>
+
+<pre><code><span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{2}: commit: Adds nested folder structure</code></pre>
+
+<p>Our next action was a <code class="highlighter-rouge">git commit</code> that commited some nested folders and files in order to explore <a href="#git-objects--commits-trees-blobs">Git Objects</a>. This corresponds with your <em>second-commit</em>.</p>
+
+<h4 id="detached-the-head">Detached the <code class="highlighter-rouge">HEAD</code></h4>
+
+<p>How did we arrive at <code class="highlighter-rouge">HEAD@{1}</code>?</p>
+
+<pre><code><span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{1}: checkout: moving from master to master~0</code></pre>
+
+<p>We performed a checkout via <code class="highlighter-rouge">git checkout master~0</code> to <em>detach</em> the <code class="highlighter-rouge">HEAD</code>. Since <a href="#swimming-upstream"><code class="highlighter-rouge">~0</code></a> means “<em>zero steps upstream of</em> <span class="git-green">master</span>”, the <code class="highlighter-rouge">HEAD</code> points to the same <em>commit</em> that <span class="git-green">master</span> points to. This corresponds with our <em>second-commit</em>.</p>
+
+<h4 id="attached-the-head">Attached the <code class="highlighter-rouge">HEAD</code></h4>
+
+<p>How did we arrive at <code class="highlighter-rouge">HEAD@{0}</code>?</p>
+
+<pre><code><span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{0}: checkout: moving from <span class="second-commit goi">118a9ac701be36a849423e65f4ab2bebf75ddbfe</span> to master</code></pre>
+
+<p>We performed a checkout via <code class="highlighter-rouge">git checkout master</code> to <em>attach</em> the <code class="highlighter-rouge">HEAD</code> to <em>branch</em> <span class="git-green">master</span>.</p>
+
+<h3 id="reflog-for-branches"><em>Reflog</em> for Branches</h3>
+
+<p><code class="highlighter-rouge">git reflog &lt;branch&gt;</code> shows the <em>reflog</em> for said <em>branch</em>.</p>
+
+<p><em>Reflog</em>s for <em>branch</em>es work about the same way as <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>Since <em>branch</em>es can be deleted, thereby erasing all traces of their movements, there is less use for <em>reflog</em>s for <em>branch</em>es.</p>
+
+<p>The <code class="highlighter-rouge">HEAD</code> can never be deleted, nor can its <em>reflog</em>.</p>
+
+<div class="side-note">
+  <p>Please don’t try <code class="highlighter-rouge">git reflog delete</code> for now. That deletes individual <em>reflog</em> entries; there’s really no reason to mess with the individual entries in the <em>undo history</em>.</p>
+</div>
+
+<h1 id="branches">Branches</h1>
+
+<div class="tip">
+  <p>A Git <strong>branch</strong> is conceptually a <strong>string of connected <em>commit</em>s</strong>, and is technically just a Git <strong>reference</strong> (pointer). That’s all we need to know about <em>branch</em>es for now.</p>
+</div>
+
+<p>We will first demonstrate that a Git <em>branch</em> is simply a Git <em>reference</em> (pointer).</p>
+
+<p>Currently, the only branch we have is the “<em>master</em>” branch, shown by <span class="perform"><code class="highlighter-rouge">git branch</code></span>.</p>
+
+<div class="tip">
+  <p>The branch name “<em>master</em>” is the convention for the <em>main branch</em> of a Git repo.</p>
+</div>
+
+<p>Our “<em>master</em>” branch is pointing to our second commit, as shown by <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>Let’s create a new <em>branch</em> named “<em>temp</em>” at our <em>first-commit</em> by doing <span class="perform"><code class="highlighter-rouge">git branch temp master~1</code></span>. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span> (<span class="git-green">temp</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>The fact that branches are really just Git <em>references</em> tells us that branches are simply pointers. We confirm this by comparing <span class="perform"><code class="highlighter-rouge">cat .git/refs/heads/temp</code></span> with <span class="perform"><code class="highlighter-rouge">git branch -v</code></span>:</p>
+<pre>
+<code>* <span class="git-green">master</span> <span class="second-commit goi">118a9ac</span> Adds nested folder structure
+  temp   <span class="first-commit-short goi">2b55199</span> Adds first work on the story</code>
+</pre>
+
+<pre><code><span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span></code></pre>
+
+<div class="tip">
+  <p>Git <strong>branch</strong>es are simply pointers (or formally, Git <em>references</em>) pointing to <strong>commit</strong>s.</p>
+</div>
+
+<h2 id="branch-head">Branch Head</h2>
+
+<p>Although <strong>branch</strong>es are technically merely pointers, Git still wants to use the term “<em>branch</em>” to actually denote a <em>branch</em> — a line of connected <strong>commit</strong>s. That would be like a <em>branch</em> of timeline — yes, we’ll be using time travel as a fitting analog — aka <em>an alternate history</em>.</p>
+
+<p>Still with the time travel analog, 2 connected <em>branch</em>es would split (or stem) from a fork <em>upstream</em>. Relax, fork isn’t a Git term, so we can forget that term.</p>
+
+<div class="forward">
+  <p>It is possible for 2 <em>branch</em>es to connect <em>downstream</em>, as effected by a <em>merge</em>, besides forking apart <em>upstream</em>. The Git merge will be explained later.</p>
+</div>
+
+<div class="side-note">
+  <p>Git <em>commit</em>s join together to form a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">Directed Acyclic Graph</a>. To imagine them as <em>timeline</em>s and an analog to <em>time travel</em>, dispense with <em>topological ordering</em>.</p>
+</div>
+
+<p>We will continue writing our story in <code class="highlighter-rouge">story.txt</code> from <em>branch</em> <span class="git-green">master</span>, and create a new <em>branch</em> <span class="git-green">git-obj-study</span> that points to our prior study of Git objects:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git branch git-obj-study master     <span class="c"># git-obj-study points to second-commit</span>
+git branch -d temp     <span class="c"># Don't need branch 'temp' anymore</span>
+git reset --hard master~1     <span class="c"># Move branch 'master' upstream to first-commit</span></code></pre></figure>
+</div>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git reset --hard</code> <strong>manually moves</strong> (forced move) the <code class="highlighter-rouge">HEAD</code> to a specified <em>commit</em>. If the <code class="highlighter-rouge">HEAD</code> is <em>attached</em> at that time, the related <em>branch</em> is moved as well.</p>
+</div>
+
+<p>We can now witness our first <code class="highlighter-rouge">git reset</code> in the <em>reflog</em> via <span class="perform"><code class="highlighter-rouge">git reflog</code></span>:</p>
+<pre><code><span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> HEAD@{0}: reset: moving to master~1</code></pre>
+
+<p>Our story will continue properly from the <em>first-commit</em>. The <em>second-commit</em> was really a digression to understand Git objects. <span class="perform"><code class="highlighter-rouge">git log --decorate git-obj-study</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>Edit file <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to contain (new lines 3-6):</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn felt nothing about it.
+
+The unicorn looked around.</code></pre></figure>
+
+<p>Add our new work to the <em>staging area</em> by doing <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span>.</p>
+
+<p>Edit file <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Unicorn encounters a rainbow</code></pre></figure>
+
+<p>Commit our new work by doing <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph git-obj-study master</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:42:04 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+<span class="git-red">|</span> * <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|/</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span>  Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>      Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>In the above <code class="highlighter-rouge">git log</code>, we can see that there are 2 branches — <span class="git-green">master</span> whose <em>head</em> is at the <em>third-commit</em>, and <span class="git-green">git-obj-study</span> whose <em>head</em> is at the <em>second-commit</em>.</p>
+
+<div class="tip">
+  <p>The <strong>head</strong>, aka <em>tip</em>, of a <strong>branch</strong> is the latest <em>commit</em> (furthest <em>downstream</em>) on the <em>branch</em>.</p>
+</div>
+
+<p>The fork for these 2 <em>branch</em>es is at our <em>first-commit</em>, just FYI.</p>
+
+<h2 id="garbage-collection">Garbage Collection</h2>
+
+<p><em>Branch</em>es are important because they provide the only (normal) way for you to access <em>commit</em>s.</p>
+
+<div class="tip">
+  <p>In terms of normal Git use, the only way to access <em>commit</em>s is via <em>branch</em>es.</p>
+</div>
+
+<p>That is, it is generally infeasible to refer to <em>commit</em>s via their <a href="#git-object-identifier">Git Object Identifiers</a>.</p>
+
+<div class="tip">
+  <p>Unreferenced <em>commit</em>s can be deleted — at some later time, not immediately — by Git’s <em>garbage collector</em>.</p>
+</div>
+
+<p>Even if you strive hard to remember an unreferenced <em>commit</em>’s <em>Git object ID</em>, you won’t be able to retrieve that <em>commit</em> after Git’s <em>garbage collector</em> has deleted it.</p>
+
+<div class="forward">
+  <p>We will soon see that <em>branch</em>es are important for keeping <em>commit</em>s (keeping them <em>referenced</em>).</p>
+</div>
+
+<p>We will demonstrate how the <em>garbage collector</em> deletes an <em>unreferenced commit</em>. We first create a commit we intend to lose.</p>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (<span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to add lines 8-9 at the end:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn felt nothing about it.
+
+The unicorn looked around.
+
+This change will be intentionally lost.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to be:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds a commit we intend to lose</code></pre></figure>
+
+<p>Do <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span> and then <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows our <em>to-lose-commit</em>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="to-lose-commit-short goi">e72818b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:48:11 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit we intend to lose
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:42:04 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>We now retreat (move <em>upstream</em>) our branch <span class="git-green">master</span> by doing <span class="perform"><code class="highlighter-rouge">git reset --hard HEAD~1</code></span>. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:42:04 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>We confirm that our <em>to-lose-commit</em> still exists by doing:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="to-lose-commit-short goi">e72818b</span></code></pre></div>
+<pre>
+<code>tree 2913ba48160d3b6b713135243c06d7e15034bbcc
+parent <span class="third-commit goi">9ad88e52d7820c8754ca35ff125cb391ae810bc0</span>
+author Author A &lt;a@c.com&gt; 1481489291 +0800
+committer Author A &lt;a@c.com&gt; 1481489291 +0800
+
+Adds a commit we intend to lose</code>
+</pre>
+
+<h3 id="unreachable-commits">Unreachable Commits</h3>
+
+<p>We can see that our <em>to-lose-commit</em> is now <strong>unreachable</strong> by doing <span class="perform"><code class="highlighter-rouge">git fsck --no-reflogs</code></span>:</p>
+<pre><code>dangling commit <span class="to-lose-commit goi">e72818bb5b1fb88e8b20e551da3610dd6de204c5</span></code></pre>
+
+<div class="side-note">
+  <p><code class="highlighter-rouge">git fsck</code> checks for <strong>unreferenced</strong> <em>commit</em>s. But <em>commit</em>s referenced only by the <em>reflog</em>s are unreachable. <code class="highlighter-rouge">git fsck --no-reflogs</code> checks for <strong>unreachable</strong> <em>commit</em>s. An <em>commit</em> that is <em>unreferenced</em> is, of course, also <em>unreachable</em>.</p>
+</div>
+
+<div class="forward">
+  <p>We will be looking at <strong>unreferenced</strong> <em>commit</em>s right after this section.</p>
+</div>
+
+<div class="tip">
+  <p><strong>Reachable commits</strong> are <em>commit</em>s that are referenced by any Git <em>references</em>.</p>
+
+  <p><strong>Reachable commits</strong> render their <strong>parent</strong>(s) <strong>reachable</strong>.</p>
+
+  <p>After accounting for all <strong>reachable commits</strong>, all other <em>commit</em>s are <strong>unreachable</strong>.</p>
+</div>
+
+<p>It is now clear that our <em>to-lose-commit</em> is <strong>unreachable</strong>. But it is <em>not</em> <strong>unreferenced</strong>! Let’s see.</p>
+
+<h3 id="reflog--safety-net">Reflog — Safety Net</h3>
+
+<p>Git’s <strong>reflog</strong> still stores a reference to our <em>to-lose-commit</em>. A <span class="perform"><code class="highlighter-rouge">git reflog</code></span> reveals our <em>to-lose-commit</em> is still referenced at <code class="highlighter-rouge">HEAD@{1}</code>:</p>
+<pre>
+<code><span class="git-yellow"><span class="third-commit-short goi">9ad88e5</span></span> HEAD@{0}: reset: moving to HEAD~1
+<span class="git-yellow"><span class="to-lose-commit-short goi">e72818b</span></span> HEAD@{1}: commit: Adds a commit we intend to lose
+<span class="git-yellow"><span class="third-commit-short goi">9ad88e5</span></span> HEAD@{2}: commit: Unicorn encounters a rainbow
+<span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> HEAD@{3}: reset: moving to master~1</code>
+</pre>
+
+<p>Now, Git’s default parameters for its <em>garbage collector</em> means that Git only deletes <em>unreferenced commits</em> that are older than 14 days. To impede our current experiment more, Git still retains references to our <em>to-lose-commit</em> in its <em>reflog</em>, because <em>reflog references to unreachable commits</em> are only deleted if older than 30 days. Our experiment can only work if we wait 30 days from now!</p>
+
+<div class="forward">
+  <p>Git does not immediately delete, through <em>garbage collection</em>, <em>commit</em>s that are not referenced. Later on, we will learn how to perform <em>undo</em> operations in Git.</p>
+</div>
+
+<p>A simple test proves it. We do <span class="perform"><code class="highlighter-rouge">git gc</code></span> and see that our <em>to-lose-commit</em> is still in existence:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="to-lose-commit-short goi">e72818b</span></code></pre></div>
+<pre>
+<code>tree 2913ba48160d3b6b713135243c06d7e15034bbcc
+parent <span class="third-commit goi">9ad88e52d7820c8754ca35ff125cb391ae810bc0</span>
+author Author A &lt;a@c.com&gt; 1481489291 +0800
+committer Author A &lt;a@c.com&gt; 1481489291 +0800
+
+Adds a commit we intend to lose</code>
+</pre>
+
+<p>We give immediacy to the <em>garbage collector</em> by passing in 2 parameters via these commands:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git config gc.pruneExpire now
+git config gc.reflogExpireUnreachable now</code></pre></figure>
+</div>
+
+<p>Now, <span class="perform"><code class="highlighter-rouge">git gc</code></span> will delete our <em>to-lose-commit</em>, as can be seen by:</p>
+<div class="perform"><pre><code>git cat-file -p <span class="to-lose-commit-short goit">e72818b</span></code></pre></div>
+<pre><code>fatal: Not a valid object name <span class="to-lose-commit-short goi">e72818b</span></code></pre>
+
+<p>As expected, <span class="perform"><code class="highlighter-rouge">git reflog</code></span> shows that our top 2 entries were deleted:</p>
+<pre>
+<code><span class="git-yellow"><span class="third-commit-short goi">9ad88e5</span></span> HEAD@{0}: commit: Unicorn encounters a rainbow
+<span class="git-yellow"><span class="first-commit-short goi">2b55199</span></span> HEAD@{1}: reset: moving to master~1</code>
+</pre>
+
+<p>The removal of those 2 entries rendered our <em>to-lose-commit</em> <strong>unreferenced</strong>, not just <strong>unreachable</strong>. That is why the <em>garbage collector</em> was able to delete our <em>to-lose-commit</em>.</p>
+
+<p>Now remove that immediacy we just mandated! We don’t want Git immediately deleting our commits. We like the 30-day <em>grace period</em> for us to perform any <em>undo</em> required!</p>
+
+<p>Reset the <em>garbage collector</em> to default parameters by doing <span class="perform"><code class="highlighter-rouge">git config --remove-section gc</code></span>! <strong><u>Do that now!</u></strong></p>
+
+<div class="tip">
+  <p>Never change default parameters for the <em>garbage collector</em> under normal circumstances.</p>
+</div>
+
+<h2 id="to-work-on-a-branch">To Work on a Branch</h2>
+
+<p>What does it mean to <em>work on a branch</em>? How is a <em>branch</em> <strong>advanced</strong>?</p>
+
+<div class="tip">
+  <p>When creating a new <em>commit</em> off of (downstream of) the <code class="highlighter-rouge">HEAD</code>:</p>
+  <ul>
+    <li>The <code class="highlighter-rouge">HEAD</code> is moved to refer to the new <em>commit</em>.</li>
+    <li><strong>If attached</strong> to a <em>branch</em>, that <em>branch</em> is advanced (downstream) to point to the new <em>commit</em>.</li>
+  </ul>
+
+  <p>Hence, a <code class="highlighter-rouge">HEAD</code> attached to some <em>branch</em> allows us to in effect <strong>work on the branch, commit to the branch, and advance the branch</strong>.</p>
+</div>
+
+<p>This was seen when we committed our <em>first-commit</em> and <em>second-commit</em> while on <em>branch</em> <span class="git-green">master</span>. We did not have to manually advance the <em>branch</em> with every new <em>commit</em>.</p>
+
+<p>We shall soon see that this <em>automatic advancing of a branch</em> does not occur if the <code class="highlighter-rouge">HEAD</code> is not attached to any branch.</p>
+
+<h3 id="quick-word-on-tags">Quick Word on Tags</h3>
+
+<div class="tip">
+  <p><em>Tag</em>s are mere pointers, like <em>branch</em>es are. However, <em>tag</em>s do not have the same functionality (such as advancement with new <em>commit</em>s) nor semantics as <em>branch</em>es do. <strong>Tags are mere pointers, and nothing more.</strong></p>
+</div>
+
+<p>As we will soon see, checking out a tag will result in a detached <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>Create a tag at the <em>second-commit</em> by doing <span class="perform"><code class="highlighter-rouge">git checkout git-obj-study</code></span> and then <span class="perform"><code class="highlighter-rouge">git tag our-tag</code></span>. Then <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">git-obj-study</span>, tag: our-tag)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>    Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<h3 id="working-a-detached-head">Working a Detached <code class="highlighter-rouge">HEAD</code></h3>
+
+<p>Checkout tag <span class="git-yellow">our-tag</span> by doing <span class="perform"><code class="highlighter-rouge">git checkout our-tag</code></span>. Git issues a warning:</p>
+<pre>
+<code>Note: checking out 'our-tag'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b &lt;new-branch-name&gt;
+
+HEAD is now at <span class="second-commit-short goi">118a9ac</span> ... Adds nested folder structure</code>
+</pre>
+
+<div class="tip">
+  <p>Checking out a <strong>tag</strong> will result in a <strong>detached</strong> <code class="highlighter-rouge">HEAD</code>.</p>
+
+  <p>Recall: performing a <strong>checkout</strong> with <em>just the branch reference</em> itself is the only way to <em>attach</em> the <code class="highlighter-rouge">HEAD</code>.</p>
+</div>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows that the <code class="highlighter-rouge">HEAD</code> is on its own:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD</span>, tag: our-tag, <span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<h4 id="committing-while-detached">Committing While Detached</h4>
+
+<p>We will now show what happens when a new <em>commit</em> is made on a <em>detached</em> <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>Add 2 lines (4-5) at the end of <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>):</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn looked around.
+
+This change will be committed while detached.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to be:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds a commit while detached</code></pre></figure>
+
+<p>Commit that new change with <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span> and then <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<p>Then <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="detached-commit-short goi">795babc</span> (<span class="git-blue">HEAD</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:55:26 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (tag: our-tag, <span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<div class="tip">
+  <p>A commit action on <strong>detached</strong> <code class="highlighter-rouge">HEAD</code> does not <strong>advance</strong> any <em>branch</em>. In effect, working with a <strong>detached</strong> <code class="highlighter-rouge">HEAD</code> is working <em>outside</em> of any <em>branch</em>.</p>
+</div>
+
+<h4 id="leaving-commits-behind">Leaving Commits Behind</h4>
+
+<p>Let’s complete our demonstration of how a commit created while detached can be lost.</p>
+
+<p>Checkout branch <span class="git-green">git-obj-study</span> via <span class="perform"><code class="highlighter-rouge">git checkout git-obj-study</code></span>, and we see Git telling us:</p>
+<pre>
+<code>Warning: you are leaving 1 commit behind, not connected to
+any of your branches:
+
+  <span class="detached-commit-short goi">795babc</span> Adds a commit while detached
+
+If you want to keep it by creating a new branch, this may be a good time
+to do so with:
+
+ git branch &lt;new-branch-name&gt; <span class="detached-commit-short goi">795babc</span>
+
+Switched to branch 'git-obj-study'</code>
+</pre>
+
+<p>In fact, despite Git’s polite warning, that is about the only time you may <em>keep that unreachable commit</em>. You likely won’t remember the <em>commit ID</em> of our <em>detached-commit</em> after this warning disappears. Moreover, Git’s <em>garbage collector</em> may delete that <em>unreachable commit</em> some time later (30 days) before you decide to retrieve it.</p>
+
+<p>That brings us to an important tip:</p>
+
+<div class="tip">
+  <p>Creating branches (temporarily or otherwise) is a good way to hang on to any <em>commit</em>s you would potentially want to keep. In fact, it’s a good “<em>put a bookmark on here before I mess things up</em>” technique. (Just don’t delete the <em>branch</em> in question!)</p>
+</div>
+
+<p>To repeat for reinforcement, <em>branch</em>es are the only normal way to access (reach) <em>commit</em>s. In Git, we work with <em>branch</em>es, not <em>tag</em>s. You create multiple/alternate timelines (approaches, “<em>what-if’s</em>”), which involve <em>branch</em>es.</p>
+
+<p>Worse than <em>tag</em>s, the <code class="highlighter-rouge">HEAD</code> is not at all intended to <em>keep commits</em>. The<code class="highlighter-rouge">HEAD</code> changes depending on which <em>branch</em> you checkout, and can potentially leave <em>commit</em>s behind.</p>
+
+<p>To see that the <code class="highlighter-rouge">HEAD</code> has moved to <em>branch</em> <span class="git-green">git-obj-study</span>, and has left our <em>detached-commit</em> behind:</p>
+<div class="perform"><pre><code>git log --decorate --graph <span class="detached-commit-short goi">795babc</span></code></pre></div>
+<pre>
+<code>* <span class="git-yellow">commit <span class="detached-commit-short goi">795babc</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:55:26 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">git-obj-study</span>, tag: our-tag)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<h4 id="jumping-through-timelines">Jumping Through Timelines</h4>
+
+<p>A <em>detached</em> <code class="highlighter-rouge">HEAD</code> does have its uses. You can move the <code class="highlighter-rouge">HEAD</code> to any <em>commit</em> (snapshot) in any timeline to take a look-see.</p>
+
+<p>Just remember that you need to attach the <code class="highlighter-rouge">HEAD</code> to a <em>branch</em> before you start work.</p>
+
+<p>Let’s jump to an earlier time in <em>branch</em> <span class="git-green">git-obj-study</span>. Suppose we want to reminisce about how we started off when we created this <em>branch</em>.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git checkout git-obj-study~1</code></span> puts us 1 <em>commit</em> upstream:</p>
+<pre>
+<code>Note: checking out 'git-obj-study~1'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b &lt;new-branch-name&gt;
+
+HEAD is now at <span class="first-commit-short goi">2b55199</span>... Adds first work on the story</code>
+</pre>
+
+<p>And <span class="perform"><code class="highlighter-rouge">git log --decorate</code></span> shows:</p>
+<pre>
+<code><span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span> (<span class="git-blue">HEAD</span>)</span>
+Author: Author A &lt;a@c.com&gt;
+Date:   Mon Dec 12 04:31:24 2016 +0800
+
+    Adds first work on the story
+
+    I'd think up more descriptive information here if I could.
+    That first line above should be a short summary, with no ending period.
+    Then comes a blank line, and then details and descriptions follow.</code>
+</pre>
+
+<p>Let’s take a look-see. A <span class="perform"><code class="highlighter-rouge">ls -a</code></span> shows:</p>
+<pre>
+<code>./                  <span class="git-blue">.git</span>/               story.txt
+../                 rough_thoughts.txt</code>
+</pre>
+
+<p>And <span class="perform"><code class="highlighter-rouge">cat story.txt</code></span> shows:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn looked around.</code></pre></figure>
+
+<p>Aw, how sweet. That was how we started, with just 3 lines in <code class="highlighter-rouge">story.txt</code>.</p>
+
+<p>Alright, enough nostalgia. We need progress. We’re done with learning about <em>detached</em> <code class="highlighter-rouge">HEAD</code>.</p>
+
+<h1 id="undo">Undo</h1>
+
+<p>The <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code> gives us the ability to undo actions we recently performed, <em>if</em> the actions involve the <em>movement</em> of the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<div class="tip">
+  <p>Land the <code class="highlighter-rouge">HEAD</code> on <em>commit</em>s (<code class="highlighter-rouge">git checkout &lt;commit&gt;</code>), so that the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code> keeps track of them (for 30 days, at least).</p>
+</div>
+
+<p>There are a few ways to perform an undo, and all of them are based on the idea that the <em>reflog</em> contains a list of <em>commit</em>s the <code class="highlighter-rouge">HEAD</code> touched on. Some of those <em>commit</em>s may have become <em>left behind</em> (aka lost).</p>
+
+<h2 id="use-branch-make-reachable">Use Branch, Make Reachable</h2>
+
+<p>To retrieve a “<em>left behind</em>” <em>commit</em>, you can simply place a <em>branch</em> on it: <code class="highlighter-rouge">git branch &lt;branch-name&gt; &lt;commit&gt;</code>.</p>
+
+<p>Our <span class="perform"><code class="highlighter-rouge">git reflog</code></span> should currently look like (omitted top 2 entries):</p>
+<pre>
+<code><span class="git-yellow"><span class="detached-commit-short goi">795babc</span></span> HEAD@{2}: commit: Adds a commit while detached
+<span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{3}: checkout: moving from git-obj-study to our-tag
+<span class="git-yellow"><span class="second-commit-short goi">118a9ac</span></span> HEAD@{4}: checkout: moving from master to git-obj-study
+<span class="git-yellow"><span class="third-commit-short goi">9ad88e5</span></span> HEAD@{5}: commit: Unicorn encounters a rainbow</code>
+</pre>
+
+<p>Our <em>detached-commit</em> is still <strong>unreachable</strong>, as seen by <span class="perform"><code class="highlighter-rouge">git fsck --no-reflogs</code></span>:</p>
+<pre><code>dangling commit <span class="detached-commit goi">795babc8e58f20dd2647032afc5bf6de12e866cf</span></code></pre>
+
+<p>Creating a new <em>branch</em> on <span class="detached-commit-short goi">795babc</span> will make it <em>reachable</em>:</p>
+<div class="perform"><pre><code>git branch reclaim-detached <span class="detached-commit-short goi">795babc</span></code></pre></div>
+
+<p>And now, <span class="perform"><code class="highlighter-rouge">git fsck --no-reflogs</code></span> should show that all <em>commit</em>s are <em>reachable</em>.</p>
+
+<div class="tip">
+  <p><em>Branch</em>es make <em>commit</em>s <strong>reachable</strong>.</p>
+</div>
+
+<h2 id="backtrack-head">Backtrack <code class="highlighter-rouge">HEAD</code></h2>
+
+<p>If you’re not yet sure you want to create a new <em>branch</em> to reclaim a “<em>left behind</em>” <em>commit</em> — perhaps when you’re swamped with tons of flippantly created <em>branch</em>es — you can choose to simply backtrack the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p><em>Force move</em> the <code class="highlighter-rouge">HEAD</code> back in time. In this case, the <em>reflog</em> “<em>time</em>” entry we want to go back to is <code class="highlighter-rouge">HEAD@{2}</code> (2 steps back into the past).</p>
+
+<pre>
+<code><span class="git-yellow"><span class="detached-commit-short goi">795babc</span></span> HEAD@{2}: commit: Adds a commit while detached</code>
+</pre>
+
+<p>We’re currently still on the <em>first-commit</em>, as seen by <span class="perform"><code class="highlighter-rouge">git log --decorate</code></span>:</p>
+<pre>
+<code><span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span> (<span class="git-blue">HEAD</span>)</span>
+Author: Author A &lt;a@c.com&gt;
+Date:   Mon Dec 12 04:31:24 2016 +0800
+
+    Adds first work on the story
+...</code>
+</pre>
+
+<p>Move the <code class="highlighter-rouge">HEAD</code> back into the past by 2 steps: <span class="perform"><code class="highlighter-rouge">git reset --hard HEAD@{2}</code></span></p>
+
+<p>Now, <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="detached-commit-short goi">795babc</span> (<span class="git-blue">HEAD</span>, <span class="git-green">reclaim-detached</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:55:26 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (tag: our-tag, <span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>Notice that <em>branch</em> <span class="git-green">reclaim-detached</span> still exists. We merely <em>force moved</em> the <code class="highlighter-rouge">HEAD</code> to a different <em>commit</em> (our <em>detached-commit</em>); we didn’t actually “<em>turn back time</em>” to when we haven’t created <em>branch</em> <span class="git-green">reclaim-detached</span>.</p>
+
+<div class="tip">
+  <p>We “<em>go back in time</em>” by moving to an older <em>commit</em>.</p>
+
+  <p>Recall that each <em>commit</em> is a <strong>snapshot</strong> of the entire project at some point in time.</p>
+</div>
+
+<p>Think of it this way. We created a <em>snapshot</em> (our <em>detached-commit</em>) right after that at <em>second-commit</em>. Then we moved the <code class="highlighter-rouge">HEAD</code> somewhere else and gave up on <em>detached-commit</em>; it was <em>unreachable</em> by any <em>branch</em> since we <em>committed</em> while detached. After that, we changed our mind about losing <em>detached-commit</em>. So we backtracked the <code class="highlighter-rouge">HEAD</code> to the point where it landed again on <em>detached-commit</em>.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git reflog</code></span> shows that we backtracked the <code class="highlighter-rouge">HEAD</code>:</p>
+<pre>
+<code><span class="git-yellow"><span class="detached-commit-short goi">795babc</span></span> HEAD@{0}: reset: moving to HEAD@{2}</code>
+</pre>
+
+<h2 id="same-for-branches">Same for Branches</h2>
+
+<p>The “undo history” (<em>reflog</em>s) for <em>branch</em>es work the same way as the <em>reflog</em> for the <code class="highlighter-rouge">HEAD</code>.</p>
+
+<p>In case you accidentally shift a <em>branch</em> via <code class="highlighter-rouge">git branch -f &lt;branch&gt; &lt;wrong-commit&gt;</code>, you can check its <em>reflog</em> to see which “<em>correct commit</em>” it was on before that accident.</p>
+
+<div class="tip">
+  <p>Be absolutely sure before you run <code class="highlighter-rouge">git branch -D &lt;branch&gt;</code>, which <em>force deletes</em> the specified <em>branch</em>, and totally nukes the <em>reflog</em> (undo history) for said <em>branch</em>. <strong>Force-deleting a <em>branch</em> can potentially lead to lost <em>commit</em>s.</strong></p>
+</div>
+
+<h2 id="amending-last-commit">Amending Last Commit</h2>
+
+<div class="tip">
+  <p>Amending a <em>commit</em> creates a new alternate <em>commit</em>. The original <em>commit</em> is <em>left behind</em>.</p>
+</div>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to be:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds a commit while detached
+
+We decided to include more details in the commit message.
+This is an amended commit.</code></pre></figure>
+
+<p>Then <span class="perform"><code class="highlighter-rouge">git commit --amend -F .git/COMMIT_EDITMSG</code></span> to amend our last <em>commit</em>.</p>
+
+<p>We can see that a new <em>commit</em> — our <em>amended-commit</em> — has been created. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph reclaim-detached HEAD</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="amended-commit-short goi">6aa7081</span> (<span class="git-blue">HEAD</span>)</span>
+<span class="git-red">|</span> Author: Jon Wong &lt;jhannwong@gmail.com&gt;
+<span class="git-red">|</span> Date:   Mon May 15 20:54:09 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds a commit while detached
+<span class="git-red">|</span>
+<span class="git-red">|</span>     We decided to include more details in the commit message.
+<span class="git-red">|</span>     This is an amended commit.
+<span class="git-red">|</span>
+<span class="git-red">|</span> * <span class="git-yellow">commit <span class="detached-commit-short goi">795babc</span> (<span class="git-green">reclaim-detached</span>)</span>
+<span class="git-red">|/</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span>  Date:   Mon Dec 12 04:55:26 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>      Adds a commit while detached
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (tag: our-tag, <span class="git-green">git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>In this case, it just so happens that we have <em>branch</em> <span class="git-green">reclaim-detached</span> at our original <em>commit</em>; normally, the original commit would have been <em>left behind</em> and become <em>unreachable</em>. The <code class="highlighter-rouge">HEAD</code> was <em>detached</em> when we created the new <em>commit</em>, so the <code class="highlighter-rouge">HEAD</code> did not bring any <em>branch</em> along with it.</p>
+
+<h2 id="amending-earlier-commits">Amending Earlier Commits</h2>
+
+<p>Since it is generally not a good practice to <em>go back</em> and perfect past commits over and over, we won’t be doing this section.</p>
+
+<div class="forward">
+  <p>If your boss needs you to do “<em>post-production edits</em>” of your Git history, let me know and I’ll fill up this section.</p>
+
+  <p>This requires learning about Git <em>rebase</em>.</p>
+</div>
+
+<h1 id="merging">Merging</h1>
+
+<p>To explore merging, we first have to do some branching. We already learned about <em>branch</em>es earlier, and now we will practice <em>working on a branch</em>.</p>
+
+<p>Recall: To <em>work on a branch</em>, simply <code class="highlighter-rouge">git checkout &lt;branch&gt;</code>.</p>
+
+<p>We move back to <em>branch</em> <span class="git-green">master</span> via <span class="perform"><code class="highlighter-rouge">git checkout master</code></span> to continue our story. (You’ll get a warning that you will be leaving behind our <em>amended-commit</em>; let that go, we don’t need that anymore.)</p>
+
+<p>Let’s do some branching right now.</p>
+
+<h2 id="leapfrog-loop">Leapfrog Loop</h2>
+
+<p>Recall that Agile’s <a href="https://en.wikipedia.org/wiki/Agile_software_development#Iterative.2C_incremental_and_evolutionary">first key paradigms</a> is <em>iterative and incremental</em>.</p>
+
+<p>We perform a short unit of work via a <em>leapfrog</em> loop (my terminology, not formal Git). But why don’t we perfectly do that short unit of work within 1 <em>commit</em>?</p>
+
+<p>Consider that even a short unit of work can involve multiple <em>commit</em>s — you should commit often (good practice), because Git tracks your work only when you commit. Additionally, consider that multiple <em>commit</em>s may be required due to your making mistakes while working fast (and you <em>should</em> work fast). That is why a typical short unit of work (“<em>leapfrog</em>”) can involve more than 1 <em>commit</em>.</p>
+
+<p>Let’s start a leapfrog.</p>
+
+<div class="tip">
+  <p>A leapfrog loop starts with creating and checking out a new <em>branch</em>.</p>
+</div>
+
+<p>Create a new branch and checkout that branch in one command: <span class="perform"><code class="highlighter-rouge">git checkout -b author-A/daydream</code></span>. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> should show:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-A/daydream</span>, <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Tue May 16 17:48:34 2017 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>We will now make 2 commits on <em>branch</em> <span class="git-green">author-A/daydream</span>.</p>
+
+<h3 id="quick-first-commit">Quick First Commit</h3>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to add lines 8-9 at the end:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn felt nothing about it.
+
+The unicorn looked around.
+
+The unicorn thought about cotton candy.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span> to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds cotton candy thought</code></pre></figure>
+
+<p>Add your work via <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span>, and commit via <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<div class="tip">
+  <p>It is good practice to make <strong>small</strong> and <strong>rapid</strong> <em>commit</em>s.</p>
+</div>
+
+<p>This first <em>commit</em> simulates a case where we’re quick to commit our work and forgot a line about “<em>clouds</em>” which we will be adding in a second <em>commit</em> coming up next.</p>
+
+<h3 id="insert-afterthought">Insert Afterthought</h3>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to add lines 9-10:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn felt nothing about it.
+
+The unicorn looked around.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span> to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Adds cloud thought</code></pre></figure>
+
+<p>Add your work via <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span>, and commit via <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<p>This second <em>commit</em> simulates an “<em>afterthought</em>” where we insert a line about “<em>clouds</em>” we missed out in the first <em>commit</em>.</p>
+
+<div class="tip">
+  <p>It is alright to make mistakes in Git, especially in a “<em>leapfrog loop</em>”.</p>
+
+  <p>This is the reason we use a “<em>leapfrog loop</em>” to house a unit of work. We can work <em>fast</em>, make <em>mistakes</em> and make <em>corrections</em>. <em>Hindsight</em> is 20/20. Exercise some foresight, but don’t forget to use lots of <em>hindsight</em>!</p>
+</div>
+
+<h2 id="closing-the-loop">Closing the Loop</h2>
+
+<p>We return to <em>branch</em> <span class="git-green">master</span> with a <span class="perform"><code class="highlighter-rouge">git checkout master</code></span>. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph author-A/daydream</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="leapfrog-two-commit-short goi">e58b350</span> (<span class="git-green">author-A/daydream</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:12:49 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds cloud thought
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="leapfrog-one-commit-short goi">ffc6ff6</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:11:07 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds cotton candy thought
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Tue May 16 17:48:34 2017 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span> to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Merge branch 'author-A/daydream'
+
+The unicorn daydreams.</code></pre></figure>
+
+<p>We perform a merge with <span class="perform"><code class="highlighter-rouge">git merge --no-ff --no-commit author-A/daydream</code><span>.</span></span></p>
+
+<div class="side-note">
+  <p>You can always abort the merge with <code class="highlighter-rouge">git merge --abort</code> if anything goes wrong. And then retry the merge again.</p>
+</div>
+
+<p>Finally, we commit the merge with <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<div class="tip">
+  <p>A leapfrog loop is closed by a merge with <code class="highlighter-rouge">--no-ff</code>. First, checkout the <em>branch</em> you want to merge <em>onto</em>. Then perform the merge.</p>
+</div>
+
+<div class="side-note">
+  <p>If you’re able to use an editor (vi or emacs) to write your <em>commit messages</em> within your Bash shell, you can just do <code class="highlighter-rouge">git merge --no-ff author-A/daydream</code> to perform the merge in 1 step, rather than 2.</p>
+</div>
+
+<p>And here is the loop with <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span><span class="git-green">\</span>  Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> <span class="git-green">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> <span class="git-green">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span> <span class="git-green">|</span>
+<span class="git-red">|</span> <span class="git-green">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span> <span class="git-green">|</span>
+<span class="git-red">|</span> <span class="git-green">|</span>     The unicorn daydreams.
+<span class="git-red">|</span> <span class="git-green">|</span>
+<span class="git-red">|</span> * <span class="git-yellow">commit <span class="leapfrog-two-commit-short goi">e58b350</span> (<span class="git-green">author-A/daydream</span>)</span>
+<span class="git-red">|</span> <span class="git-green">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> <span class="git-green">|</span> Date:   Mon Dec 12 05:12:49 2016 +0800
+<span class="git-red">|</span> <span class="git-green">|</span>
+<span class="git-red">|</span> <span class="git-green">|</span>     Adds cloud thought
+<span class="git-red">|</span> <span class="git-green">|</span>
+<span class="git-red">|</span> * <span class="git-yellow">commit <span class="leapfrog-one-commit-short goi">ffc6ff6</span></span>
+<span class="git-red">|/</span>  Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span>   Date:   Mon Dec 12 05:11:07 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>       Adds cotton candy thought
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Tue May 16 17:48:34 2017 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<h3 id="hiding-leapfrog-details">Hiding Leapfrog Details</h3>
+
+<div class="tip">
+  <p>Adding the <code class="highlighter-rouge">--first-parent</code> option to <code class="highlighter-rouge">git log</code> will hide leapfrog details.</p>
+</div>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>)</span>
+<span class="git-red">|</span>  Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Tue May 16 17:48:34 2017 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>Whatever mistakes and mishaps we had in our leapfrog is hidden from view like this.</p>
+
+<p>And that is also why we employ <em>leapfrog loop</em>s — to hide away the messy details of our work from the main <em>branch</em>. In this case, our messy details are in <em>branch</em> <span class="git-green">author-A/daydream</span>, and our main <em>branch</em> is <em>branch</em> <span class="git-green">master</span>.</p>
+
+<h1 id="remote-bare-git-repository">Remote (Bare) Git Repository</h1>
+
+<p>A bare Git repo contains the <strong>history</strong> of your work on your files, but does not keep a <em>working copy</em> of your files.</p>
+
+<p>Make room for the bare Git repo by doing:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ..
+mv my-new-project clone-A     <span class="c"># Our local repo is now in folder 'clone-A'</span>
+mkdir -p my-new-project/remote     <span class="c"># Create the folder for the bare repo</span>
+mv clone-A my-new-project     <span class="c"># 'my-new-project' shall neatly contain our repos</span>
+<span class="nb">cd </span>my-new-project</code></pre></figure>
+</div>
+
+<p>Create the bare repo, which we shall call <em>remote repo</em>, by doing:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd </span>remote
+git init --bare     <span class="c"># Create the bare repo</span>
+ls -la     <span class="c"># Show the contents of the bare repo</span>
+<span class="nb">cd</span> ..</code></pre></figure>
+</div>
+
+<p>Notice that the contents of folder <code class="highlighter-rouge">remote</code> looks exactly like the contents in folder <code class="highlighter-rouge">clone-A/.git</code>.</p>
+
+<div class="forward">
+  <p>The above bare repo resides on your local harddisk, but is for all our intents and purposes akin to a <em>remote repo</em>. You shall see the concept <em>remote repo</em> demonstrated soon.</p>
+</div>
+
+<h2 id="clone-vs-remote"><em>Clone</em> vs <em>Remote</em></h2>
+
+<div class="tip">
+  <p><strong>Clone</strong>s are non-bare local repos we work on. Your <em>clone</em> is your local copy of the Git repo you work on (see “<em>remote</em>” soon after this).</p>
+</div>
+
+<p>In our case here, we have a <em>clone</em> in folder <code class="highlighter-rouge">clone-A</code>.</p>
+
+<div class="tip">
+  <p><strong>Remote</strong>s are bare repos we push to, and collaborate on. Consider a <em>remote</em> as a “<em>certified true copy</em>” of sorts, which is also clearly implied by the contrasting term “<em>clone</em>”. They also act like “<em>cloud backups</em>” (if you’re using <a href="github.com">GitHub</a> or <a href="bitbucket.org">BitBucket</a>), in case your <em>clones</em> get damaged.</p>
+</div>
+
+<p>Our <em>remote</em> in this case resides in folder <code class="highlighter-rouge">remote</code>.</p>
+
+<div class="forward">
+  <p>We will look at situating our <em>remote</em> on GitHub and BitBucket later on.</p>
+</div>
+
+<p>Point our <em>clone</em> to the <em>remote</em>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd </span>clone-A
+git remote -v     <span class="c"># Should display nothing; no remotes linked to yet.</span>
+git remote add origin ../remote     <span class="c"># Our remote is named "origin"</span></code></pre></figure>
+</div>
+
+<div class="tip">
+  <p>The <em>remote</em> name “<em>origin</em>” is the convention for representing the “<em>certified true copy</em>” repo for the project.</p>
+</div>
+
+<p>Checking for our added remote with <span class="perform"><code class="highlighter-rouge">git remote -v</code></span>:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">orign	../remote (fetch)
+orign	../remote (push)</code></pre></figure>
+
+<div class="side-note">
+  <p>Although it is possible to pull (fetch) from one remote repo and push to another remote repo, we shall stick with the most common use case — our remote pulls from and pushes to the same location.</p>
+</div>
+
+<h2 id="pushing-work-to-remote">Pushing Work To Remote</h2>
+
+<p>We now push our current <em>branch</em> <span class="git-green">master</span> up to <code class="highlighter-rouge">origin</code> by doing <span class="perform"><code class="highlighter-rouge">git push -u origin master</code></span>:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Counting objects: 13, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (13/13), 1.31 KiB | 0 bytes/s, done.
+Total 13 (delta 2), reused 0 (delta 0)
+To ../remote
+ * [new branch]      master -&gt; master</code></pre></figure>
+
+<div class="side-note">
+  <p>Typically, your <em>first</em> push to a remote should include the <code class="highlighter-rouge">-u</code> (set-upstream) option like this <code class="highlighter-rouge">git push -u origin master</code>. That associates <em>branch</em> <span class="git-green">master</span> with <em>branch</em> <span class="git-red">origin/master</span>. That way, the next time you’re on <em>branch</em> <span class="git-green">master</span>, you can simply do <code class="highlighter-rouge">git push</code> and Git knows you mean <code class="highlighter-rouge">git push origin master</code> (and similarly for <code class="highlighter-rouge">git pull</code>).</p>
+</div>
+
+<div class="tip">
+  <p>The “<em>upstream</em>” in the context of <em>remote branch</em>es is different from the <em>time travel branch</em>es we spoke of. In the context of <em>remote branch</em>es, <strong>upstream</strong> is the “<em>certified true copy</em>” that <em>clone</em>s (<strong>downstream</strong>s) pull from and push to. The key idea for the <code class="highlighter-rouge">-u</code> option is to specify the “<em>certified true copy</em>” for your project’s <em>branch</em>es.</p>
+</div>
+
+<div class="forward">
+  <p>It is possible to have different <em>branch</em>es pull from (and push to) separate <em>remote</em>s. An example use case is when I need to use a BitBucket private repo to track/store my project, and I use <a href="https://pages.github.com">GitHub Pages</a> to publish my project’s documentation. In such a case, I would have 2 <strong>remote</strong>s — <span class="git-red">origin</span> would point to a BitBucket repo while <span class="git-red">doc</span> (arbitrary name) would point to GitHub repo.</p>
+
+  <p>Shoot me an email if you want me to rush out a tutorial for the above use case (very common for staff in SUTD).</p>
+</div>
+
+<p>Everything you saw in your <code class="highlighter-rouge">.git</code> folder inside your <em>clone</em> will be inside the <em>remote</em> (the bare Git repo).
+Both these commands should show you the same files (<code class="highlighter-rouge">../remote/objects</code> has less files):</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">find .git/objects -type f
+find ../remote/objects -type f</code></pre></figure>
+</div>
+
+<p>(The <em>remote</em> shows only the <em>commit</em>s from <em>branch</em> <span class="git-green">master</span> because we only pushed that <em>branch</em> up.)</p>
+
+<p>You can see that the bare repo does not reserve any space for <em>working copies of project files</em>; all Git data is stored at the top-level folder (<code class="highlighter-rouge">../remote</code>).</p>
+
+<div class="tip">
+  <p>We never work on <em>remotes</em>, but instead work on <em>clones</em> and push our work up to <em>remotes</em>.</p>
+</div>
+
+<p>A look at Git log via <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> tells us our <em>remote</em> now has <em>branch</em> <span class="git-green">master</span> too (<span class="git-red">origin/master</span>):</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span>  Merge: 9ad88e5 e58b350
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Tue May 16 17:48:34 2017 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<div class="tip">
+  <p>Remote <em>branch</em>es are shown in red, and prefixed by the name of the remote plus ‘/’. Eg. ‘origin/master’.</p>
+</div>
+
+<h2 id="push-to-publish">Push to Publish</h2>
+
+<p><em>Branch</em>es (and consequently the <em>commit</em>s rendered <em>reachable</em> only by them) are not visible to the rest of your team if you don’t push them to the <em>remote</em>.</p>
+
+<p>We will demonstrate this fact. We first clone the repo into folder <code class="highlighter-rouge">clone-B</code>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ..     <span class="c"># Go to parent folder, 1 up from clone-A</span>
+git clone remote clone-B     <span class="c"># Clone repo at 'remote' into 'clone-B'</span>
+<span class="nb">cd </span>clone-B     <span class="c"># Enter clone-B</span></code></pre></figure>
+</div>
+
+<div class="tip">
+  <p>We <em>clone</em> a <em>remote</em> by doing <code class="highlighter-rouge">git clone &lt;remote&gt; &lt;folder&gt;</code>, where <code class="highlighter-rouge">&lt;remote&gt;</code> is the location of the <em>remote</em> and <code class="highlighter-rouge">&lt;folder&gt;</code> is the folder to create that will hold the <em>clone</em>.</p>
+</div>
+
+<p>We then set our credential and some parameters:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git config user.name <span class="s2">"Author B"</span>
+git config user.email b@d.com
+git config log.abbrevCommit <span class="nb">true</span></code></pre></figure>
+</div>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>, <span class="git-red">origin/master</span>, <span class="git-red">origin/HEAD</span>)</span>
+<span class="git-red">|</span>  Merge: 9ad88e5 e58b350
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+...</code>
+</pre>
+
+<div class="tip">
+  <p>The remote <em>branch</em> <span class="git-red">origin/HEAD</span> simply points to the <em>branch</em> that is pulled down upon a <code class="highlighter-rouge">git clone</code>. We don’t need a reference to it in the <em>clone</em>s. It serves the <em>remote</em>, not the <em>clone</em>s.</p>
+</div>
+
+<p>We delete <em>branch</em> <span class="git-red">origin/HEAD</span> in our <code class="highlighter-rouge">clone-B</code> via <span class="perform"><code class="highlighter-rouge">git branch -r -d origin/HEAD</code></span>.</p>
+
+<p>The above Git log tells us our <code class="highlighter-rouge">clone-B</code> has access to <em>branch</em> <span class="git-green">master</span>. But what about <em>branch</em> <span class="git-green">git-obj-study</span>? Let’s see with <span class="perform"><code class="highlighter-rouge">git log --decorate --graph git-obj-study</code></span>:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">fatal: ambiguous argument 'git-obj-study': unknown revision or path not in the working tree.</code></pre></figure>
+
+<p>Even <span class="perform"><code class="highlighter-rouge">git branch</code></span> tells us that <code class="highlighter-rouge">clone-B</code>’s only <em>branch</em> is <span class="git-green">master</span>.</p>
+
+<p>Let’s go back into <code class="highlighter-rouge">clone-A</code> to publish <em>branch</em> <span class="git-green">git-obj-study</span>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../clone-A     <span class="c"># Enter clone-A folder</span>
+git push -u origin git-obj-study     <span class="c"># Push branch 'git-obj-study'</span></code></pre></figure>
+</div>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git push -u &lt;remote&gt; &lt;branch&gt;</code> to publish <em>branch</em> <span class="git-green">&lt;branch&gt;</span> to <em>remote</em> <span class="git-red">&lt;remote&gt;</span>.</p>
+</div>
+
+<p>And we get <code class="highlighter-rouge">clone-B</code> to pull in the newly pushed <em>branch</em>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../clone-B     <span class="c"># Enter clone-B folder</span>
+git pull     <span class="c"># Pull updates from remote</span>
+git checkout git-obj-study     <span class="c"># Checkout branch 'git-obj-study'</span></code></pre></figure>
+</div>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">git pull</code> to pull down any new updates from <em>remote</em>(s).</p>
+</div>
+
+<p>Now, <span class="perform"><code class="highlighter-rouge">git log --decorate --graph</code></span> shows that <code class="highlighter-rouge">clone-B</code> can see <em>branch</em> <span class="git-green">git-obj-study</span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="second-commit-short goi">118a9ac</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">git-obj-study</span>, <span class="git-red">origin/git-obj-study</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 04:33:47 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Adds nested folder structure
+...
+* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span></span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<h2 id="remote-branch">Remote Branch</h2>
+
+<p>We will contrast <strong>remote branch</strong> versus <strong>branch on remote</strong>.</p>
+
+<div class="tip">
+  <p>A <strong>remote branch</strong> is merely a <em>tracking branch</em>, which <em>tracks</em> (corresponds with) a <strong>branch on the remote</strong>.</p>
+
+  <p>A <strong>remote branch</strong> is like a pointer that resides in the <em>clone</em>. A <strong>branch on the remote</strong> resides in the <em>remote</em>.</p>
+</div>
+
+<p>To see that concept demonstrated, we will create a <em>remote branch</em>, delete it, and then see that the <em>remote repo</em> still has the corresponding <em>branch</em>.</p>
+
+<p>We create <em>branch</em> <span class="git-green">temp</span> at our <em>first-commit</em> via <span class="perform"><code class="highlighter-rouge">git branch temp HEAD~1</code></span>. We then push that <em>branch</em> up via <span class="perform"><code class="highlighter-rouge">git push -u origin temp</code></span>. Finally, <span class="perform"><code class="highlighter-rouge">git log --decorate temp</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="first-commit-short goi">2b55199</span> (<span class="git-green">temp</span>, <span class="git-red">origin/temp</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>We confirm that the <em>remote repo</em> actually has <em>branch</em> <span class="git-green">temp</span>. We enter the <em>remote repo</em> with <span class="perform"><code class="highlighter-rouge">cd ../remote</code></span>. We then check the log via <span class="perform"><code class="highlighter-rouge">git log --decorate temp</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span> (<span class="git-green">temp</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git branch -v</code></span> also shows:</p>
+<pre><code>  temp             <span class="first-commit goi">2b55199</span> Adds first work on the story</code></pre>
+
+<p>We now return to <code class="highlighter-rouge">clone-B</code> and delete the <em>remote branch</em> <span class="git-red">origin/temp</span> and also local <em>branch</em> <span class="git-green">temp</span>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../clone-B
+git branch -rd origin/temp
+git branch -d temp</code></pre></figure>
+</div>
+
+<p>Our <em>first-commit</em> no longer holds <em>remote branch</em> <span class="git-red">origin/temp</span> nor local <em>branch</em> <span class="git-green">temp</span>. A <span class="perform"><code class="highlighter-rouge">git log temp</code></span> and a <span class="perform"><code class="highlighter-rouge">git log origin/temp</code></span> both show:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">fatal: ambiguous argument 'temp': unknown revision or path not in the working tree.</code></pre></figure>
+
+<p>We will see that the <em>remote repo</em> still has <em>branch</em> <span class="git-green">temp</span>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../remote
+git log --decorate temp</code></pre></figure>
+</div>
+<pre>
+<code>* <span class="git-yellow">commit <span class="first-commit goi">2b5519936865f3b841b5f7aad46dcd0cf0e86ceb</span> (<span class="git-green">temp</span>)</span>
+  Author: Author A &lt;a@c.com&gt;
+  Date:   Mon Dec 12 04:31:24 2016 +0800
+
+      Adds first work on the story
+...</code>
+</pre>
+
+<p>As can be seen, a <strong>remote branch</strong> is merely a <em>tracking branch</em> that tracks (corresponds with) a <strong>branch on a remote</strong>.</p>
+
+<p>We now return to <code class="highlighter-rouge">clone-B</code> to delete the <em>branch on the remote</em>  (we normally don’t have direct access to a <em>remote repo</em>):</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../clone-B
+git push origin --delete temp</code></pre></figure>
+</div>
+
+<p>Now, the <em>remote repo</em> truly has <em>branch</em> <span class="git-green">temp</span> deleted:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../remote
+git log --decorate temp</code></pre></figure>
+</div>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">fatal: ambiguous argument 'temp': unknown revision or path not in the working tree.</code></pre></figure>
+
+<h1 id="collaboration">Collaboration</h1>
+
+<p>A typical collaboration technique is the “<em>peer review</em>”.</p>
+
+<p>To demonstrate such collaboration, we will be getting “<em>Author A</em>” to commit some changes on a <em>branch</em> and then to notify someone else to do a review of those changes. Finally, after the review, the work will be merged back into <em>branch</em> <span class="git-green">master</span>.</p>
+
+<h2 id="the-work">The Work</h2>
+
+<p>We enter <code class="highlighter-rouge">clone-A</code> now with <span class="perform"><code class="highlighter-rouge">cd ../clone-A</code></span>. We then create a new <em>branch</em> and checkout the <em>branch</em> (recall <a href="#leapfrog-loop">section Leapfrog Loop</a>) via <span class="perform"><code class="highlighter-rouge">git checkout -b author-A/rainbow</code></span>.</p>
+
+<p>Our <em>branch</em> <span class="git-green">author-A/rainbow</span> should be at our <em>merge-commit</em>, as seen via <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-A/rainbow</span>, <span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+...</code>
+</pre>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to change line 5:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it unremarkable.
+
+The unicorn looked around.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span> to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Unicorn finds rainbow unremarkable</code></pre></figure>
+
+<p>Add your work via <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span>, and then commit it via <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>. Then <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="work-A-commit-short goi">db07e57</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-A/rainbow</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:19:42 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow unremarkable
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<h2 id="publishing-for-review">Publishing for Review</h2>
+
+<p>“<em>Author A</em>” will now publish the work, so that someone else can review it.</p>
+
+<p>Do <span class="perform"><code class="highlighter-rouge">git push -u origin author-A/rainbow</code></span> to publish the work. A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="work-A-commit-short goi">db07e57</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-A/rainbow</span>, <span class="git-red">origin/author-A/rainbow</span>)</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:19:42 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow unremarkable
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<h3 id="pull-request">Pull Request</h3>
+
+<p>There is a concept called “<em>Pull Request</em>” (PR). A PR is a piece of communication going from the <em>work/change publisher</em> (“<em>Author A</em>”, in our case) to the <em>reviewer</em> (“<em>Author C</em>”, which we will soon create).</p>
+
+<p>PRs are not a part of Git. GitHub, BitBucket and GitLab (terms it as “<em>Merge Request</em>”) had to implement this feature themselves.</p>
+
+<p>For now, we only need to know that a PR is merely a message of this structure:</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">From Branch</span><span class="pi">:</span> <span class="s">origin/author-A/rainbow</span>
+<span class="s">To Branch</span><span class="pi">:</span> <span class="s">origin/master</span>
+<span class="s">Description</span><span class="pi">:</span> <span class="s">Makes rainbow more integal to the story.</span></code></pre></figure>
+
+<p>That is all a PR essentially is — a request to merge (from) a <em>work branch</em> onto a <em>main branch</em>. That request is sent to a reviewer.</p>
+
+<p>Suppose “<em>Author A</em>” sends the above PR to “<em>Author C</em>”.</p>
+
+<h2 id="the-review">The Review</h2>
+
+<p>We now simulate an “<em>Author C</em>”. Create a clone <code class="highlighter-rouge">clone-C</code> by doing:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ..
+git clone remote clone-C
+<span class="nb">cd </span>clone-C
+git branch -rd origin/HEAD</code></pre></figure>
+</div>
+
+<p>We then set the credential for “<em>Author C</em>”, as well as some parameters:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git config user.name <span class="s2">"Author C"</span>
+git config user.email c@e.com
+git config log.abbrevCommit <span class="nb">true</span></code></pre></figure>
+</div>
+
+<p>Next, we pull updates from the <em>remote</em>, and then checkout the work we need to review:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git pull
+git checkout author-A/rainbow</code></pre></figure>
+</div>
+
+<h3 id="installing-diff-highlight">Installing <code class="highlighter-rouge">diff-highlight</code></h3>
+
+<p>Git has a related program called <code class="highlighter-rouge">diff-highlight</code> that makes <code class="highlighter-rouge">git diff</code> more visually informative.</p>
+
+<p>Install the <code class="highlighter-rouge">diff-highlight</code> program:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">mkdir ~/bin
+curl https://raw.githubusercontent.com/git/git/master/contrib/diff-highlight/diff-highlight &gt; ~/bin/diff-highlight
+chmod +x ~/bin/diff-highlight</code></pre></figure>
+</div>
+
+<h4 id="executable-path">Executable Path</h4>
+
+<p>Check if the <code class="highlighter-rouge">diff-highlight</code> program is on your <em>executable path</em>: Doing <span class="perform"><code class="highlighter-rouge">which diff-highlight</code></span> should show:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">/Users/&lt;username&gt;/bin/diff-highlight</code></pre></figure>
+
+<p><strong>If there was no output</strong> from the above command, you will have to add <code class="highlighter-rouge">~/bin</code> to your <em>executable path</em>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="s2">"PATH=~/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> &gt;&gt; ~/.bashrc</code></pre></figure>
+
+</div>
+
+<p><strong>If you’re using MacOS</strong>, you must also ensure that your <code class="highlighter-rouge">~/.bash_profile</code> has this line:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">[[ -s ~/.bashrc ]] &amp;&amp; source ~/.bashrc</code></pre></figure>
+
+<p>Usually, a MacOS’s <code class="highlighter-rouge">~/.bash_profile</code> should contain only that 1 line.</p>
+
+<p>After adding <code class="highlighter-rouge">~/bin</code> to your <em>executable path</em>, you must restart your Bash terminal.</p>
+
+<div class="side-note">
+  <p>If you’re on Linux, you can try to do <code class="highlighter-rouge">source /etc/environment &amp;&amp; source ~/.bashrc</code> without having to restart your Bash terminal.</p>
+
+  <p>If you’re on MacOS, you can try to do <code class="highlighter-rouge">source /etc/profile</code> instead. Yes, MacOS is a little non-standard in the way it handles shell configuration.</p>
+</div>
+
+<h4 id="using-diff-highlight">Using <code class="highlighter-rouge">diff-highlight</code></h4>
+
+<p>Now, tell Git to always use <code class="highlighter-rouge">diff-highlight</code>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git config --global pager.log <span class="s2">"diff-highlight | less"</span>
+git config --global pager.show <span class="s2">"diff-highlight | less"</span>
+git config --global pager.diff <span class="s2">"diff-highlight | less"</span></code></pre></figure>
+</div>
+
+<h3 id="diff">Diff</h3>
+
+<p>The <em>reviewer</em> looks at the <em>work</em> (or <em>changes</em>).</p>
+
+<div class="tip">
+  <p>To view the <em>work/changes</em>, do <code class="highlighter-rouge">git diff &lt;ours&gt; &lt;theirs&gt;</code>, where <code class="highlighter-rouge">&lt;ours&gt;</code> is the <em>commit</em> on which we will be applying changes (via <code class="highlighter-rouge">git merge</code>) from <code class="highlighter-rouge">&lt;theirs&gt;</code>.</p>
+</div>
+
+<p>In this case, <em>branch</em> <span class="git-green">author-A/rainbow</span> contains the new changes to be applied onto <em>branch</em> <span class="git-green">master</span>. Therefore, we do <span class="perform"><code class="highlighter-rouge">git diff master author-A/rainbow</code></span>:</p>
+<pre>
+<code><span class="bold">diff --git a/story.txt b/story.txt
+index 700b75e..6806d4f 100644
+--- a/story.txt
++++ b/story.txt</span>
+<span class="git-blue">@@ -2,7 +2,7 @@</span> Once upon a time, there was a unicorn.
+
+ The unicorn saw a rainbow.
+
+<span class="git-red">-The unicorn f<span class="diff">elt nothing about it</span>.</span>
+<span class="git-green">+The unicorn f<span class="diff">ound it unremarkable</span>.</span>
+
+ The unicorn looked around.</code>
+</pre>
+
+<p>It is very obvious that “<em>Author A</em>” replaced “<em>elt nothing about it</em>” with “<em>ound it unremarkable</em>”.</p>
+
+<h3 id="discussion">Discussion</h3>
+
+<p>In this case, the changes are simple and easy to understand.</p>
+
+<p>But to learn about how discussions are typically conducted, let’s assume the reviewer still has concerns, and chooses to hold a discussion with “<em>Author A</em>”. For example, the reviewer may question the purpose of the “<em>rainbow</em>” in the story, since the unicorn had no response to the “<em>rainbow</em>” at all. In response, “<em>Author A</em>” may justify the existence of the “<em>rainbow</em>” by claiming that the “<em>rainbow</em>” will have a purpose only later on in the story, via a “<em>surprise plot twist</em>” perhaps. Moreover, “<em>Author A</em>” can claim that deeming the “<em>rainbow</em>” “<em>unremarkable</em>” is a non-trivial response.</p>
+
+<p>Let’s assume that the reviewer accepts the justification given by “<em>Author A</em>”, and therefore accepts the change put forward by “<em>Author A</em>”.</p>
+
+<h3 id="merge">Merge</h3>
+
+<p>The reviewer will now <em>merge</em> the work into <em>branch</em> <span class="git-green">master</span>.</p>
+
+<p>Create <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Merge branch 'author-A/rainbow'</code></pre></figure>
+
+<p>Perform the merge, commit it, and then push it:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git checkout master     <span class="c"># Recall: always checkout the 'onto' branch</span>
+git merge --no-ff --no-commit author-A/rainbow     <span class="c"># Do the merge</span>
+git commit -F .git/COMMIT_EDITMSG     <span class="c"># Commit the merge</span>
+git push     <span class="c"># Push the merge</span></code></pre></figure>
+</div>
+
+<p>When working on a GitHub, BitBucket or GitLab platform, a PR is merged on the <em>remote repo</em>, not from a <em>clone</em> like what was seen in the above merge process. Don’t worry, such a platform-facilitated merge is a lot more convenient than the above manual merge process.</p>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> now should show:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="work-A-merge-commit-short goi">a4305c8</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="merge-commit-short goi">e20621b</span> <span class="work-A-commit-short goi">db07e57</span>
+<span class="git-red">|</span> Author: Author C &lt;c@e.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:25:23 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/rainbow'
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span></span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<div class="forward">
+  <p>We will next see “merge conflict” enter this merge stage, making this stage a lot more involved.</p>
+</div>
+
+<h2 id="conflict">Conflict</h2>
+
+<div class="tip">
+  <p>A <strong>merge conflict</strong> occurs when 2 separate <em>branch</em>es change the same line in the same file.</p>
+</div>
+
+<p>To demonstrate a <strong>merge conflict</strong>, we get “<em>Author B</em>” to create work that changes the same lines affected by the work of “<em>Author A</em>”.</p>
+
+<p>The workflow is about the same as the case without <em>merge conflict</em>, but with conflict discussion and resolution added:</p>
+<ul>
+  <li>Work is done.</li>
+  <li>PR is created, and conflict is discovered.</li>
+  <li>Conflict is discussed among relevant parties.</li>
+  <li>Conflict is resolved.</li>
+  <li>PR is sent to reviewer.</li>
+  <li>Work is reviewed, and then merged.</li>
+</ul>
+
+<p>Note that the “<em>PR creation</em>” step will now be fleshed out properly. It is more involved than previously described.</p>
+
+<h3 id="work-done">Work Done</h3>
+
+<p>“<em>Author B</em>” will now create a <em>branch</em> <span class="git-green">author-B/rainbow</span>:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd</span> ../clone-B     <span class="c"># Go to clone-B</span>
+git checkout master     <span class="c"># Always leapfrog from 'master'</span>
+git checkout -b author-B/rainbow     <span class="c"># Create the work branch</span></code></pre></figure>
+</div>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-B/rainbow</span>, <span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="third-commit-short goi">9ad88e5</span></span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Tue May 16 18:23:02 2017 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn encounters a rainbow
+...</code>
+</pre>
+
+<p>Notice that we’re starting our work from an older tip of <em>branch</em> <span class="git-green">master</span> — there is no sign of work from “<em>Author A</em>”. This is intentional in this demonstration. It is a typical scenario.</p>
+
+<div class="tip">
+  <p>The hallmark of Git is <em>rapid</em>, <em>asynchronous</em> work. Nobody waits on anybody to start work.</p>
+</div>
+
+<p>In this case, we’re assuming that “<em>Author B</em>” started work on <em>branch</em> <span class="git-green">author-B/rainbow</span> <em>before</em> “<em>Author A</em>” even finished work on <em>branch</em> <span class="git-green">author-A/rainbow</span>.</p>
+
+<p>We now do some work.</p>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) to change line 5 and add lines 9-10:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it exciting.
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.</code></pre></figure>
+
+<p>A <span class="perform"><code class="highlighter-rouge">git diff story.txt</code></span> shows:</p>
+<pre>
+<code><span class="bold">diff --git a/story.txt b/story.txt
+index 700b75e..b669429 100644
+--- a/story.txt
++++ b/story.txt</span>
+<span class="git-blue">@@ -2,7 +2,7 @@</span> Once upon a time, there was a unicorn.
+
+ The unicorn saw a rainbow.
+
+<span class="git-red">-The unicorn f<span class="diff">elt nothing about it</span>.</span>
+<span class="git-green">+The unicorn f<span class="diff">ound it exciting</span>.</span>
+
+ The unicorn looked around.
+
+<span class="git-green">+The unicorn moved towards the rainbow.
++</span>
+ The unicorn dreamed of clouds.
+
+ The unicorn thought about cotton candy.
+</code>
+</pre>
+
+<div class="tip">
+  <p>It is good practice to review your unstaged changes via <code class="highlighter-rouge">git diff &lt;file&gt;</code> before staging your changes.</p>
+</div>
+
+<p>Create <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span>) to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Unicorn finds rainbow exciting</code></pre></figure>
+
+<p>Add your work via <span class="perform"><code class="highlighter-rouge">git add story.txt</code></span>, and then commit it via <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>. Finally, we push the work via <span class="perform"><code class="highlighter-rouge">git push -u origin author-B/rainbow</code></span>. Then <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent</code></span> shows:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="work-B-commit-short goi">afc9e0c</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-B/rainbow</span>, <span class="git-red">origin/author-B/rainbow</span>)</span>
+<span class="git-red">|</span> Author: Author B &lt;b@d.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:28:51 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow exciting
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span> (<span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<h3 id="pr-created">PR Created</h3>
+
+<p>We next have “<em>Author B</em>” create the following PR:</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">From Branch</span><span class="pi">:</span> <span class="s">origin/author-B/rainbow</span>
+<span class="s">To Branch</span><span class="pi">:</span> <span class="s">origin/master</span>
+<span class="s">Description</span><span class="pi">:</span> <span class="s">Unicorn responds to the rainbow</span></code></pre></figure>
+
+<p>“<em>Author B</em>” now has the responbility to perform a “<em>test merge</em>” of the work onto <em>branch</em> <span class="git-green">master</span>.</p>
+
+<div class="tip">
+  <p>It is never the reviewer’s responsibility to discover and resolve <em>merge conflicts</em>. The <em>work/change publisher</em> should be responsible instead.</p>
+</div>
+
+<div class="tip">
+  <p>Platforms that feature PR mechanism will perform this “<em>test merge</em>” automatically, discover <em>merge conflicts</em>, and inform you immediately about them.</p>
+
+  <p>For learning purposes, we continue to perform the “<em>test merge</em>” ourselves.</p>
+</div>
+
+<p>“<em>Author B</em>” performs the “<em>test merge</em>” via:</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git pull     <span class="c"># Pull in updates from remote</span>
+git checkout master     <span class="c"># Checkout branch 'master'</span>
+git merge --no-ff --no-commit author-B/rainbow</code></pre></figure>
+</div>
+
+<p>Git tells us there’s a <em>merge conflict</em>:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Auto-merging story.txt
+CONFLICT (content): Merge conflict in story.txt
+Automatic merge failed; fix conflicts and then commit the result.</code></pre></figure>
+
+<div class="tip">
+  <p><strong>Merge conflict</strong>s are described inside the files where <em>conflict</em>s occur.</p>
+</div>
+
+<p>Editing <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span>) shows:</p>
+
+<pre class="linenos"><code>3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</code></pre>
+
+<pre class="conflict">
+<code>The unicorn saw a rainbow.
+
+<span class="bound">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="old">The unicorn found it <span class="diff">unremarkable</span>.</span>
+<span class="bound">||||||| merged common ancestors</span>
+<span class="common">The unicorn felt nothing about it.</span>
+<span class="bound">=======</span>
+<span class="new">The unicorn found it <span class="diff">exciting</span>.</span>
+<span class="bound">&gt;&gt;&gt;&gt;&gt;&gt;&gt; author-B/rainbow</span>
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.</code>
+</pre>
+
+<p>The above colorful highlighting is provided by <code class="highlighter-rouge">emacs</code>. Even if your text editor doesn’t show those colors, you should be able to compare the text easily.</p>
+
+<p>Recall: To view the <em>work/changes</em>, do <code class="highlighter-rouge">git diff &lt;ours&gt; &lt;theirs&gt;</code>, where <code class="highlighter-rouge">&lt;ours&gt;</code> is the <em>commit</em> on which we will be applying changes (via <code class="highlighter-rouge">git merge</code>) from <code class="highlighter-rouge">&lt;theirs&gt;</code>. In our case now, <code class="highlighter-rouge">&lt;ours&gt;</code> would be <em>branch</em> <span class="git-green">master</span> and <code class="highlighter-rouge">&lt;theirs&gt;</code> would be <em>branch</em> <span class="git-green">author-B/rainbow</span>.</p>
+
+<p>The <span class="conflict-old">red section</span> shows the “<em>old</em>” value, the value already on <em>branch</em> <span class="git-green">master</span>.</p>
+
+<p>The <span class="conflict-new">green section</span> shows the “<em>new</em>” value, the value on <em>branch</em> <span class="git-green">author-B/rainbow</span>.</p>
+
+<p>The <span class="conflict-common">yellow section</span> shows the “<em>common value</em>” from which both the “<em>new</em>” and “<em>old</em>” values stemmed (forked).</p>
+
+<p>Let’s see where that “<em>fork</em>” is, via <span class="perform"><code class="highlighter-rouge">git log --decorate --graph --first-parent master author-B/rainbow</code></span>:</p>
+<pre>
+<code>* <span class="git-yellow">commit <span class="work-B-commit-short goi">afc9e0c</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">author-B/rainbow</span>, <span class="git-red">origin/author-B/rainbow</span>)</span>
+<span class="git-red">|</span> Author: Author B &lt;b@d.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:28:51 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Unicorn finds rainbow exciting
+<span class="git-red">|</span>
+<span class="git-red">|</span> * <span class="git-yellow">commit <span class="work-A-merge-commit-short goi">a4305c8</span> (<span class="git-blue">HEAD -&gt;</span> <span class="git-green">master</span>, <span class="git-red">origin/master</span>)</span>
+<span class="git-red">|/</span>  Author: Author C &lt;c@e.com&gt;
+<span class="git-red">|</span>   Date:   Mon Dec 12 05:25:23 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>       Merge branch 'author-A/rainbow'
+<span class="git-red">|</span>
+* <span class="git-yellow">commit <span class="merge-commit-short goi">e20621b</span></span>
+<span class="git-red">|</span> Merge: <span class="third-commit-short goi">9ad88e5</span> <span class="leapfrog-two-commit-short goi">e58b350</span>
+<span class="git-red">|</span> Author: Author A &lt;a@c.com&gt;
+<span class="git-red">|</span> Date:   Mon Dec 12 05:14:15 2016 +0800
+<span class="git-red">|</span>
+<span class="git-red">|</span>     Merge branch 'author-A/daydream'
+<span class="git-red">|</span>
+<span class="git-red">|</span>     The unicorn daydreams.
+...</code>
+</pre>
+
+<p>The fork is obviously at our <em>merge-commit</em>, where we merged in the unicorn’s thoughts about “<em>clouds and cotton candy</em>”, and where the unicorn still “<em>felt nothing about</em>” the rainbow.</p>
+
+<p>We now abort the “<em>test merge</em>” via <span class="perform"><code class="highlighter-rouge">git merge --abort</code></span>. We don’t have the right to merge our work into <em>branch</em> <span class="git-green">master</span> now, because our work is not yet reviewed.</p>
+
+<h3 id="conflict-discussion">Conflict Discussion</h3>
+
+<p>At this point of the workflow, “<em>Author B</em>” should discuss the conflict with “<em>Author A</em>”.</p>
+
+<p>A typical start of such a discussion would be these question from “<em>Author B</em>” to “<em>Author A</em>”:</p>
+<ul>
+  <li>“<em>Did you intend to have the unicorn find the rainbow unremarkable?</em>”</li>
+  <li>“<em>Will I break anything if I now decide that the unicorn finds the rainbow exciting?</em>”</li>
+</ul>
+
+<p>In our case, let’s simplify the scenario and have “<em>Author A</em>” tell “<em>Author B</em>” to “<em>go ahead with your changes because I now agree that the unicorn should not find the rainbow unremarkable</em>”. In short, “<em>Author A</em>” agrees to have her own changes overwritten by changes from “<em>Author B</em>”.</p>
+
+<div class="side-note">
+  <p>In more complex scenarios, both authors may incorporate parts of each other’s work.</p>
+</div>
+
+<h3 id="conflict-resolution">Conflict Resolution</h3>
+
+<p>“<em>Author B</em>” goes back to <em>branch</em> <span class="git-green">author-B/rainbow</span> and attempts to incorporate the “<em>latest updates</em>” on <em>branch</em> <span class="git-green">master</span> onto the <em>work branch</em> (<em>branch</em> <span class="git-green">author-B/rainbow</span>):</p>
+<div class="perform">
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git checkout author-B/rainbow
+git merge --no-ff --no-commit master</code></pre></figure>
+</div>
+
+<p>Edit <code class="highlighter-rouge">story.txt</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs story.txt</code></span> to see the <em>merge conflict</em>:</p>
+
+<pre class="linenos"><code>3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</code></pre>
+
+<pre class="conflict">
+<code>The unicorn saw a rainbow.
+
+<span class="bound">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="old">The unicorn found it <span class="diff">exciting</span>.</span>
+<span class="bound">||||||| merged common ancestors</span>
+<span class="common">The unicorn felt nothing about it.</span>
+<span class="bound">=======</span>
+<span class="new">The unicorn found it <span class="diff">unremarkable</span>.</span>
+<span class="bound">&gt;&gt;&gt;&gt;&gt;&gt;&gt; author-B/rainbow</span>
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.</code>
+</pre>
+
+<div class="tip">
+  <p>Non-conflicting changes are merged in without conflict alerts.</p>
+
+  <p>The above line 15 is an example. It is a new line added.</p>
+</div>
+
+<p>“<em>Author B</em>” easily sees that our intended changes now involves removing lines 7-11 and line 5. We want to keep <em>our</em> changes (on <em>branch</em> <span class="git-green">author-B/rainbow</span>), and discard <em>their</em> changes (on <em>branch</em> <span class="git-green">master</span>). The final contents of <code class="highlighter-rouge">story.txt</code> should be:</p>
+
+<pre class="linenos"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</code></pre>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Once upon a time, there was a unicorn.
+
+The unicorn saw a rainbow.
+
+The unicorn found it exciting.
+
+The unicorn looked around.
+
+The unicorn moved towards the rainbow.
+
+The unicorn dreamed of clouds.
+
+The unicorn thought about cotton candy.</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">.git/COMMIT_EDITMSG</code> (eg. <span class="perform"><code class="highlighter-rouge">emacs .git/COMMIT_EDITMSG</code></span> to contain:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">Pulls in updates from 'master'</code></pre></figure>
+
+<p>Commit the merge via <span class="perform"><code class="highlighter-rouge">git commit -F .git/COMMIT_EDITMSG</code></span>.</p>
+
+<p>Finally, the PR is sent to the reviewer, and the review proceeds. And that concludes our demonstration of <strong>merge conflicts</strong>.</p>
+
+<div class="side-note">
+  <p>For a cleaner Git history, <em>merge conflict</em>s can be resolved via <em>rebasing</em>. Let me know if your project manager needs me to teach <em>rebasing</em>.</p>
+</div>
+
+<h2 id="work-on-own-branches">Work on Own Branches</h2>
+
+<p>Do not work on <em>branch</em>es belonging to other team members.</p>
+
+<p>Notice in <a href="#leapfrog-loop">section Leapfrog Loop</a> that we created for “<em>Author A</em>” a <em>branch</em> named <span class="git-green">author-A/daydream</span>.</p>
+
+<div class="tip">
+  <p>Create your own <em>branch</em>es by prefixing <code class="highlighter-rouge">your-name/</code> to the new <em>branch</em> names. Eg. <span class="git-green">author-A/daydream</span>.</p>
+
+  <p>Work (create <em>commit</em>s) only on your own <em>branch</em>es.</p>
+</div>
+
+<p>In future, if I do write about <em>force push</em> (<code class="highlighter-rouge">git push -f</code>), I can explain why we only ever work on our own <em>branch</em>es.</p>
+
+<p>As for <em>branch</em> <span class="git-green">master</span>, usually only the project manager should have the authority to “<em>work</em>” on that — the project manager merges <em>branch</em>es (leapfrog loops) into <em>branch</em> <span class="git-green">master</span>.</p>
+
+<h1 id="go-forth">Go Forth!</h1>
+
+<p>We’re done with the Git lesson! Feel free to create <em>commit</em>s with both “<em>Author A</em>” and “<em>Author B</em>”, and get a feel for how collaboration can work on Git repositories via <em>remote</em> and <em>clone</em>s.</p>
+
+<p>As a final tidbit, here’s a clue about how to <strong>ignore</strong> the <code class="highlighter-rouge">rough_thoughts.txt</code> file we created. Create a <code class="highlighter-rouge">.gitignore</code> file in folder <code class="highlighter-rouge">clone-A</code>. And <code class="highlighter-rouge">clone-B</code> too, if you want to continue pretending to be both “<em>Author A</em>” and “<em>Author B</em>”.</p>
+
+<div class="tip">
+  <p><code class="highlighter-rouge">.gitignore</code> entries permit wildcards that work in Bash. Eg <code class="highlighter-rouge">*.bak</code> ignores all files whose name end with <code class="highlighter-rouge">.bak</code>.</p>
+
+  <p>Specifying paths are a little more involved:</p>
+  <ul>
+    <li>A leading <code class="highlighter-rouge">/</code> targets only the folder where <code class="highlighter-rouge">gitignore</code> resides.
+      <ul>
+        <li>Eg. <code class="highlighter-rouge">/config.cfg</code> ignores <code class="highlighter-rouge">/config.cfg</code> but not <code class="highlighter-rouge">/subfolder/config.cfg</code>.</li>
+      </ul>
+    </li>
+    <li>No leading <code class="highlighter-rouge">/</code> targets all folders, including subfolders, recursively.
+      <ul>
+        <li>Eg. <code class="highlighter-rouge">config.cfg</code> ignores all <code class="highlighter-rouge">config.cfg</code> files, even in subfolders.</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<h1 id="github-and-bitbucket">GitHub and BitBucket</h1>
+
+<p>BitBucket allows your academic email address to get an unlimited account — you can have any number of private repositories.</p>
+
+<p>GitHub is probably where you want to publish your proudest achievements.</p>
+
+<p>For security, <strong>you should use SSH keys to login</strong> to your Bitbucket and GitHub accounts. Feel free to contact me to ask for a write-up on this. Or you can contact BitBucket and GitHub to ask their support staff for help.</p>
+
+<div class="tip">
+  <p>General rule of thumb for passwords:</p>
+  <ul>
+    <li>Long and complex for account login.</li>
+    <li>Short and easy for private passphrase locking/unlocking your SSH keys.</li>
+  </ul>
+
+  <p>Each SSH key has 2 parts — private and public. The private key never leaves your harddisk, never travels onto any network. You can read briefly into <a href="https://en.wikipedia.org/wiki/Public-key_cryptography">Public-key Cryptography</a> to get an idea of how SSH keys work.</p>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Git Lessons</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Jon Wong (SUTD)
+            
+            </li>
+            
+            <li><a href="mailto:jon_wong add sutd.edu.sg, jhannwong add gmail.com">jon_wong add sutd.edu.sg, jhannwong add gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a target="_blank" href="https://bitbucket.org/jon_wong_sutd"><span class="icon icon--github"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="16px" height="16px" viewBox="0 0 31.68 31.681" style="enable-background:new 0 0 31.68 31.681;"
+	 xml:space="preserve">
+	<path d="M29.208,3.519c-0.203-0.285-0.451-0.525-0.729-0.738c-0.61-0.475-1.297-0.814-2.01-1.102
+		c-1.516-0.611-3.097-0.971-4.701-1.229C19.81,0.137,17.836,0.012,15.762,0c-1.854,0.016-3.797,0.133-5.725,0.434
+		C8.668,0.649,7.316,0.94,6.002,1.385c-0.869,0.297-1.71,0.649-2.477,1.164C3.16,2.793,2.824,3.07,2.549,3.418
+		C2.205,3.856,2.058,4.344,2.147,4.897C2.32,5.989,2.48,7.082,2.66,8.169c0.264,1.611,0.537,3.222,0.811,4.828
+		c0.306,1.787,0.62,3.573,0.918,5.36c0.07,0.416,0.246,0.769,0.526,1.07c0.179,0.193,0.37,0.377,0.574,0.543
+		c0.73,0.59,1.562,1.01,2.432,1.354c2.082,0.83,4.259,1.205,6.485,1.328c1.616,0.09,3.23,0.033,4.838-0.187
+		c1.369-0.185,2.709-0.479,4.011-0.948c0.965-0.349,1.891-0.775,2.725-1.382c0.355-0.26,0.683-0.547,0.945-0.901
+		c0.181-0.238,0.305-0.504,0.354-0.805c0.397-2.341,0.809-4.679,1.196-7.021c0.362-2.172,0.701-4.346,1.058-6.518
+		C29.617,4.388,29.502,3.935,29.208,3.519z M15.82,19.64c-2.4-0.008-4.341-1.971-4.333-4.383c0.006-2.41,1.958-4.347,4.369-4.338
+		c2.425,0.008,4.359,1.961,4.35,4.387C20.195,17.704,18.227,19.648,15.82,19.64z M24.522,4.394
+		c-0.124,0.139-0.274,0.262-0.436,0.357c-0.45,0.268-0.951,0.409-1.454,0.541c-0.952,0.243-1.923,0.383-2.896,0.485
+		c-1.281,0.136-2.565,0.183-3.791,0.188c-1.49-0.008-2.914-0.068-4.332-0.238c-1.064-0.129-2.124-0.291-3.146-0.633
+		C8.164,4.99,7.869,4.858,7.584,4.713C7.438,4.641,7.309,4.528,7.198,4.409c-0.197-0.215-0.196-0.45,0.005-0.663
+		C7.32,3.621,7.463,3.514,7.61,3.43C8.034,3.184,8.5,3.041,8.969,2.918c0.983-0.256,1.985-0.402,2.994-0.509
+		c1.652-0.17,3.308-0.221,4.967-0.172c1.524,0.045,3.045,0.158,4.55,0.431c0.706,0.127,1.407,0.274,2.075,0.545
+		c0.236,0.096,0.463,0.217,0.683,0.346c0.109,0.064,0.208,0.164,0.288,0.266C24.668,4.007,24.674,4.222,24.522,4.394z
+		 M26.186,22.761c0.009,0.088-0.004,0.183-0.021,0.271c-0.305,1.604-0.614,3.205-0.911,4.811c-0.101,0.539-0.344,0.99-0.724,1.377
+		c-0.422,0.432-0.918,0.752-1.448,1.023c-0.979,0.498-2.018,0.811-3.085,1.031c-1.377,0.286-2.771,0.414-3.563,0.407
+		c-2.41-0.006-4.184-0.198-5.917-0.698c-0.802-0.23-1.577-0.529-2.3-0.953c-0.379-0.222-0.732-0.478-1.042-0.789
+		c-0.388-0.392-0.64-0.846-0.741-1.396c-0.296-1.604-0.609-3.207-0.915-4.81c-0.016-0.081-0.021-0.163-0.019-0.245
+		c0.019-0.394,0.37-0.597,0.724-0.423c0.036,0.021,0.072,0.041,0.105,0.063c1.174,0.853,2.484,1.423,3.858,1.856
+		c1.262,0.4,2.556,0.641,3.873,0.758c1.52,0.138,3.031,0.104,4.54-0.11c2-0.28,3.91-0.851,5.687-1.827
+		c0.354-0.194,0.686-0.43,1.025-0.646c0.056-0.035,0.108-0.076,0.167-0.104C25.819,22.206,26.153,22.395,26.186,22.761z
+		 M18.027,15.284c-0.005,1.203-0.992,2.184-2.197,2.178c-1.205-0.004-2.178-0.987-2.172-2.196c0.004-1.212,0.98-2.181,2.192-2.175
+		C17.059,13.097,18.03,14.073,18.027,15.284z"/>
+</svg>
+</span><span class="username">jon_wong_sutd</span></a>
+<!-- <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>This micro site teaches you Git in clear conceptual and practical ways.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
