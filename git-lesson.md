@@ -1833,8 +1833,6 @@ Merge branch 'author-A/daydream'
 The unicorn daydreams.
 {% endhighlight %}
 
-Add your work via <span class="perform">`git add story.txt`</span>.
-
 We perform a merge with <span class="perform">`git merge --no-ff --no-commit author-A/daydream`<span>.
 
 <div class="side-note" markdown="1">
